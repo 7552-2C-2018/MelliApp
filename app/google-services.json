@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "65840447963",
+    "firebase_url": "https://melli-7552.firebaseio.com",
+    "project_id": "melli-7552",
+    "storage_bucket": "melli-7552.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65840447963:android:b601494ea0560cab",
+        "android_client_info": {
+          "package_name": "com.a7552_2c_2018.melliapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65840447963-i13tdsgfpip1q1gb2qkb4aa75hi5ug6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv1PLFjWblmO3X8XeUVzI_N44L_Pufb0k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
