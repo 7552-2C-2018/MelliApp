@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MelliApp</string>
+    <string name="app_name">Comprame</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
