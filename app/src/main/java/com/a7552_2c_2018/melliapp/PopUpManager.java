@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
 
-public class PopUpManager {
+class PopUpManager {
 
     public static void showToastError(Context context, CharSequence text) {
         int duration = Toast.LENGTH_LONG;

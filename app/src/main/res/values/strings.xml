@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Comprame</string>
+    <string name="hardcode_text">I\'m a hardcode text !</string>
+
+    <!-- Strings related to api uris -->
+    <string name="test_uri">https://api.chucknorris.io/jokes/random</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

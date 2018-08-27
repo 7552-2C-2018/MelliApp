@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    String BASE_URI = "https://api.chucknorris.io/jokes/random";
     private static final String TAG = "MainActivity";
 
     @Override
@@ -27,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         getTestText();
     }
 
-    public void getTestText() {
+    private void getTestText() {
 
-        String url = BASE_URI;
+        String url = getResources().getString(R.string.test_uri);
         String REQUEST_TAG = "getJoke";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showResponse(JSONObject response) {
-        String text = "";
+        String text;
         try {
             text = response.getString("value");
             TextView tvText = findViewById(R.id.testMsg);
