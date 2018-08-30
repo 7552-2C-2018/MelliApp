@@ -39,6 +39,7 @@ public class SingletonConnect {
                 });*/
     }
 
+
     public static synchronized SingletonConnect getInstance(Context context) {
         if (mAppSingletonInstance == null) {
             mAppSingletonInstance = new SingletonConnect(context);
