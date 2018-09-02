@@ -4,6 +4,7 @@
 
     <!-- Strings related to api uris -->
     <string name="test_uri">https://api.chucknorris.io/jokes/random</string>
+    <string name="local_server">http://127.0.0.1:5000/</string>
 
     <!-- Strings related screen msg -->
     <string name="validating">Validando credenciales ...</string>

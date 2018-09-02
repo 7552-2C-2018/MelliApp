@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void loginServer() {
         String REQUEST_TAG = "sendUser";
-        String url = R.string.test_uri + "";
-
+        //String url = R.string.local_server + "/login";
+        String url = "http://127.0.0.1:5000/login";
         JSONObject data = new JSONObject();
         UserInfo user = SingletonUser.getInstance().getUser();
         try {
@@ -110,44 +110,34 @@ public class MainActivity extends AppCompatActivity {
             data.put("token", AccessToken.getCurrentAccessToken().getToken());
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.d(TAG, "error: " + e.toString());
             PopUpManager.showToastError(getApplicationContext(), "Agregar error");
         }
 
-        final String requestBody = data.toString();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                data,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        // tomar token de acceso
+                    public void onResponse(JSONObject response) {
                         getServerLoginResponse(response);
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                PopUpManager.showToastError(getApplicationContext(), "Agregar error");
-            }
-        })
-        {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    System.out.println(uee.toString());
-                    return null;
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.d(TAG, "error: " + error.toString());
+                        PopUpManager.showToastError(getApplicationContext(), "Agregar error");
+                        finish();
+                    }
                 }
-            }
-        };
-        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(stringRequest,REQUEST_TAG);
+        );
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
     }
 
-    private void getServerLoginResponse(String response) {
-        //
+    private void getServerLoginResponse(JSONObject response) {
+        Log.d(TAG, response.toString());
     }
 
 
