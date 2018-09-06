@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
                             SingletonUser.getInstance().setUser(user);
                             profilePicture = findViewById(R.id.profilePicture);
                             profilePicture.setProfileId(id);
+                            TextView tvTitle = findViewById(R.id.tvHelloName);
+                            tvTitle.setText("¡Bienvenido " + name + "!");
                             loginServer();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
             data.put("photoUrl", user.getPhotoURL());
             data.put("email", user.getEmail());
             data.put("token", AccessToken.getCurrentAccessToken().getToken());
+            Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(TAG, "error: " + e.toString());
