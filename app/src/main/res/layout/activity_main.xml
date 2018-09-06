@@ -12,12 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:text="TextView"
+        android:text="@string/hardcode_text"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="163dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.facebook.login.widget.ProfilePictureView
         android:id="@+id/profilePicture"
@@ -27,18 +26,30 @@
         android:layout_marginTop="29dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHelloName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvHelloName">
+
+    </com.facebook.login.widget.ProfilePictureView>
 
 
     <TextView
         android:id="@+id/testMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="192dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="@string/hardcode_text"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
