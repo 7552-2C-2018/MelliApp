@@ -1,35 +1,31 @@
-package com.a7552_2c_2018.melliapp;
+package com.a7552_2c_2018.melliapp.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
+import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
+import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
-import com.facebook.login.Login;
-import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         // If MainActivity is reached without the user being logged in, redirect to the Login
         // Activity
-        /* For manual logout
+        // For manual logout
+        /*
         if (AccessToken.getCurrentAccessToken() != null) {
             LoginManager.getInstance().logOut();
         }
@@ -55,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
         if (AccessToken.getCurrentAccessToken() == null) {
             Intent loginIntent = new Intent(MainActivity.this, FacebookLoginActivity.class);
             startActivityForResult(loginIntent, RESULT_LOGIN_ACTIVITY);
-        } 
-        makeValidations();
+        } else {
+            makeValidations();
+        }
     }
 
     private void makeValidations() {
@@ -114,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "error: " + e.toString());
-            PopUpManager.showToastError(getApplicationContext(), "Agregar error");
+            Log.d(TAG, "error al crear el json: " + e.toString());
+            PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -132,8 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error){
                         Log.d(TAG, "error: " + error.toString());
-                        PopUpManager.showToastError(getApplicationContext(), "Agregar error");
-                        finish();
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                     }
                 }
         );
@@ -142,6 +139,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void getServerLoginResponse(JSONObject response) {
         Log.d(TAG, response.toString());
+        Integer status = 0;
+        String token = "";
+        try {
+            status = response.getInt("status");
+            token = response.getString("token");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (status == 200){
+            SingletonUser.getInstance().setToken(token);
+        } else {
+            PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
+        }
     }
 
 

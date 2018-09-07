@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_dark"
-    tools:context=".FacebookLoginActivity"
+    tools:context=".activity.FacebookLoginActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <TextView
@@ -16,7 +16,7 @@
         android:text="@string/login_header"
         android:textAlignment="center"
         android:textColor="@color/browser_actions_bg_grey"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

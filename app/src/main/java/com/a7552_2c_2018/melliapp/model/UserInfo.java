@@ -1,4 +1,4 @@
-package com.a7552_2c_2018.melliapp;
+package com.a7552_2c_2018.melliapp.model;
 
 public class UserInfo {
 

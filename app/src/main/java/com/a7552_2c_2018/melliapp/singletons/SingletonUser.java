@@ -1,13 +1,17 @@
-package com.a7552_2c_2018.melliapp;
+package com.a7552_2c_2018.melliapp.singletons;
 
+
+import com.a7552_2c_2018.melliapp.model.UserInfo;
 
 public class SingletonUser {
 
     private static SingletonUser userSingletonInstance;
-    public UserInfo user;
+    private UserInfo user;
+    private String token;
 
     private SingletonUser() {
         user = new UserInfo();
+        token = "";
     }
 
 
@@ -26,5 +30,11 @@ public class SingletonUser {
         return user;
     }
 
+    public String getToken() {
+        return token;
+    }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

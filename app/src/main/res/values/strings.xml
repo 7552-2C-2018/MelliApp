@@ -6,8 +6,12 @@
     <string name="test_uri">https://api.chucknorris.io/jokes/random</string>
     <string name="local_server">http://127.0.0.1:5000/</string>
 
-    <!-- Strings related screen msg -->
+    <!-- Strings related to steady screen text -->
     <string name="validating">Espera mientras validamos tus datos.</string>
+
+    <!-- Strings related to pop ups msg-->
+    <string name="general_error">Ups! Hubo un error en la aplicación</string>
+    <string name="validation_error">No puedes utilizar la aplicación en este momento.</string>
 
     <!-- Strings related to login -->
     <string name="login_header">Para utilizar la aplicación es necesario que ingreses con

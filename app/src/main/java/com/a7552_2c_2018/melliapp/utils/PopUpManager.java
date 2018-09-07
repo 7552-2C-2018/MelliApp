@@ -1,10 +1,10 @@
-package com.a7552_2c_2018.melliapp;
+package com.a7552_2c_2018.melliapp.utils;
 
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
 
-class PopUpManager {
+public class PopUpManager {
 
     public static void showToastError(Context context, CharSequence text) {
         int duration = Toast.LENGTH_LONG;
