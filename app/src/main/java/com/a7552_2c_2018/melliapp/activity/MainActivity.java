@@ -149,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (status == 200){
             SingletonUser.getInstance().setToken(token);
+            Intent loginIntent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(loginIntent);
+
         } else {
             PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
         }

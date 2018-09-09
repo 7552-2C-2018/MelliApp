@@ -21,4 +21,19 @@
     <string name="facebook_app_id">2088214498095092</string>
     <string name="fb_login_protocol_scheme">fb2088214498095092</string>
 
+    <!-- Strings related to Drawler Menu -->
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+
+    <!-- Strings Arrays -->
+    <!-- Strings Array for Menu Drawer -->
+    <string-array
+        name="sections_array">
+        <item>Inicio</item>
+        <item>Mis compras</item>
+        <item>Mis ventas</item>
+        <item>Conversaciones</item>
+    </string-array>
+
+
 </resources>
