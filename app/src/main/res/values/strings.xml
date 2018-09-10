@@ -4,7 +4,8 @@
 
     <!-- Strings related to api uris -->
     <string name="test_uri">https://api.chucknorris.io/jokes/random</string>
-    <string name="local_server">http://127.0.0.1:5000/</string>
+    <string name="local_login">http://10.0.2.2:5000/login</string>
+    <string name="remote_login">https://app-server-23.herokuapp.com/login</string>
 
     <!-- Strings related to steady screen text -->
     <string name="validating">Espera mientras validamos tus datos.</string>
@@ -27,13 +28,15 @@
 
     <!-- Strings Arrays -->
     <!-- Strings Array for Menu Drawer -->
-    <string-array
-        name="sections_array">
+    <string-array name="sections_array">
         <item>Inicio</item>
         <item>Mis compras</item>
         <item>Mis ventas</item>
         <item>Conversaciones</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

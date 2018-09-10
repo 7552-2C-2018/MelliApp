@@ -2,6 +2,8 @@ package com.a7552_2c_2018.melliapp.activity;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.fragment.AccountFragment;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
 public class HomeActivity extends AppCompatActivity {
@@ -35,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                Fragment fragment = null;
                 switch(id)
                 {
                     case R.id.home:
@@ -46,10 +50,18 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.chats:
                         PopUpManager.showToastError(getApplicationContext(), "C");
                     case R.id.profile:
-                        PopUpManager.showToastError(getApplicationContext(), "C");
-                    default:
-                        return true;
+                        fragment = new AccountFragment();
+                    default: break;
                 }
+
+                if (fragment != null) {
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame, fragment);
+                    transaction.commit();
+                    dl.closeDrawers();
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -61,7 +73,6 @@ public class HomeActivity extends AppCompatActivity {
 
         if(t.onOptionsItemSelected(item))
             return true;
-
         return super.onOptionsItemSelected(item);
     }
 

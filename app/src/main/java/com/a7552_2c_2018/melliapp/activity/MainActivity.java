@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         String REQUEST_TAG = "sendUser";
         //String url = R.string.local_server + "/login";
         //String url = "http://127.0.0.1:5000/login";
-        String url = "http://10.0.2.2:5000/login";
+        String url = getString(R.string.local_login);
         JSONObject data = new JSONObject();
         UserInfo user = SingletonUser.getInstance().getUser();
         try {
@@ -147,14 +147,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (status == 200){
+        //if (status == 200){
             SingletonUser.getInstance().setToken(token);
             Intent loginIntent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(loginIntent);
 
-        } else {
-            PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
-        }
+        //} else {
+        //    PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
+        //}
     }
 
 
