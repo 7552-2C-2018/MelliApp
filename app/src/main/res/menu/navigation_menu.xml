@@ -7,8 +7,11 @@
     <item android:id="@+id/buys"
         android:icon="@drawable/ic_local_grocery_store_black_24dp"
         android:title="Mis Compras"/>
-    <item android:id="@+id/solds"
+    <item android:id="@+id/posts"
         android:icon="@drawable/ic_attach_money_black_24dp"
+        android:title="Mis Publicaciones"/>
+    <item android:id="@+id/solds"
+        android:icon="@drawable/ic_monetization_on_black_24dp"
         android:title="Mis Ventas"/>
     <item android:id="@+id/chats"
         android:icon="@drawable/ic_chat_black_24dp"

@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         String REQUEST_TAG = "sendUser";
         //String url = R.string.local_server + "/login";
         //String url = "http://127.0.0.1:5000/login";
-        String url = getString(R.string.local_login);
+        String url = getString(R.string.remote_login);
         JSONObject data = new JSONObject();
         UserInfo user = SingletonUser.getInstance().getUser();
         try {

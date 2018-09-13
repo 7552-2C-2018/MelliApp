@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
@@ -57,7 +58,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void logOut() {
-        new AlertDialog.Builder(getApplicationContext())
+        new AlertDialog.Builder(getActivity())
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Cerrar Sesión")
                 .setMessage("Desea cerrar su sesión ?")

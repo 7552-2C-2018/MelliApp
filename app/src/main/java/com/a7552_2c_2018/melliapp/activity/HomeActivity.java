@@ -42,11 +42,13 @@ public class HomeActivity extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home:
-                        PopUpManager.showToastError(getApplicationContext(), "A");
+                        PopUpManager.showToastError(getApplicationContext(), "H");
                     case R.id.buys:
                         PopUpManager.showToastError(getApplicationContext(), "B");
+                    case R.id.posts:
+                        PopUpManager.showToastError(getApplicationContext(), "P");
                     case R.id.solds:
-                        PopUpManager.showToastError(getApplicationContext(), "C");
+                        PopUpManager.showToastError(getApplicationContext(), "S");
                     case R.id.chats:
                         PopUpManager.showToastError(getApplicationContext(), "C");
                     case R.id.profile:
