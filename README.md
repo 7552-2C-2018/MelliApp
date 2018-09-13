@@ -18,7 +18,7 @@
     * Furnari, Carlos
     * Gallippi, Leandro
     * Maness, Ignacio
-    * {}, Guido
+    * Albarello, Guido
 
 # Licencia
 
