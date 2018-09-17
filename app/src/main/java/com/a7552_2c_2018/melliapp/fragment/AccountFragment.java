@@ -9,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
+import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
@@ -42,6 +43,15 @@ public class AccountFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
+        EditText etName = v.findViewById(R.id.faEtName);
+        etName.setText(user.getName());
+
+        EditText etSurname = v.findViewById(R.id.faEtSurname);
+        etSurname.setText(user.getSurname());
+
+        EditText etEmail = v.findViewById(R.id.faEtEmail);
+        etEmail.setText(user.getEmail());
+
         ProfilePictureView profilePicture;
         profilePicture = v.findViewById(R.id.AccProfilePicture);
         profilePicture.setProfileId(user.getFacebookID());
@@ -53,9 +63,17 @@ public class AccountFragment extends Fragment {
             }
         });
 
+        Button btSave = v.findViewById(R.id.faBtnSave);
+        btSave.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                saveChanges();
+            }
+        });
+
         // Inflate the layout for this fragment
         return v;
     }
+
 
     private void logOut() {
         new AlertDialog.Builder(getActivity())
@@ -75,6 +93,12 @@ public class AccountFragment extends Fragment {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    private void saveChanges(){
+        // TODO: AGREGAR PUT AL BACKEND
+
+        PopUpManager.showToastError(getApplicationContext(), getString(R.string.msg_save_ok));
     }
 
 }

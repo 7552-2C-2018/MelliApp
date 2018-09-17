@@ -30,6 +30,9 @@
     <string name="default_notification_channel_id">my_notification_channel</string>
     <string name="default_notification_id">1</string>
 
+    <!-- Strings related to Account Fragment -->
+    <string name="msg_save_ok">Se guardaron los cambios</string>
+
     <!-- Strings Arrays -->
     <!-- Strings Array for Menu Drawer -->
     <string-array name="sections_array">

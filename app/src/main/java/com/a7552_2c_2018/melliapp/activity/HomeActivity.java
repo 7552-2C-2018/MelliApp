@@ -42,15 +42,17 @@ public class HomeActivity extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home:
-                        PopUpManager.showToastError(getApplicationContext(), "H");
+                        PopUpManager.showToastError(getApplicationContext(), "Home");
                     case R.id.buys:
-                        PopUpManager.showToastError(getApplicationContext(), "B");
+                        PopUpManager.showToastError(getApplicationContext(), "Buys");
                     case R.id.posts:
-                        PopUpManager.showToastError(getApplicationContext(), "P");
+                        PopUpManager.showToastError(getApplicationContext(), "Posts");
                     case R.id.solds:
-                        PopUpManager.showToastError(getApplicationContext(), "S");
+                        PopUpManager.showToastError(getApplicationContext(), "Solds");
                     case R.id.chats:
-                        PopUpManager.showToastError(getApplicationContext(), "C");
+                        PopUpManager.showToastError(getApplicationContext(), "Chats");
+                    case R.id.qr:
+                        PopUpManager.showToastError(getApplicationContext(), "QR");
                     case R.id.profile:
                         fragment = new AccountFragment();
                     default: break;
