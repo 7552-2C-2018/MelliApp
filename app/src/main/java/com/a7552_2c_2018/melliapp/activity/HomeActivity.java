@@ -1,5 +1,7 @@
 package com.a7552_2c_2018.melliapp.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -25,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        dl = findViewById(R.id.activity_main);
+        dl = findViewById(R.id.drawer_layout);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
@@ -43,16 +45,22 @@ public class HomeActivity extends AppCompatActivity {
                 {
                     case R.id.home:
                         PopUpManager.showToastError(getApplicationContext(), "Home");
+                        break;
                     case R.id.buys:
                         PopUpManager.showToastError(getApplicationContext(), "Buys");
+                        break;
                     case R.id.posts:
                         PopUpManager.showToastError(getApplicationContext(), "Posts");
+                        break;
                     case R.id.solds:
                         PopUpManager.showToastError(getApplicationContext(), "Solds");
+                        break;
                     case R.id.chats:
                         PopUpManager.showToastError(getApplicationContext(), "Chats");
+                        break;
                     case R.id.qr:
                         PopUpManager.showToastError(getApplicationContext(), "QR");
+                        break;
                     case R.id.profile:
                         fragment = new AccountFragment();
                     default: break;
@@ -78,6 +86,24 @@ public class HomeActivity extends AppCompatActivity {
         if(t.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Salir")
+                .setMessage("Desea cerrar la aplicación ?")
+                .setPositiveButton("Si", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
 }
