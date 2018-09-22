@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +16,32 @@ import android.widget.EditText;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
+import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class AccountFragment extends Fragment {
+
+    private static final String TAG = "AccountFragment";
+    EditText etName, etSurname, etEmail;
+    UserInfo user;
 
 
     public AccountFragment() {
@@ -39,17 +58,17 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        UserInfo user = SingletonUser.getInstance().getUser();
+        user = SingletonUser.getInstance().getUser();
 
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
-        EditText etName = v.findViewById(R.id.faEtName);
+        etName = v.findViewById(R.id.faEtName);
         etName.setText(user.getName());
 
-        EditText etSurname = v.findViewById(R.id.faEtSurname);
+        etSurname = v.findViewById(R.id.faEtSurname);
         etSurname.setText(user.getSurname());
 
-        EditText etEmail = v.findViewById(R.id.faEtEmail);
+        etEmail = v.findViewById(R.id.faEtEmail);
         etEmail.setText(user.getEmail());
 
         ProfilePictureView profilePicture;
@@ -96,9 +115,47 @@ public class AccountFragment extends Fragment {
     }
 
     private void saveChanges(){
-        // TODO: AGREGAR PUT AL BACKEND
+        String REQUEST_TAG = "updateUser";
+        final String url = getString(R.string.remote_login);
+        JSONObject data = new JSONObject();
+        try {
+            data.put("facebookId", user.getFacebookID());
+            data.put("firstName", etName.getText());
+            data.put("lastName", etSurname.getText());
+            data.put("email", user.getEmail());
+            Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d(TAG, "error al crear el json: " + e.toString());
+            PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+        }
 
-        PopUpManager.showToastError(getApplicationContext(), getString(R.string.msg_save_ok));
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                data,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.msg_save_ok));
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.d(TAG, "error: " + error.toString());
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> headers = new HashMap<String, String>();
+                headers.put("Authorization", SingletonUser.getInstance().getToken());
+                return headers; }
+        };
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
     }
+
+
 
 }
