@@ -82,7 +82,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         */
         Log.d("ItemAdapter", desc.substring(0,Math.max(desc.length(),40)));
         holder.tvDesc.setText(desc.substring(0,Math.min(desc.length(),40)));
-        byte[] decodedString = Base64.decode(values.get(position).getImage(), Base64.DEFAULT);
+        String base64Image = values.get(position).getImage();
+        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         holder.ivPhoto.setImageBitmap(decodedByte);
     }

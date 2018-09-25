@@ -25,18 +25,24 @@
                 android:id="@+id/apTvFiller1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nueva Publicación" />
+                android:layout_marginTop="8dp"
+                android:text="Nueva Publicación"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <View
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="2dp"
                 android:background="?android:attr/listDivider" />
 
             <EditText
                 android:id="@+id/apTvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="Título"
                 android:inputType="textPersonName" />
@@ -45,6 +51,8 @@
                 android:id="@+id/apMlDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="Descripción"
                 android:inputType="textMultiLine" />
@@ -53,6 +61,8 @@
                 android:id="@+id/apNstock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="Cantidad"
                 android:inputType="number" />
@@ -61,6 +71,8 @@
                 android:id="@+id/apNprice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="Precio"
                 android:inputType="number" />
@@ -68,9 +80,9 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                tools:layout_editor_absoluteX="7dp"
-                tools:layout_editor_absoluteY="360dp">
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/apRbNew"
@@ -88,26 +100,62 @@
                     android:text="Usado" />
             </RadioGroup>
 
-            <com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner
-                android:id="@+id/mySpinner"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp">
 
-            <Spinner
-                android:id="@+id/apScategories"
-                android:layout_width="266dp"
-                android:layout_height="42dp" />
+                <TextView
+                    android:id="@+id/apTvFiller2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Medios de pago"
+                    android:textSize="18sp" />
+
+                <com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner
+                    android:id="@+id/mySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/apTvFiller2" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/apTvFiller3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Categoría"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/apScategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/apTvFiller3" />
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/apBaddpictures"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="Agregar Imágenes" />
 
             <Button
                 android:id="@+id/apBsave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="Publicar" />
         </LinearLayout>
     </ScrollView>
