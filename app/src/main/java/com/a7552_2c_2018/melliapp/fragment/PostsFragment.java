@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.PostsActivity;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
@@ -71,6 +73,15 @@ public class PostsFragment extends Fragment {
         }
         mAdapter = new ItemAdapter(input);
         recyclerView.setAdapter(mAdapter);
+
+        FloatingActionButton fabNew = v.findViewById(R.id.fpAbNew);
+        fabNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent postIntent = new Intent(getApplicationContext(), PostsActivity.class);
+                startActivity(postIntent);
+            }
+        });
         return v;
     }
 

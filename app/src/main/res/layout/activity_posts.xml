@@ -4,6 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.PostsActivity">
+    tools:context=".activity.PostsActivity"
+    tools:layout_editor_absoluteY="25dp">
 
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/apTvFiller1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nueva Publicación" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <EditText
+                android:id="@+id/apTvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Título"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/apMlDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Descripción"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/apNstock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Cantidad"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/apNprice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Precio"
+                android:inputType="number" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="7dp"
+                tools:layout_editor_absoluteY="360dp">
+
+                <RadioButton
+                    android:id="@+id/apRbNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="Nuevo" />
+
+                <RadioButton
+                    android:id="@+id/apRbUsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Usado" />
+            </RadioGroup>
+
+            <com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner
+                android:id="@+id/mySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/apScategories"
+                android:layout_width="266dp"
+                android:layout_height="42dp" />
+
+            <Button
+                android:id="@+id/apBaddpictures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Agregar Imágenes" />
+
+            <Button
+                android:id="@+id/apBsave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Publicar" />
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

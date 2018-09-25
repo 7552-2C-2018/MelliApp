@@ -13,6 +13,7 @@
     <!-- Strings related to pop ups msg-->
     <string name="general_error">Ups! Hubo un error en la aplicación</string>
     <string name="validation_error">No puedes utilizar la aplicación en este momento.</string>
+    <string name="post_ok">La publicación fue satisfactoria</string>
 
     <!-- Strings related to login -->
     <string name="login_header">Para utilizar la aplicación es necesario que ingreses con
@@ -44,6 +45,30 @@
         <item>Mis compras</item>
         <item>Mis ventas</item>
         <item>Conversaciones</item>
+    </string-array>
+
+    <!-- Strings Array for Mocks Payments -->
+    <string-array name="payments_array">
+        <item>Efectivo</item>
+        <item>Transferencia</item>
+        <item>Tarjeta de Débito</item>
+        <item>Tarjeta de Crédito</item>
+        <item>MercadoPago</item>
+        <item>Cheques</item>
+        <item>Bitcoins</item>
+    </string-array>
+
+    <string-array name="categories_array">
+        <item>Accesorios</item>
+        <item>Alimentos y Bebidas</item>
+        <item>Belleza y Cuidado Personal</item>
+        <item>Telefonía</item>
+        <item>Electrónica</item>
+        <item>Deportes</item>
+        <item>Hogar</item>
+        <item>Ropa</item>
+        <item>Libros</item>
+        <item>Otros</item>
     </string-array>
 
 </resources>
