@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+import com.a7552_2c_2018.melliapp.R;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,10 +65,10 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
     @Override
     public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Medios de Pago habilitados");
+        builder.setTitle(getResources().getString(R.string.multi_title));
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
-        builder.setPositiveButton("Listo", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.multi_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
@@ -74,7 +76,7 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
                 listener.selectedStrings(getSelectedStrings());
             }
         });
-        builder.setNegativeButton("Descartar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.multi_discard), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 simple_adapter.clear();

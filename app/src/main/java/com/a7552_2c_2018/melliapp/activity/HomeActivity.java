@@ -17,6 +17,7 @@ import com.a7552_2c_2018.melliapp.fragment.AccountFragment;
 import com.a7552_2c_2018.melliapp.fragment.PostsFragment;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout dl;

@@ -27,6 +27,21 @@
     <string name="login_header">Para utilizar la aplicación es necesario que ingreses con
     tu cuenta de Facebook</string>
 
+    <!-- Strings related to Spinners -->
+    <string name="multi_title">Medios de Pago habilitados</string>
+    <string name="multi_ok">Listo</string>
+    <string name="multi_discard">Descartar</string>
+
+    <!-- Strings related to Nav Menu -->
+    <string name="nav_op1">Inicio</string>
+    <string name="nav_op2">Mis Compras</string>
+    <string name="nav_op3">Mis Publicaciones</string>
+    <string name="nav_op4">Mis Ventas</string>
+    <string name="nav_op5">Conversaciones</string>
+    <string name="nav_op6">Comprar con QR</string>
+    <string name="nav_op7">Mi Cuenta</string>
+
+
     <!-- Strings related to Facebook -->
     <string name="facebook_app_id">2088214498095092</string>
     <string name="fb_login_protocol_scheme">fb2088214498095092</string>
@@ -64,6 +79,7 @@
     <string name="pa_title9">Categoría</string>
     <string name="pa_title10">Agregar Imágenes</string>
     <string name="pa_title11">Publicar</string>
+    <string name="pa_msg">Faltan ingresar datos</string>
 
     <!-- Strings related to Item Activity -->
     <string name="ia_btn_buy">Comprar</string>

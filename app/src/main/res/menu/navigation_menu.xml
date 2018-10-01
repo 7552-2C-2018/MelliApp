@@ -3,24 +3,24 @@
 
     <item android:id="@+id/home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Inicio"/>
+        android:title="@string/nav_op1"/>
     <item android:id="@+id/buys"
         android:icon="@drawable/ic_local_grocery_store_black_24dp"
-        android:title="Mis Compras"/>
+        android:title="@string/nav_op2"/>
     <item android:id="@+id/posts"
         android:icon="@drawable/ic_attach_money_black_24dp"
-        android:title="Mis Publicaciones"/>
+        android:title="@string/nav_op3"/>
     <item android:id="@+id/solds"
         android:icon="@drawable/ic_monetization_on_black_24dp"
-        android:title="Mis Ventas"/>
+        android:title="@string/nav_op4"/>
     <item android:id="@+id/chats"
         android:icon="@drawable/ic_chat_black_24dp"
-        android:title="Conversaciones"/>
+        android:title="@string/nav_op5"/>
     <item android:id="@+id/qr"
         android:icon="@drawable/ic_center_focus_weak_black_24dp"
-        android:title="Comprar con QR"/>
+        android:title="@string/nav_op6"/>
     <item android:id="@+id/profile"
         android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="Mi Cuenta"/>
+        android:title="@string/nav_op7"/>
 
 </menu>

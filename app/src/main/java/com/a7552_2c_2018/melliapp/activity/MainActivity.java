@@ -109,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
             data.put("photoUrl", user.getPhotoURL());
             data.put("email", user.getEmail());
             data.put("token", AccessToken.getCurrentAccessToken().getToken());
-            Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
+            Log.d(TAG, getString(R.string.send_server) + data.toString());
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "error al crear el json: " + e.toString());
+            Log.d(TAG, getString(R.string.json_error) + e.toString());
             PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
 
@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @SuppressWarnings("SpellCheckingInspection")
     public static String encodeTobase64(Bitmap image)
     {
         Bitmap immagex=image;

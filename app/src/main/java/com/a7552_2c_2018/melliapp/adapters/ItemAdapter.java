@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private List<PostItem> values;

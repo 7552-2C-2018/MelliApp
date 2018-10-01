@@ -71,7 +71,7 @@ public class PostsFragment extends Fragment {
             item = new PostItem();
             item.setImage(getString(R.string.base64mock));
             item.setPrice(800);
-            item.setDesc("Remera Selección Argentina Original Local a la calle");
+            item.setDesc(getString(R.string.mock_title));
             input.add(item);
         }
         mAdapter = new ItemAdapter(input);

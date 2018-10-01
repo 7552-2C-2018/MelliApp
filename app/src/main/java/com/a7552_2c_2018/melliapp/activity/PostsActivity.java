@@ -103,7 +103,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 if (validateInputs() == true) {
                     callBackend();
                 } else {
-                    PopUpManager.showToastError(getApplicationContext(), "Faltan ingresar datos");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.pa_msg));
                 }
             }
         });
@@ -159,10 +159,10 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             data.put("pictures", base64array.toArray());
             data.put("latitude", latitude);
             data.put("longitude", longitude);
-            Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
+            Log.d(TAG, getString(R.string.send_server) + data.toString());
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "error al crear el json: " + e.toString());
+            Log.d(TAG, getString(R.string.json_error) + e.toString());
             PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
 
