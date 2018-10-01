@@ -233,4 +233,10 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         return imageEncoded;
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }

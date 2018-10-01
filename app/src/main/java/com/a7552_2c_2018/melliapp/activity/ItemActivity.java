@@ -71,4 +71,10 @@ public class ItemActivity extends AppCompatActivity {
         }
         tvPayments.setText(fullString);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
