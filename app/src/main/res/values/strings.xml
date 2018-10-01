@@ -34,9 +34,44 @@
     <!-- Strings related to Account Fragment -->
     <string name="msg_save_ok">Se guardaron los cambios</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Strings related to Item Activity -->
+    <string name="ia_btn_buy">Comprar</string>
+    <string name="ia_desc">Descripción</string>
+    <string name="ia_pays">Medios de Pago</string>
 
+    <!-- Strings for Mocks -->
     <string name="base64mock">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</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mock_title">Remera Original Selección Argentina Local a la Calle</string>
+    <string name="mock_desc">Camiseta seleccion Argentina ORIGINAL hombre y mujer
+        Talles del s al XL
+
+        ETIQUETA
+        Medidas Aproximadas:
+
+        HOMBRE
+        Talle S: Pecho 88 - 94 cm / Largo 71cm
+        Talle M: Pecho 95 - 102 cm / Largo 73cm
+        Talle L: Pecho 103 - 111 cm / Largo 75cm
+        Talle XL: Pecho 112 - 121 cm / Largo 77cm
+        Talle XXL: Pecho 122 - 132 cm / Largo 79cm
+
+        MUJER
+        TALLE S: Axila a axila 43cm / Largo 60 cm.
+        TALLE M: Axila a axila 45 cm / Largo 62 cm.
+        TALLE L: Axila a axila 47 cm / Largo 64 cm.
+        TALLE XL: Axila a axila 49 cm / Largo 66 cm.
+
+        Se retira por Retiro, local a la calle
+
+        Haga sus consultas antes de ofertar</string>
+
+    <string name="mock_seller">vendido por futbol2000</string>
+    <string name="mock_price">$ 2349</string>
+    <string-array name="mock_payments_array">
+        <item>Efectivo</item>
+        <item>MercadoPago</item>
+    </string-array>
 
     <!-- Strings Arrays -->
     <!-- Strings Array for Menu Drawer -->

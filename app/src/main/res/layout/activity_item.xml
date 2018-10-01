@@ -29,20 +29,17 @@
             <TextView
                 android:id="@+id/aiTvTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Titulo" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/aiTvSeller"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="vendido por usuario" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/aiTvPrice"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="$ 999,99" />
+                android:layout_height="wrap_content" />
 
             <View
                 android:id="@+id/divider3"
@@ -51,22 +48,38 @@
                 android:background="?android:attr/listDivider" />
 
             <TextView
-                android:id="@+id/aiTvDesc"
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descripcion" />
+                android:text="@string/ia_desc" />
+
+            <TextView
+                android:id="@+id/aiTvDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ia_pays" />
 
             <TextView
                 android:id="@+id/aiTvPayments"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Medios de Pago" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/aiBtnBuy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comprar" />
+                android:text="@string/ia_btn_buy" />
         </LinearLayout>
 
     </ScrollView>
