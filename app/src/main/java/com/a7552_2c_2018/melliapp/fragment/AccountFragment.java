@@ -97,9 +97,9 @@ public class AccountFragment extends Fragment {
     private void logOut() {
         new AlertDialog.Builder(getActivity())
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Cerrar Sesión")
-                .setMessage("Desea cerrar su sesión ?")
-                .setPositiveButton("Si", new DialogInterface.OnClickListener()
+                .setTitle(getString(R.string.af_title1))
+                .setMessage(getString(R.string.af_title2))
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -110,7 +110,7 @@ public class AccountFragment extends Fragment {
                     }
 
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton(getString(R.string.no), null)
                 .show();
     }
 
@@ -123,10 +123,10 @@ public class AccountFragment extends Fragment {
             data.put("firstName", etName.getText());
             data.put("lastName", etSurname.getText());
             data.put("email", user.getEmail());
-            Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
+            Log.d(TAG, getString(R.string.send_server) + data.toString());
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "error al crear el json: " + e.toString());
+            Log.d(TAG, getString(R.string.json_error) + e.toString());
             PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
 

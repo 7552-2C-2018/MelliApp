@@ -22,7 +22,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private static final String USER_POSTS = "user_posts";
     private static final String PUBLIC_PROFILE = "public_profile";
     private static final String USER_BIRTHDAY = "user_birthday";
-    private static final String AUTH_TYPE = "rerequest";
+    private static final String AUTH_TYPE = "request";
 
 
     private CallbackManager mCallbackManager;
@@ -51,11 +51,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 setResult(RESULT_OK);
+                /*
                 UserInfo user;
                 user = new UserInfo("123", "carlos", "furnari", "asd");
                 //user.setPhotoURL(profilePicUrl);
                 SingletonUser.getInstance().setUser(user);
-                /*
+
                 GraphRequest request = GraphRequest.newMeRequest(
                         AccessToken.getCurrentAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {

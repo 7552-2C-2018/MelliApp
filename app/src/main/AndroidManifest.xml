@@ -89,7 +89,7 @@
         </service>
 
         <activity android:name=".activity.PostsActivity" />
-        <activity android:name=".activity.ItemActivity"></activity>
+        <activity android:name=".activity.ItemActivity" />
     </application>
 
 </manifest>

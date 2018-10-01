@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Nueva Publicación"
+                android:text="@string/pa_title1"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -44,7 +44,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="Título"
+                android:hint="@string/pa_title2"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -54,7 +54,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="Descripción"
+                android:hint="@string/pa_title3"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -64,7 +64,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="Cantidad"
+                android:hint="@string/pa_title4"
                 android:inputType="number" />
 
             <EditText
@@ -74,7 +74,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="Precio"
+                android:hint="@string/pa_title5"
                 android:inputType="number" />
 
             <RadioGroup
@@ -90,14 +90,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Nuevo" />
+                    android:text="@string/pa_title6"  />
 
                 <RadioButton
                     android:id="@+id/apRbUsed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Usado" />
+                    android:text="@string/pa_title7"  />
             </RadioGroup>
 
             <RelativeLayout
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Medios de pago"
+                    android:text="@string/pa_title8"
                     android:textSize="18sp" />
 
                 <com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner
@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Categoría"
+                    android:text="@string/pa_title9"
                     android:textSize="18sp" />
 
                 <Spinner
@@ -149,14 +149,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Agregar Imágenes" />
+                android:text="@string/pa_title10" />
 
             <Button
                 android:id="@+id/apBsave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Publicar" />
+                android:text="@string/pa_title11" />
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
