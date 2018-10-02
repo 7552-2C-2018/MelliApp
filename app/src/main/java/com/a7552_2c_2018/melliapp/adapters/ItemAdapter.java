@@ -1,8 +1,8 @@
 package com.a7552_2c_2018.melliapp.adapters;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
@@ -13,25 +13,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.activity.ItemActivity;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 @SuppressWarnings("SpellCheckingInspection")
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
-    private List<PostItem> values;
+    private final List<PostItem> values;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView tvPrice;
-        public TextView tvDesc;
-        public ImageView ivPhoto;
-        public View layout;
+        final TextView tvPrice;
+        final TextView tvDesc;
+        final ImageView ivPhoto;
+        final View layout;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             layout = v;
             tvPrice = v.findViewById(R.id.eTvPrice);
@@ -40,10 +37,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         }
     }
 
-    public void add(int position, PostItem item) {
-        values.add(position, item);
-        notifyItemInserted(position);
-    }
+// --Commented out by Inspection START (01/10/2018 23:20):
+//    public void add(int position, PostItem item) {
+//        values.add(position, item);
+//        notifyItemInserted(position);
+//    }
+// --Commented out by Inspection STOP (01/10/2018 23:20)
 
     public void remove(int position) {
         values.remove(position);
@@ -56,22 +55,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     }
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
-    public ItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public ItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                     int viewType) {
         // create a new view
         LayoutInflater inflater = LayoutInflater.from(
                 parent.getContext());
         View v =
                 inflater.inflate(R.layout.element, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final String price = "$ " + values.get(position).getPrice();

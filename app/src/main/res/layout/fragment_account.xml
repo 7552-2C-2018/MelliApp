@@ -101,7 +101,6 @@
             app:layout_constraintTop_toBottomOf="@+id/faBtnSave" />
 
         <TextView
-            android:id="@+id/faTvFiller4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -118,10 +117,10 @@
             android:layout_height="42dp"
             android:layout_marginStart="8dp"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/af_title8"
+            android:inputType="textEmailAddress"
+            android:hint="@string/af_title8"
             app:layout_constraintStart_toEndOf="@+id/faTvFiller3"
-            app:layout_constraintTop_toBottomOf="@+id/faEtSurname" />
+            app:layout_constraintTop_toBottomOf="@+id/faEtSurname"/>
 
         <EditText
             android:id="@+id/faEtSurname"
@@ -132,7 +131,8 @@
             android:inputType="textPersonName"
             android:text="@string/af_title9"
             app:layout_constraintStart_toEndOf="@+id/faTvFiller2"
-            app:layout_constraintTop_toBottomOf="@+id/faEtName" />
+            app:layout_constraintTop_toBottomOf="@+id/faEtName"
+            tools:ignore="LabelFor" />
 
         <EditText
             android:id="@+id/faEtName"
@@ -144,7 +144,8 @@
             android:inputType="textPersonName"
             android:text="@string/af_title10"
             app:layout_constraintStart_toEndOf="@+id/faTvFiller1"
-            app:layout_constraintTop_toBottomOf="@+id/AccProfilePicture" />
+            app:layout_constraintTop_toBottomOf="@+id/AccProfilePicture"
+            tools:ignore="LabelFor" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

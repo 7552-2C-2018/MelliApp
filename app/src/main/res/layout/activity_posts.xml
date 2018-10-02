@@ -8,7 +8,6 @@
     tools:layout_editor_absoluteY="25dp">
 
     <ScrollView
-        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +21,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/apTvFiller1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -32,7 +30,6 @@
                 android:textStyle="bold" />
 
             <View
-                android:id="@+id/divider2"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="?android:attr/listDivider" />
@@ -41,7 +38,7 @@
                 android:id="@+id/apTvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title2"
@@ -51,7 +48,7 @@
                 android:id="@+id/apMlDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title3"
@@ -61,7 +58,7 @@
                 android:id="@+id/apNstock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title4"
@@ -71,16 +68,16 @@
                 android:id="@+id/apNprice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title5"
-                android:inputType="number" />
+                android:inputType="number"/>
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -93,7 +90,6 @@
                     android:text="@string/pa_title6"  />
 
                 <RadioButton
-                    android:id="@+id/apRbUsed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -103,7 +99,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp">
 
                 <TextView
@@ -118,14 +114,14 @@
                     android:id="@+id/mySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/apTvFiller2" />
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/apTvFiller2" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp">
 
                 <TextView
@@ -140,8 +136,8 @@
                     android:id="@+id/apScategories"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/apTvFiller3" />
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/apTvFiller3" />
             </RelativeLayout>
 
             <Button

@@ -17,12 +17,13 @@ import com.a7552_2c_2018.melliapp.fragment.AccountFragment;
 import com.a7552_2c_2018.melliapp.fragment.PostsFragment;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
+import java.util.Objects;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class HomeActivity extends AppCompatActivity {
 
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
-    private NavigationView nv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +36,14 @@ public class HomeActivity extends AppCompatActivity {
         dl.addDrawerListener(t);
         t.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         Fragment fragment = new PostsFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame, fragment);
         transaction.commit();
 
-        nv = findViewById(R.id.nv);
+        NavigationView nv = findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

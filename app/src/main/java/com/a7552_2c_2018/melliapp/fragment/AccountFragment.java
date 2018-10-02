@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +19,10 @@ import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
@@ -33,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -40,8 +39,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class AccountFragment extends Fragment {
 
     private static final String TAG = "AccountFragment";
-    EditText etName, etSurname, etEmail;
-    UserInfo user;
+    private EditText etName;
+    private EditText etSurname;
+    private UserInfo user;
 
 
     public AccountFragment() {
@@ -50,12 +50,7 @@ public class AccountFragment extends Fragment {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         user = SingletonUser.getInstance().getUser();
@@ -68,7 +63,7 @@ public class AccountFragment extends Fragment {
         etSurname = v.findViewById(R.id.faEtSurname);
         etSurname.setText(user.getSurname());
 
-        etEmail = v.findViewById(R.id.faEtEmail);
+        EditText etEmail = v.findViewById(R.id.faEtEmail);
         etEmail.setText(user.getEmail());
 
         ProfilePictureView profilePicture;
@@ -104,7 +99,7 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LoginManager.getInstance().logOut();
-                        getActivity().finishAffinity();
+                        Objects.requireNonNull(getActivity()).finishAffinity();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }
@@ -148,8 +143,8 @@ public class AccountFragment extends Fragment {
                     }
                 }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> headers = new HashMap<String, String>();
+            public Map<String, String> getHeaders() {
+                Map<String,String> headers = new HashMap<>();
                 headers.put("Authorization", SingletonUser.getInstance().getToken());
                 return headers; }
         };

@@ -1,10 +1,8 @@
 package com.a7552_2c_2018.melliapp.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -25,9 +23,8 @@ import com.facebook.login.widget.ProfilePictureView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 
-
+@SuppressWarnings("UnusedAssignment")
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -63,12 +60,13 @@ public class MainActivity extends AppCompatActivity {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
+                    @SuppressWarnings("SpellCheckingInspection")
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Log.d(TAG, "response: " + response.toString());
 
-                        String id, name, surname, email = null;
-                        String profilePicUrl = null;
+                        String id, name, surname, email;
+                        String profilePicUrl;
                         try {
                             id = object.getString("id");
                             name = object.getString("first_name");
@@ -82,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                             profilePicture = findViewById(R.id.profilePicture);
                             profilePicture.setProfileId(id);
                             TextView tvTitle = findViewById(R.id.tvHelloName);
-                            tvTitle.setText("¡Bienvenido " + name + "!");
+                            tvTitle.setText(String.format(getString(R.string.welcome_msg), name));
                             loginServer();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -158,18 +156,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @SuppressWarnings("SpellCheckingInspection")
-    public static String encodeTobase64(Bitmap image)
-    {
-        Bitmap immagex=image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
-
-        Log.e("LOOK", imageEncoded);
-        return imageEncoded;
-    }
+// --Commented out by Inspection START (01/10/2018 23:20):
+//    @SuppressWarnings("SpellCheckingInspection")
+//    public static String encodeTobase64(Bitmap image)
+//    {
+//        ByteArrayOutputStream base = new ByteArrayOutputStream();
+//        image.compress(Bitmap.CompressFormat.JPEG, 100, base);
+//        byte[] b = base.toByteArray();
+//        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+//
+//        Log.e("LOOK", imageEncoded);
+//        return imageEncoded;
+//    }
+// --Commented out by Inspection STOP (01/10/2018 23:20)
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

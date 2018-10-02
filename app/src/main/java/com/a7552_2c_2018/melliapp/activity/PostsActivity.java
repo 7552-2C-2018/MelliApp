@@ -1,7 +1,6 @@
 package com.a7552_2c_2018.melliapp.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,6 +44,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PostsActivity extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
 
@@ -54,16 +54,15 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private RadioButton isNew;
     private MultiSelectionSpinner paymentOptions;
     private Spinner categories;
-    private Button loadImg, validatePost;
     private List<String> base64array = null;
-    private double longitude, latitude;
+    private double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         String[] payments_array = getResources().getStringArray(R.array.payments_array);
         String[] categories_array = getResources().getStringArray(R.array.categories_array);
@@ -84,7 +83,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categories.setAdapter(adapter);
 
-        loadImg = findViewById(R.id.apBaddpictures);
+        Button loadImg = findViewById(R.id.apBaddpictures);
         loadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,11 +95,11 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             }
         });
 
-        validatePost = findViewById(R.id.apBsave);
+        Button validatePost = findViewById(R.id.apBsave);
         validatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInputs() == true) {
+                if (validateInputs()) {
                     callBackend();
                 } else {
                     PopUpManager.showToastError(getApplicationContext(), getString(R.string.pa_msg));
@@ -109,31 +108,25 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         });
     }
 
-    public boolean validateInputs() {
+    private boolean validateInputs() {
         if (title.getText().toString().isEmpty() || desc.getText().toString().isEmpty() ||
         stock.getText().toString().isEmpty() || price.getText().toString().isEmpty() ||
                 paymentOptions.getSelectedItemsAsString().isEmpty()) {
             return false;
         }
-        if (Integer.parseInt(stock.getText().toString()) <= 0 ||
-                Integer.parseInt(price.getText().toString()) <= 0 ) {
-            return false;
-        }
-        return true;
+        return Integer.parseInt(stock.getText().toString()) > 0 &&
+                Integer.parseInt(price.getText().toString()) > 0;
     }
 
-    public void callBackend(){
+    private void callBackend(){
         String REQUEST_TAG = "createPost";
-        //String url = R.string.local_server + "/login";
-        //String url = "http://127.0.0.1:5000/login";
-        //TODO: add the real uri
         String url = getString(R.string.remote_login);
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED) {
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
             longitude = location.getLongitude();
             latitude = location.getLatitude();
         } else {
@@ -142,7 +135,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                             Manifest.permission.ACCESS_COARSE_LOCATION },
                     1);
         }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
         longitude = location.getLongitude();
         latitude = location.getLatitude();
         JSONObject data = new JSONObject();
@@ -207,8 +200,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CHOOSER && resultCode == RESULT_OK) {
             List<Uri> imageUris = ImageChooserMaker.getPickMultipleImageResultUris(this, data);
-            ArrayList<Bitmap> mBitmapsSelected = new ArrayList<Bitmap>();
-            base64array = new ArrayList<String>();
+            //ArrayList<Bitmap> mBitmapsSelected = new ArrayList<>();
+            base64array = new ArrayList<>();
             for (int i = 0; i < imageUris.size(); i++) {
                 Uri uri = imageUris.get(i);
                 Bitmap bitmap = null;
@@ -217,17 +210,16 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mBitmapsSelected.add(bitmap);
-                base64array.add(encode2Tobase64(bitmap));
+                //mBitmapsSelected.add(bitmap);
+                base64array.add(encode2Tobase64(Objects.requireNonNull(bitmap)));
             }
         }
     }
 
-    public static String encode2Tobase64(Bitmap image2) {
-        Bitmap immage = image2;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
+    private static String encode2Tobase64(Bitmap image2) {
+        ByteArrayOutputStream base = new ByteArrayOutputStream();
+        image2.compress(Bitmap.CompressFormat.JPEG, 100, base);
+        byte[] b = base.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
         Log.d("Image Log:", imageEncoded);
         return imageEncoded;
