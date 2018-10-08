@@ -127,7 +127,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         //String url = R.string.local_server + "/login";
         //String url = "http://127.0.0.1:5000/login";
         //TODO: add the real uri
-        String url = getString(R.string.remote_login);
+        String url = getString(R.string.remote_postItem);
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
@@ -173,7 +173,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        getServerLoginResponse(response);
+                        getServerPostResponse(response);
                     }
                 },
                 new Response.ErrorListener(){
@@ -188,7 +188,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
 
     }
 
-    private void getServerLoginResponse(JSONObject response) {
+    private void getServerPostResponse(JSONObject response) {
         PopUpManager.showToastError(getApplicationContext(), getString(R.string.post_ok));
     }
 
@@ -208,7 +208,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         if (requestCode == REQUEST_IMAGE_CHOOSER && resultCode == RESULT_OK) {
             List<Uri> imageUris = ImageChooserMaker.getPickMultipleImageResultUris(this, data);
             ArrayList<Bitmap> mBitmapsSelected = new ArrayList<Bitmap>();
-            base64array = new ArrayList<String>();
+            base64array = new ArrayList<>();
             for (int i = 0; i < imageUris.size(); i++) {
                 Uri uri = imageUris.get(i);
                 Bitmap bitmap = null;
@@ -218,16 +218,15 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                     e.printStackTrace();
                 }
                 mBitmapsSelected.add(bitmap);
-                base64array.add(encode2Tobase64(bitmap));
+                base64array.add(encode2ToBase64(bitmap));
             }
         }
     }
 
-    public static String encode2Tobase64(Bitmap image2) {
-        Bitmap immage = image2;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
+    public static String encode2ToBase64(Bitmap image2) {
+        ByteArrayOutputStream base = new ByteArrayOutputStream();
+        image2.compress(Bitmap.CompressFormat.JPEG, 100, base);
+        byte[] b = base.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
         Log.d("Image Log:", imageEncoded);
         return imageEncoded;

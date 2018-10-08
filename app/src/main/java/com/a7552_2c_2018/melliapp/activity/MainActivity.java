@@ -13,19 +13,24 @@ import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
             Intent loginIntent = new Intent(MainActivity.this, FacebookLoginActivity.class);
             startActivityForResult(loginIntent, RESULT_LOGIN_ACTIVITY);
         } else {
-            makeValidations();
+            loadData();
         }
     }
 
-    private void makeValidations() {
+    private void loadData() {
         TextView tvMsg = findViewById(R.id.testMsg);
         tvMsg.setText(R.string.validating);
         GraphRequest request = GraphRequest.newMeRequest(
@@ -83,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                             profilePicture.setProfileId(id);
                             TextView tvTitle = findViewById(R.id.tvHelloName);
                             tvTitle.setText("¡Bienvenido " + name + "!");
-                            loginServer();
+                            checkServer();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -95,31 +100,14 @@ public class MainActivity extends AppCompatActivity {
         request.executeAsync();
     }
 
-    private void loginServer() {
-        String REQUEST_TAG = "sendUser";
-        //String url = R.string.local_server + "/login";
-        //String url = "http://127.0.0.1:5000/login";
+    private void checkServer() {
+        String REQUEST_TAG = "checkUser";
         String url = getString(R.string.remote_login);
-        JSONObject data = new JSONObject();
-        UserInfo user = SingletonUser.getInstance().getUser();
-        try {
-            data.put("facebookId", user.getFacebookID());
-            data.put("firstName", user.getName());
-            data.put("lastName", user.getSurname());
-            data.put("photoUrl", user.getPhotoURL());
-            data.put("email", user.getEmail());
-            data.put("token", AccessToken.getCurrentAccessToken().getToken());
-            Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(TAG, "error al crear el json: " + e.toString());
-            PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-        }
-
+        Log.d(TAG, "token " + AccessToken.getCurrentAccessToken().getToken());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
+                Request.Method.GET,
                 url,
-                data,
+                null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -129,11 +117,33 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "error: " + error.toString());
+                        Log.d(TAG, "volley error check" + error.getMessage());
+                        //OR
+                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                        //OR
+                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                        //Or if nothing works than splitting is the only option
+                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
                         PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                     }
-                }
-        );
+                }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", AccessToken.getCurrentAccessToken().getToken());
+
+                return params;
+            }
+        };
+        Log.d(TAG, "login request " + jsonObjectRequest.toString());
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
     }
 
@@ -141,33 +151,114 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, response.toString());
         Integer status = 0;
         String token = "";
+        JSONObject data;
         try {
             status = response.getInt("status");
-            token = response.getString("token");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //if (status == 200){
+        if (status == 200){
+            try {
+                data = response.getJSONObject("data");
+                token = data.getString("token");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             SingletonUser.getInstance().setToken(token);
             Intent loginIntent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(loginIntent);
 
-        //} else {
-        //    PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
-        //}
+        } else {
+            //PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
+            createUser();
+        }
     }
 
+    private void createUser() {
+        String REQUEST_TAG = "createUser";
+        String url = getString(R.string.remote_register);
+        final UserInfo user = SingletonUser.getInstance().getUser();
+        StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "Success");
+                        getServerRegisterResponse(response);
+                    }
+                }, new Response.ErrorListener() {
 
-    public static String encodeTobase64(Bitmap image)
-    {
-        Bitmap immagex=image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "volley error create " + error.getMessage());
+                //OR
+                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                //OR
+                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                //Or if nothing works than splitting is the only option
+                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
-        Log.e("LOOK", imageEncoded);
-        return imageEncoded;
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+            }
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("firstName", user.getName());
+                params.put("lastName", user.getSurname());
+                params.put("photoUrl", user.getPhotoURL());
+                params.put("email", user.getEmail());
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", AccessToken.getCurrentAccessToken().getToken());
+
+                return params;
+            }
+
+        };
+
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjRequest,REQUEST_TAG);
+    }
+
+    private void getServerRegisterResponse(String response) {
+        Log.d(TAG, "getServerRegisterResponse: " + response);
+        Integer status = 0;
+        String token;
+        JSONObject data = null, data2 = null;
+        try {
+            data = new JSONObject(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            status = data.getInt("status");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (status == 200){
+            try {
+                data2 = data.getJSONObject("data");
+                token = data2.getString("token");
+                SingletonUser.getInstance().setToken(token);
+                Intent loginIntent = new Intent(MainActivity.this, HomeActivity.class);
+                startActivity(loginIntent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
+        }
     }
 
     @Override
@@ -175,7 +266,8 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case RESULT_LOGIN_ACTIVITY:
                 if (resultCode == RESULT_OK) {
-                    makeValidations();
+                    loadData();
+                    checkServer();
                 }
                 break;
             default:
