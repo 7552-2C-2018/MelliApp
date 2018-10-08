@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,16 +12,22 @@ import com.a7552_2c_2018.melliapp.R;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.util.Objects;
+
 public class ItemActivity extends AppCompatActivity {
 
-    CarouselView carouselView;
+    private CarouselView carouselView;
 
-    String[] sampleImages = null;
+    private String[] sampleImages = null;
 
-    TextView tvTitle, tvSeller, tvPrice, tvDesc, tvPayments;
-    Button btnBuy;
+    private TextView tvTitle;
+    private TextView tvSeller;
+    private TextView tvPrice;
+    private TextView tvDesc;
+    private TextView tvPayments;
+    // --Commented out by Inspection (01/10/2018 23:20):Button btnBuy;
 
-    ImageListener imageListener = new ImageListener() {
+    private final ImageListener imageListener = new ImageListener() {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
             String base64Image = sampleImages[position];
@@ -37,7 +42,7 @@ public class ItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         carouselView = findViewById(R.id.carouselView);
         tvTitle = findViewById(R.id.aiTvTitle);
@@ -45,13 +50,12 @@ public class ItemActivity extends AppCompatActivity {
         tvPrice = findViewById(R.id.aiTvPrice);
         tvDesc = findViewById(R.id.aiTvDesc);
         tvPayments = findViewById(R.id.aiTvPayments);
-        btnBuy = findViewById(R.id.aiBtnBuy);
 
         mocking();
     }
 
     //remove this method
-    public void mocking(){
+    private void mocking(){
         sampleImages = new String[4];
         for (int i=0; i<4; i++){
             sampleImages[i]= getString(R.string.base64mock);
@@ -65,11 +69,11 @@ public class ItemActivity extends AppCompatActivity {
         tvPrice.setText(getString(R.string.mock_price));
         tvSeller.setText(getString(R.string.mock_seller));
         String[] pays = getResources().getStringArray(R.array.mock_payments_array);
-        String fullString = pays[0];
+        StringBuilder fullString = new StringBuilder(pays[0]);
         for (int i=1; i<pays.length; i++){
-            fullString = fullString + ", " + pays[i];
+            fullString.append(", ").append(pays[i]);
         }
-        tvPayments.setText(fullString);
+        tvPayments.setText(fullString.toString());
     }
 
     @Override

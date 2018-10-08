@@ -1,7 +1,6 @@
 package com.a7552_2c_2018.melliapp.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,6 +44,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PostsActivity extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
 
@@ -56,14 +56,14 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private Spinner categories;
     private Button loadImg, validatePost;
     private List<String> base64array = null;
-    private double longitude, latitude;
+    private double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         String[] payments_array = getResources().getStringArray(R.array.payments_array);
         String[] categories_array = getResources().getStringArray(R.array.categories_array);
@@ -100,40 +100,34 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         validatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInputs() == true) {
+                if (validateInputs()) {
                     callBackend();
                 } else {
-                    PopUpManager.showToastError(getApplicationContext(), "Faltan ingresar datos");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.pa_msg));
                 }
             }
         });
     }
 
-    public boolean validateInputs() {
+    private boolean validateInputs() {
         if (title.getText().toString().isEmpty() || desc.getText().toString().isEmpty() ||
         stock.getText().toString().isEmpty() || price.getText().toString().isEmpty() ||
                 paymentOptions.getSelectedItemsAsString().isEmpty()) {
             return false;
         }
-        if (Integer.parseInt(stock.getText().toString()) <= 0 ||
-                Integer.parseInt(price.getText().toString()) <= 0 ) {
-            return false;
-        }
-        return true;
+        return Integer.parseInt(stock.getText().toString()) > 0 &&
+                Integer.parseInt(price.getText().toString()) > 0;
     }
 
-    public void callBackend(){
+    private void callBackend(){
         String REQUEST_TAG = "createPost";
-        //String url = R.string.local_server + "/login";
-        //String url = "http://127.0.0.1:5000/login";
-        //TODO: add the real uri
         String url = getString(R.string.remote_postItem);
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED) {
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
             longitude = location.getLongitude();
             latitude = location.getLatitude();
         } else {
@@ -142,7 +136,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                             Manifest.permission.ACCESS_COARSE_LOCATION },
                     1);
         }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
         longitude = location.getLongitude();
         latitude = location.getLatitude();
         JSONObject data = new JSONObject();
@@ -159,10 +153,10 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             data.put("pictures", base64array.toArray());
             data.put("latitude", latitude);
             data.put("longitude", longitude);
-            Log.d(TAG, "mensaje a enviar al servidor: " + data.toString());
+            Log.d(TAG, getString(R.string.send_server) + data.toString());
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d(TAG, "error al crear el json: " + e.toString());
+            Log.d(TAG, getString(R.string.json_error) + e.toString());
             PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
 
@@ -217,8 +211,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                mBitmapsSelected.add(bitmap);
-                base64array.add(encode2ToBase64(bitmap));
+                //mBitmapsSelected.add(bitmap);
+                base64array.add(encode2ToBase64(Objects.requireNonNull(bitmap)));
             }
         }
     }

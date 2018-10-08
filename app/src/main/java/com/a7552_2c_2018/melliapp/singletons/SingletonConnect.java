@@ -15,17 +15,16 @@ import com.android.volley.toolbox.Volley;
 public class SingletonConnect {
     private static SingletonConnect mAppSingletonInstance;
     private RequestQueue mRequestQueue;
-    private ImageLoader mImageLoader;
     private static Context mContext;
 
     private SingletonConnect(Context context) {
         mContext = context;
         mRequestQueue = getRequestQueue();
 
-        mImageLoader = new ImageLoader(mRequestQueue,
+        ImageLoader mImageLoader = new ImageLoader(mRequestQueue,
                 new ImageLoader.ImageCache() {
                     private final LruCache<String, Bitmap>
-                            cache = new LruCache<String, Bitmap>(20);
+                            cache = new LruCache<>(20);
 
                     @Override
                     public Bitmap getBitmap(String url) {
@@ -59,8 +58,10 @@ public class SingletonConnect {
         getRequestQueue().add(req);
     }
 
-    public ImageLoader getImageLoader() {
-        return mImageLoader;
-    }
+// --Commented out by Inspection START (01/10/2018 23:21):
+//    public ImageLoader getImageLoader() {
+//        return mImageLoader;
+//    }
+// --Commented out by Inspection STOP (01/10/2018 23:21)
 
 }

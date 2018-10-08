@@ -1,13 +1,15 @@
 package com.a7552_2c_2018.melliapp.utils;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+
+import com.a7552_2c_2018.melliapp.R;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,18 +18,19 @@ import java.util.List;
 public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSpinner implements
         OnMultiChoiceClickListener {
 
+    @SuppressWarnings("EmptyMethod")
     public interface OnMultipleItemsSelectedListener{
         void selectedIndices(List<Integer> indices);
         void selectedStrings(List<String> strings);
     }
     private OnMultipleItemsSelectedListener listener;
 
-    String[] _items = null;
-    boolean[] mSelection = null;
-    boolean[] mSelectionAtStart = null;
-    String _itemsAtStart = null;
+    private String[] _items = null;
+    private boolean[] mSelection = null;
+    private boolean[] mSelectionAtStart = null;
+    private String _itemsAtStart = null;
 
-    ArrayAdapter<String> simple_adapter;
+    private final ArrayAdapter<String> simple_adapter;
 
     public MultiSelectionSpinner(Context context) {
         super(context);
@@ -60,13 +63,14 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean performClick() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Medios de Pago habilitados");
+        builder.setTitle(getResources().getString(R.string.multi_title));
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
-        builder.setPositiveButton("Listo", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getResources().getString(R.string.multi_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
@@ -74,7 +78,7 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
                 listener.selectedStrings(getSelectedStrings());
             }
         });
-        builder.setNegativeButton("Descartar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.multi_discard), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 simple_adapter.clear();
@@ -103,15 +107,17 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
         mSelectionAtStart[0] = true;
     }
 
-    public void setItems(List<String> items) {
-        _items = items.toArray(new String[items.size()]);
-        mSelection = new boolean[_items.length];
-        mSelectionAtStart  = new boolean[_items.length];
-        simple_adapter.clear();
-        simple_adapter.add(_items[0]);
-        Arrays.fill(mSelection, false);
-        mSelection[0] = true;
-    }
+// --Commented out by Inspection START (01/10/2018 23:20):
+//    public void setItems(List<String> items) {
+//        _items = items.toArray(new String[items.size()]);
+//        mSelection = new boolean[_items.length];
+//        mSelectionAtStart  = new boolean[_items.length];
+//        simple_adapter.clear();
+//        simple_adapter.add(_items[0]);
+//        Arrays.fill(mSelection, false);
+//        mSelection[0] = true;
+//    }
+// --Commented out by Inspection STOP (01/10/2018 23:20)
 
     public void setSelection(String[] selection) {
         for (int i = 0; i < mSelection.length; i++) {
@@ -191,7 +197,7 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
         return selection;
     }
 
-    public List<Integer> getSelectedIndices() {
+    private List<Integer> getSelectedIndices() {
         List<Integer> selection = new LinkedList<>();
         for (int i = 0; i < _items.length; ++i) {
             if (mSelection[i]) {

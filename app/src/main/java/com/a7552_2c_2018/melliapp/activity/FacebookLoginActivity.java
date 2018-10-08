@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
-import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -17,7 +15,7 @@ import java.util.Arrays;
 
 public class FacebookLoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "FbLoginActivity";
+    // --Commented out by Inspection (01/10/2018 23:20):private static final String TAG = "FbLoginActivity";
     private static final String EMAIL = "email";
     private static final String USER_POSTS = "user_posts";
     private static final String PUBLIC_PROFILE = "public_profile";

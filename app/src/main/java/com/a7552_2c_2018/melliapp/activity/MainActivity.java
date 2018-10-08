@@ -1,10 +1,8 @@
 package com.a7552_2c_2018.melliapp.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -18,11 +16,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
@@ -32,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@SuppressWarnings("UnusedAssignment")
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -68,12 +64,13 @@ public class MainActivity extends AppCompatActivity {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
+                    @SuppressWarnings("SpellCheckingInspection")
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Log.d(TAG, "response: " + response.toString());
 
-                        String id, name, surname, email = null;
-                        String profilePicUrl = null;
+                        String id, name, surname, email;
+                        String profilePicUrl;
                         try {
                             id = object.getString("id");
                             name = object.getString("first_name");
