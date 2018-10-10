@@ -32,6 +32,7 @@ import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.tuanchauict.intentchooser.ImageChooserMaker;
 import com.tuanchauict.intentchooser.selectphoto.CameraChooser;
@@ -69,6 +70,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         //String[] payments_array = getResources().getStringArray(R.array.payments_array);
+
         //String[] categories_array = getResources().getStringArray(R.array.categories_array);
         getServerCategories();
         getServerPayments();
@@ -79,7 +81,11 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         price = findViewById(R.id.apNprice);
         isNew = findViewById(R.id.apRbNew);
 
-        paymentOptions = findViewById(R.id.mySpinner);;
+        paymentOptions = findViewById(R.id.mySpinner);
+        /*
+        paymentOptions.setItems(payments_array);
+        paymentOptions.setListener(this);
+        */
 
         categories = findViewById(R.id.apScategories);
 
@@ -111,13 +117,13 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private void getServerCategories() {
         String REQUEST_TAG = "getCategories";
         String url = getString(R.string.remote_getCat);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         getServerCategoriesResponse(response);
                     }
                 },
@@ -151,19 +157,17 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 return params;
             }
         };
-        Log.d(TAG, "categories request " + jsonObjectRequest.toString());
-        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
+        Log.d(TAG, "categories request " + jsonArrayRequest.toString());
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
     }
 
-    private void getServerCategoriesResponse(JSONObject response) {
+    private void getServerCategoriesResponse(JSONArray response) {
         Log.d(TAG, response.toString());
-        JSONArray catArray;
         String[] categories_array = null;
         try {
-            catArray = response.getJSONArray("data");
-            categories_array = new String[catArray.length()];
-            for (int i = 0; i < catArray.length(); ++i) {
-                JSONObject item = catArray.getJSONObject(i);
+            categories_array = new String[response.length()];
+            for (int i = 0; i < response.length(); ++i) {
+                JSONObject item = response.getJSONObject(i);
                 //int id = item.getInt("_id");
                 String cat = item.getString("name");
                 categories_array[i] = cat;
@@ -180,13 +184,13 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private void getServerPayments() {
         String REQUEST_TAG = "getPayments";
         String url = getString(R.string.remote_getPays);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         getServerPaymentsResponse(response);
                     }
                 },
@@ -220,19 +224,17 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 return params;
             }
         };
-        Log.d(TAG, "payments request " + jsonObjectRequest.toString());
-        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
+        Log.d(TAG, "payments request " + jsonArrayRequest.toString());
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
     }
 
-    private void getServerPaymentsResponse(JSONObject response) {
+    private void getServerPaymentsResponse(JSONArray response) {
         Log.d(TAG, response.toString());
-        JSONArray payArray;
         String[] payments_array = null;
         try {
-            payArray = response.getJSONArray("data");
-            payments_array = new String[payArray.length()];
-            for (int i = 0; i < payArray.length(); ++i) {
-                JSONObject item = payArray.getJSONObject(i);
+            payments_array = new String[response.length()];
+            for (int i = 0; i < response.length(); ++i) {
+                JSONObject item = response.getJSONObject(i);
                 //int id = item.getInt("_id");
                 String pay = item.getString("name");
                 payments_array[i] = pay;

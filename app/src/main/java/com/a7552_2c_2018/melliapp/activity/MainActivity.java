@@ -100,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkServer() {
         String REQUEST_TAG = "checkUser";
-        String url = getString(R.string.remote_login);
+        //String url = getString(R.string.remote_login);
+        String url = getString(R.string.remote_users);
         Log.d(TAG, "token " + AccessToken.getCurrentAccessToken().getToken());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -123,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
                         //Or if nothing works than splitting is the only option
                         Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                        //PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                        createUser();
                     }
                 }) {
 
@@ -147,34 +149,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void getServerLoginResponse(JSONObject response) {
         Log.d(TAG, response.toString());
-        Integer status = 0;
         String token = "";
-        JSONObject data;
         try {
-            status = response.getInt("status");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (status == 200){
-            try {
-                data = response.getJSONObject("data");
-                token = data.getString("token");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            token = response.getString("token");
             SingletonUser.getInstance().setToken(token);
             Intent loginIntent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(loginIntent);
-
-        } else {
-            //PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
-            createUser();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
     }
 
     private void createUser() {
         String REQUEST_TAG = "createUser";
-        String url = getString(R.string.remote_register);
+        //String url = getString(R.string.remote_register);
+        String url = getString(R.string.remote_users);
         final UserInfo user = SingletonUser.getInstance().getUser();
         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                 url,
@@ -231,31 +221,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void getServerRegisterResponse(String response) {
         Log.d(TAG, "getServerRegisterResponse: " + response);
-        Integer status = 0;
-        String token;
-        JSONObject data = null, data2 = null;
+        String token = "";
+        JSONObject aux = null;
         try {
-            data = new JSONObject(response);
+            aux = new JSONObject(response);
+            token = aux.getString("token");
+            SingletonUser.getInstance().setToken(token);
+            Intent loginIntent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(loginIntent);
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        try {
-            status = data.getInt("status");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (status == 200){
-            try {
-                data2 = data.getJSONObject("data");
-                token = data2.getString("token");
-                SingletonUser.getInstance().setToken(token);
-                Intent loginIntent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(loginIntent);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
-            PopUpManager.showToastError(getApplicationContext(), getString(R.string.validation_error));
+            PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
     }
 
