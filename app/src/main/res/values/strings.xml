@@ -16,6 +16,8 @@
     <string name="remote_login">https://app-server-23.herokuapp.com/users/login</string>
     <string name="remote_register">https://app-server-23.herokuapp.com/users/register</string>
     <string name="remote_postItem">https://app-server-23.herokuapp.com/products/newPost</string>
+    <string name="remote_getCat">https://app-server-23.herokuapp.com/products/categories</string>
+    <string name="remote_getPays">https://app-server-23.herokuapp.com/products/payments</string>
 
     <!-- Strings related to steady screen text -->
     <string name="validating">Espera mientras validamos tus datos.</string>

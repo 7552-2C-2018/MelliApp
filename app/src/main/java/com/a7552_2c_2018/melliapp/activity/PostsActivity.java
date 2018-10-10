@@ -37,13 +37,16 @@ import com.tuanchauict.intentchooser.ImageChooserMaker;
 import com.tuanchauict.intentchooser.selectphoto.CameraChooser;
 import com.tuanchauict.intentchooser.selectphoto.ImageChooser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class PostsActivity extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
@@ -65,8 +68,10 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        String[] payments_array = getResources().getStringArray(R.array.payments_array);
-        String[] categories_array = getResources().getStringArray(R.array.categories_array);
+        //String[] payments_array = getResources().getStringArray(R.array.payments_array);
+        //String[] categories_array = getResources().getStringArray(R.array.categories_array);
+        getServerCategories();
+        getServerPayments();
 
         title = findViewById(R.id.apTvTitle);
         desc = findViewById(R.id.apMlDesc);
@@ -74,15 +79,9 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         price = findViewById(R.id.apNprice);
         isNew = findViewById(R.id.apRbNew);
 
-        paymentOptions = findViewById(R.id.mySpinner);
-        paymentOptions.setItems(payments_array);
-        paymentOptions.setListener(this);
+        paymentOptions = findViewById(R.id.mySpinner);;
 
         categories = findViewById(R.id.apScategories);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, categories_array);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categories.setAdapter(adapter);
 
         loadImg = findViewById(R.id.apBaddpictures);
         loadImg.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +106,142 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 }
             }
         });
+    }
+
+    private void getServerCategories() {
+        String REQUEST_TAG = "getCategories";
+        String url = getString(R.string.remote_getCat);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        getServerCategoriesResponse(response);
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.d(TAG, "volley error check" + error.getMessage());
+                        //OR
+                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                        //OR
+                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                        //Or if nothing works than splitting is the only option
+                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                    }
+                }) {
+            /*
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+            */
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("access-token", SingletonUser.getInstance().getToken());
+
+                return params;
+            }
+        };
+        Log.d(TAG, "categories request " + jsonObjectRequest.toString());
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
+    }
+
+    private void getServerCategoriesResponse(JSONObject response) {
+        Log.d(TAG, response.toString());
+        JSONArray catArray;
+        String[] categories_array = null;
+        try {
+            catArray = response.getJSONArray("data");
+            categories_array = new String[catArray.length()];
+            for (int i = 0; i < catArray.length(); ++i) {
+                JSONObject item = catArray.getJSONObject(i);
+                //int id = item.getInt("_id");
+                String cat = item.getString("name");
+                categories_array[i] = cat;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, categories_array);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categories.setAdapter(adapter);
+    }
+
+    private void getServerPayments() {
+        String REQUEST_TAG = "getPayments";
+        String url = getString(R.string.remote_getPays);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        getServerPaymentsResponse(response);
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.d(TAG, "volley error check" + error.getMessage());
+                        //OR
+                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                        //OR
+                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                        //Or if nothing works than splitting is the only option
+                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                    }
+                }) {
+            /*
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+            */
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("access-token", SingletonUser.getInstance().getToken());
+
+                return params;
+            }
+        };
+        Log.d(TAG, "payments request " + jsonObjectRequest.toString());
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
+    }
+
+    private void getServerPaymentsResponse(JSONObject response) {
+        Log.d(TAG, response.toString());
+        JSONArray payArray;
+        String[] payments_array = null;
+        try {
+            payArray = response.getJSONArray("data");
+            payments_array = new String[payArray.length()];
+            for (int i = 0; i < payArray.length(); ++i) {
+                JSONObject item = payArray.getJSONObject(i);
+                //int id = item.getInt("_id");
+                String pay = item.getString("name");
+                payments_array[i] = pay;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        paymentOptions.setItems(payments_array);
+        paymentOptions.setListener(this);
     }
 
     private boolean validateInputs() {
