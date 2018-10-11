@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         //OR
                         Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
                         //Or if nothing works than splitting is the only option
-                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                        //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
                         //PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                         createUser();

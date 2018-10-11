@@ -49,6 +49,7 @@ public class PostsFragment extends Fragment {
     private static final String TAG = "PostsFragment";
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private View v;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -170,7 +171,7 @@ public class PostsFragment extends Fragment {
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
-                params.put("access-token", AccessToken.getCurrentAccessToken().getToken());
+                params.put("token", SingletonUser.getInstance().getToken());
 
                 return params;
             }
@@ -183,6 +184,7 @@ public class PostsFragment extends Fragment {
         try {
             List<PostItem> input = new ArrayList<>();
             PostItem item;
+            /*
             for (int i=0; i<6; i++) {
                 item = new PostItem();
                 item.setImage(getString(R.string.base64mock));
@@ -190,11 +192,13 @@ public class PostsFragment extends Fragment {
                 item.setDesc(getString(R.string.mock_title));
                 input.add(item);
             }
-
+            */
             for (int i = 0; i < response.length(); ++i) {
                 JSONObject jItem = response.getJSONObject(i);
                 item = new PostItem();
-                item.setImage(getString(R.string.base64mock));
+                JSONArray pictures = jItem.getJSONArray("pictures");
+                item.setImage(pictures.getString(0));
+                //item.setImage(getString(R.string.base64mock));
                 item.setPrice(jItem.getInt("price"));
                 item.setDesc(jItem.getString("title"));
                 input.add(item);
