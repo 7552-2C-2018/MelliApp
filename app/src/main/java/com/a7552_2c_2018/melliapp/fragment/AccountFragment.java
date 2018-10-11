@@ -14,15 +14,19 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
@@ -81,6 +85,7 @@ public class AccountFragment extends Fragment {
         btSave.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 saveChanges();
+
             }
         });
 
@@ -108,7 +113,7 @@ public class AccountFragment extends Fragment {
                 .setNegativeButton(getString(R.string.no), null)
                 .show();
     }
-
+    /*
     private void saveChanges(){
         String REQUEST_TAG = "updateUser";
         final String url = getString(R.string.remote_login);
@@ -150,7 +155,66 @@ public class AccountFragment extends Fragment {
         };
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
     }
+    */
+    private void saveChanges() {
+        String REQUEST_TAG = "saveChanges";
+        //String url = getString(R.string.remote_register);
+        String url = getString(R.string.remote_users);
+        final UserInfo user = SingletonUser.getInstance().getUser();
+        StringRequest jsonObjRequest = new StringRequest(Request.Method.PUT,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "Success");
+                        PopUpManager.showToastError(getApplicationContext(), "Datos Guardados");
+                    }
+                }, new Response.ErrorListener() {
 
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "volley error create " + error.getMessage());
+                //OR
+                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                //OR
+                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                //Or if nothing works than splitting is the only option
+                //Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+            }
+        }) {
 
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("firstName", etName.getText().toString());
+                params.put("lastName", etSurname.getText().toString());
+                params.put("photoUrl", user.getPhotoURL());
+                params.put("email", user.getEmail());
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", SingletonUser.getInstance().getToken());
+
+                return params;
+            }
+
+        };
+
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjRequest,REQUEST_TAG);
+        user.setName(etName.getText().toString());
+        user.setSurname(etSurname.getText().toString());
+        SingletonUser.getInstance().setUser(user);
+
+    }
 }

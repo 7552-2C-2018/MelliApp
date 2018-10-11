@@ -110,6 +110,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             public void onClick(View v) {
                 if (validateInputs()) {
                     callBackend();
+                    onBackPressed();
                 } else {
                     PopUpManager.showToastError(getApplicationContext(), getString(R.string.pa_msg));
                 }
@@ -139,7 +140,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                         //OR
                         Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
                         //Or if nothing works than splitting is the only option
-                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                        //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
                         PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                     }
@@ -149,7 +150,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
-                params.put("access-token", SingletonUser.getInstance().getToken());
+                params.put("token", SingletonUser.getInstance().getToken());
 
                 return params;
             }
@@ -209,7 +210,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
-                params.put("access-token", SingletonUser.getInstance().getToken());
+                params.put("token", SingletonUser.getInstance().getToken());
 
                 return params;
             }
@@ -266,28 +267,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
         longitude = location.getLongitude();
         latitude = location.getLatitude();
-        /*
-        JSONObject data = new JSONObject();
-        UserInfo user = SingletonUser.getInstance().getUser();
-        try {
-            data.put("facebookId", user.getFacebookID());
-            data.put("title", title.getText().toString());
-            data.put("desc", desc.getText().toString());
-            data.put("stock", Integer.parseInt(stock.getText().toString()));
-            data.put("price", Integer.parseInt(price.getText().toString()));
-            data.put("new", isNew.isChecked());
-            data.put("payments", paymentOptions.getSelectedStrings().toArray());
-            data.put("category", categories.getSelectedItem().toString());
-            data.put("pictures", base64array.toArray());
-            data.put("latitude", latitude);
-            data.put("longitude", longitude);
-            Log.d(TAG, getString(R.string.send_server) + data.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(TAG, getString(R.string.json_error) + e.toString());
-            PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-        }
-        */
+
         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                 url,
                 new Response.Listener<String>() {
@@ -347,7 +327,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
-                params.put("access-token", AccessToken.getCurrentAccessToken().getToken());
+                params.put("token", SingletonUser.getInstance().getToken());
                 return params;
             }
 
