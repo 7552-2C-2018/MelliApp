@@ -29,11 +29,14 @@ import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.facebook.AccessToken;
 import com.tuanchauict.intentchooser.ImageChooserMaker;
 import com.tuanchauict.intentchooser.selectphoto.CameraChooser;
 import com.tuanchauict.intentchooser.selectphoto.ImageChooser;
@@ -96,7 +99,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 Intent intent = ImageChooserMaker.newChooser(PostsActivity.this)
                         .add(new CameraChooser())
                         .add(new ImageChooser(true))
-                        .create("Select Image");
+                        .create("Seleccione la imagen");
                 startActivityForResult(intent, REQUEST_IMAGE_CHOOSER);
             }
         });
@@ -141,12 +144,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                         PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                     }
                 }) {
-            /*
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
-            */
 
             @Override
             public Map<String, String> getHeaders() {
@@ -168,7 +165,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             categories_array = new String[response.length()];
             for (int i = 0; i < response.length(); ++i) {
                 JSONObject item = response.getJSONObject(i);
-                //int id = item.getInt("_id");
                 String cat = item.getString("name");
                 categories_array[i] = cat;
             }
@@ -208,12 +204,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                         PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                     }
                 }) {
-            /*
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
-            */
 
             @Override
             public Map<String, String> getHeaders() {
@@ -258,7 +248,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
 
     private void callBackend(){
         String REQUEST_TAG = "createPost";
-        String url = getString(R.string.remote_postItem);
+        String url = getString(R.string.remote_posts);
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
@@ -276,6 +266,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
         longitude = location.getLongitude();
         latitude = location.getLatitude();
+        /*
         JSONObject data = new JSONObject();
         UserInfo user = SingletonUser.getInstance().getUser();
         try {
@@ -296,31 +287,73 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             Log.d(TAG, getString(R.string.json_error) + e.toString());
             PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
         }
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
+        */
+        StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                 url,
-                data,
-                new Response.Listener<JSONObject>() {
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        getServerPostResponse(response);
+                    public void onResponse(String response) {
+                        Log.d(TAG, "Success");
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.post_ok));
                     }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "error: " + error.toString());
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "volley error create " + error.getMessage());
+                //OR
+                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                //OR
+                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                //Or if nothing works than splitting is the only option
+                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
+
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+            }
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("title", title.getText().toString());
+                params.put("desc", desc.getText().toString());
+                params.put("stock", stock.getText().toString());
+                params.put("price", price.getText().toString());
+                params.put("new", String.valueOf(isNew.isChecked()));
+                //params.put("payments", paymentOptions.getSelectedStrings().toArray());
+                List<String> aux = paymentOptions.getSelectedStrings();
+                for (int i=0; i<aux.size(); i++){
+                    params.put("payments", aux.get(i));
+                }
+                params.put("category", categories.getSelectedItem().toString());
+                //params.put("pictures", base64array.toArray());
+                if (base64array != null) {
+                    for (int j=0; j<base64array.size(); j++){
+                        params.put("pictures", base64array.get(j));
                     }
                 }
-        );
-        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest,REQUEST_TAG);
+                params.put("shipping", "false");
+                params.put("latitude", String.valueOf(latitude));
+                params.put("longitude", String.valueOf(longitude));
+                return params;
+            }
 
-    }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("access-token", AccessToken.getCurrentAccessToken().getToken());
+                return params;
+            }
 
-    private void getServerPostResponse(JSONObject response) {
-        PopUpManager.showToastError(getApplicationContext(), getString(R.string.post_ok));
+        };
+
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjRequest,REQUEST_TAG);
     }
 
     @Override

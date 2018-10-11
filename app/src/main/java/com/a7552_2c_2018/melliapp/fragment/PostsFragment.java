@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,20 +15,40 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.activity.ItemActivity;
+import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.activity.PostsActivity;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
+import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
+import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.AccessToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class PostsFragment extends Fragment {
+
+    private static final String TAG = "PostsFragment";
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -44,15 +65,11 @@ public class PostsFragment extends Fragment {
 
         // Inflate the layout for this fragment
 
-        RecyclerView recyclerView = v.findViewById(R.id.fpRecycler);
-        // use this setting to
-        // improve performance if you know that changes
-        // in content do not change the layout size
-        // of the RecyclerView
+        recyclerView = v.findViewById(R.id.fpRecycler);
         recyclerView.setHasFixedSize(true);
-        // use a linear layout manager
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
+        /*
         List<PostItem> input = new ArrayList<>();
         PostItem item;
         for (int i=0; i<6; i++) {
@@ -64,6 +81,8 @@ public class PostsFragment extends Fragment {
         }
         RecyclerView.Adapter mAdapter = new ItemAdapter(input);
         recyclerView.setAdapter(mAdapter);
+        */
+        getPosts();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {
@@ -113,4 +132,77 @@ public class PostsFragment extends Fragment {
         return v;
     }
 
+    private void getPosts() {
+        String REQUEST_TAG = "getPosts";
+        //String url = getString(R.string.remote_login);
+        String url = getString(R.string.remote_posts_all);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        getPostsResponse(response);
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.d(TAG, "volley error check" + error.getMessage());
+                        //OR
+                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                        //OR
+                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                        //Or if nothing works than splitting is the only option
+                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                    }
+                }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("access-token", AccessToken.getCurrentAccessToken().getToken());
+
+                return params;
+            }
+        };
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
+    }
+
+    private void getPostsResponse(JSONArray response) {
+        Log.d(TAG, response.toString());
+        try {
+            List<PostItem> input = new ArrayList<>();
+            PostItem item;
+            for (int i=0; i<6; i++) {
+                item = new PostItem();
+                item.setImage(getString(R.string.base64mock));
+                item.setPrice(800);
+                item.setDesc(getString(R.string.mock_title));
+                input.add(item);
+            }
+
+            for (int i = 0; i < response.length(); ++i) {
+                JSONObject jItem = response.getJSONObject(i);
+                item = new PostItem();
+                item.setImage(getString(R.string.base64mock));
+                item.setPrice(jItem.getInt("price"));
+                item.setDesc(jItem.getString("title"));
+                input.add(item);
+            }
+            RecyclerView.Adapter mAdapter = new ItemAdapter(input);
+            recyclerView.setAdapter(mAdapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
