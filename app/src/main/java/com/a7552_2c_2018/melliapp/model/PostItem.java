@@ -4,6 +4,8 @@ public class PostItem {
     private String image;
     private Integer price;
     private String desc;
+    private String facebookId;
+    private String publDate;
 
     public PostItem() {
     }
@@ -30,5 +32,21 @@ public class PostItem {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public String getPublDate() {
+        return publDate;
+    }
+
+    public void setPublDate(String publDate) {
+        this.publDate = publDate;
     }
 }

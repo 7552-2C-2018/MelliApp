@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.adapters;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -13,9 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.ItemActivity;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
@@ -35,6 +39,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
             tvDesc = v.findViewById(R.id.eTvDesc);
             ivPhoto = v.findViewById(R.id.eIvPhoto);
         }
+
     }
 
 // --Commented out by Inspection START (01/10/2018 23:20):
@@ -43,11 +48,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 //        notifyItemInserted(position);
 //    }
 // --Commented out by Inspection STOP (01/10/2018 23:20)
-
+    /*
     public void remove(int position) {
         values.remove(position);
         notifyItemRemoved(position);
     }
+    */
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public ItemAdapter(List<PostItem> myDataset) {
@@ -71,20 +77,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         final String price = "$ " + values.get(position).getPrice();
         final String desc = values.get(position).getDesc();
         holder.tvPrice.setText(price);
         /*
-        holder.tvPrice.setOnClickListener(new View.OnClickListener() {
+        holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                remove(position);
+                Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
+                itemIntent.putExtra("facebookId", );
+                startActivity(itemIntent);
             }
         });
         */
-        //Log.d("ItemAdapter", desc.substring(0,Math.max(desc.length(),40)));
         holder.tvDesc.setText(desc.substring(0,Math.min(desc.length(),40)));
         String base64Image = values.get(position).getImage();
         byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
@@ -96,6 +101,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
     @Override
     public int getItemCount() {
         return values.size();
+    }
+
+    public PostItem getPostItem(int position) {
+        return values.get(position);
     }
 
 }

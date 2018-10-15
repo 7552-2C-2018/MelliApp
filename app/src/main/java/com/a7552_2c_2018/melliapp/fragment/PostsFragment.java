@@ -69,19 +69,7 @@ public class PostsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        /*
-        List<PostItem> input = new ArrayList<>();
-        PostItem item;
-        for (int i=0; i<6; i++) {
-            item = new PostItem();
-            item.setImage(getString(R.string.base64mock));
-            item.setPrice(800);
-            item.setDesc(getString(R.string.mock_title));
-            input.add(item);
-        }
-        RecyclerView.Adapter mAdapter = new ItemAdapter(input);
-        recyclerView.setAdapter(mAdapter);
-        */
+
         getPosts();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
@@ -103,7 +91,14 @@ public class PostsFragment extends Fragment {
 
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
 
+                        int position = recyclerView.getChildAdapterPosition(child);
+
+                        ItemAdapter aux = (ItemAdapter) recyclerView.getAdapter();
+                        String fId = aux.getPostItem(position).getFacebookId();
+                        String publ = aux.getPostItem(position).getPublDate();
                         Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
+                        itemIntent.putExtra("facebookId", fId);
+                        itemIntent.putExtra("pubDate", publ);
                         startActivity(itemIntent);
 
                         return true;
@@ -194,6 +189,9 @@ public class PostsFragment extends Fragment {
                 }
                 item.setPrice(jItem.getInt("price"));
                 item.setDesc(jItem.getString("title"));
+                JSONObject jIdItem = jItem.getJSONObject("_id");
+                item.setFacebookId(jIdItem.getString("facebookId"));
+                item.setPublDate(String.valueOf(jIdItem.getLong("publication_date")));
                 input.add(item);
             }
             RecyclerView.Adapter mAdapter = new ItemAdapter(input);
