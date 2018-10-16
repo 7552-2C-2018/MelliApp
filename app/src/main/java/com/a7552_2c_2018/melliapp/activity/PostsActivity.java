@@ -58,7 +58,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private static final String TAG = "PostsActivity";
     private static final int REQUEST_IMAGE_CHOOSER = 1;
     private EditText title, desc, stock, price;
-    private RadioButton isNew;
+    private RadioButton isNew, makesShipping;
     private MultiSelectionSpinner paymentOptions;
     private Spinner categories;
     private Button loadImg, validatePost;
@@ -83,13 +83,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         stock = findViewById(R.id.apNstock);
         price = findViewById(R.id.apNprice);
         isNew = findViewById(R.id.apRbNew);
-
+        makesShipping = findViewById(R.id.apRbMakesShips);
         paymentOptions = findViewById(R.id.mySpinner);
-        /*
-        paymentOptions.setItems(payments_array);
-        paymentOptions.setListener(this);
-        */
-
         categories = findViewById(R.id.apScategories);
 
         loadImg = findViewById(R.id.apBaddpictures);
@@ -305,19 +300,17 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 params.put("stock", stock.getText().toString());
                 params.put("price", price.getText().toString());
                 params.put("new", String.valueOf(isNew.isChecked()));
-                //params.put("payments", paymentOptions.getSelectedStrings().toArray());
+                params.put("shipping", String.valueOf(makesShipping.isChecked()));
                 List<String> aux = paymentOptions.getSelectedStrings();
                 for (int i=0; i<aux.size(); i++){
                     params.put("payments", aux.get(i));
                 }
                 params.put("category", categories.getSelectedItem().toString());
-                //params.put("pictures", base64array.toArray());
                 if (base64array != null) {
                     for (int j=0; j<base64array.size(); j++){
                         params.put("pictures", base64array.get(j));
                     }
                 }
-                params.put("shipping", "false");
                 params.put("latitude", String.valueOf(latitude));
                 params.put("longitude", String.valueOf(longitude));
                 return params;
@@ -351,7 +344,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CHOOSER && resultCode == RESULT_OK) {
             List<Uri> imageUris = ImageChooserMaker.getPickMultipleImageResultUris(this, data);
-            ArrayList<Bitmap> mBitmapsSelected = new ArrayList<Bitmap>();
+            //ArrayList<Bitmap> mBitmapsSelected = new ArrayList<Bitmap>();
             base64array = new ArrayList<>();
             for (int i = 0; i < imageUris.size(); i++) {
                 Uri uri = imageUris.get(i);

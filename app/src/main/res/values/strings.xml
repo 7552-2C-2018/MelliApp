@@ -88,6 +88,7 @@
     <string name="pa_title9">Categoría</string>
     <string name="pa_title10">Agregar Imágenes</string>
     <string name="pa_title11">Publicar</string>
+    <string name="pa_title12">Realiza Envios:</string>
     <string name="pa_msg">Faltan ingresar datos</string>
 
     <!-- Strings related to Item Activity -->
