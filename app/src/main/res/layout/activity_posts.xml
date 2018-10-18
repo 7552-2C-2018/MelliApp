@@ -186,6 +186,12 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/pa_title10" />
 
+            <LinearLayout
+                android:id="@+id/secondLayout"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"></LinearLayout>
+
             <Button
                 android:id="@+id/apBsave"
                 android:layout_width="match_parent"

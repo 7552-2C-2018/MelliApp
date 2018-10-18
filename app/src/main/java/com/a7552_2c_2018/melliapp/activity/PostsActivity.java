@@ -13,18 +13,21 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner;
@@ -36,7 +39,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.facebook.AccessToken;
 import com.tuanchauict.intentchooser.ImageChooserMaker;
 import com.tuanchauict.intentchooser.selectphoto.CameraChooser;
 import com.tuanchauict.intentchooser.selectphoto.ImageChooser;
@@ -53,6 +55,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class PostsActivity extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
 
     private static final String TAG = "PostsActivity";
@@ -64,6 +68,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private Button loadImg, validatePost;
     private List<String> base64array = null;
     private double latitude, longitude;
+    private LinearLayout secondLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +77,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        //String[] payments_array = getResources().getStringArray(R.array.payments_array);
-
-        //String[] categories_array = getResources().getStringArray(R.array.categories_array);
         getServerCategories();
         getServerPayments();
 
@@ -86,6 +88,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         makesShipping = findViewById(R.id.apRbMakesShips);
         paymentOptions = findViewById(R.id.mySpinner);
         categories = findViewById(R.id.apScategories);
+        secondLayout = findViewById(R.id.secondLayout);
+        secondLayout.setVisibility(View.GONE);
 
         loadImg = findViewById(R.id.apBaddpictures);
         loadImg.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +115,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 }
             }
         });
+
     }
 
     private void getServerCategories() {
@@ -345,18 +350,29 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         if (requestCode == REQUEST_IMAGE_CHOOSER && resultCode == RESULT_OK) {
             List<Uri> imageUris = ImageChooserMaker.getPickMultipleImageResultUris(this, data);
             //ArrayList<Bitmap> mBitmapsSelected = new ArrayList<Bitmap>();
+            if(secondLayout.getChildCount() > 0)
+                secondLayout.removeAllViews();
             base64array = new ArrayList<>();
             for (int i = 0; i < imageUris.size(); i++) {
                 Uri uri = imageUris.get(i);
-                Bitmap bitmap = null;
+                Bitmap bitmap;
+                String output;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    output = encode2ToBase64(Objects.requireNonNull(bitmap));
+                    base64array.add(output);
+                    ImageView miniPhoto = new ImageView(this);
+                    miniPhoto.setImageBitmap(bitmap);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                    miniPhoto.setLayoutParams(params);
+                    secondLayout.addView(miniPhoto);
+                    secondLayout.setVisibility(View.VISIBLE);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //mBitmapsSelected.add(bitmap);
-                base64array.add(encode2ToBase64(Objects.requireNonNull(bitmap)));
             }
+        } else {
+            secondLayout.setVisibility(View.GONE);
         }
     }
 

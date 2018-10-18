@@ -1,12 +1,10 @@
 package com.a7552_2c_2018.melliapp.adapters;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.activity.ItemActivity;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 
 import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
@@ -37,7 +32,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
             layout = v;
             tvPrice = v.findViewById(R.id.eTvPrice);
             tvDesc = v.findViewById(R.id.eTvDesc);
-            ivPhoto = v.findViewById(R.id.eIvPhoto);
+            ivPhoto = v.findViewById(R.id.miniPhoto);
         }
 
     }
