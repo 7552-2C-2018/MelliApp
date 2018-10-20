@@ -78,6 +78,9 @@
     <string name="af_title10">Name</string>
     <string name="msg_save_ok">Se guardaron los cambios</string>
 
+    <!-- Strings related to Posts Fragment -->
+    <string name="pf_title">Buscando productos...</string>
+
     <!-- Strings related to Post Activity -->
     <string name="pa_title1">Nueva Publicación</string>
     <string name="pa_title2">Título</string>

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.HomeActivity;
@@ -49,6 +50,7 @@ public class PostsFragment extends Fragment {
     private static final String TAG = "PostsFragment";
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private RelativeLayout searching;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -69,6 +71,8 @@ public class PostsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
+
+        searching = v.findViewById(R.id.fpSearching);
 
         getPosts();
 
@@ -194,6 +198,7 @@ public class PostsFragment extends Fragment {
                 item.setPublDate(String.valueOf(jIdItem.getLong("publication_date")));
                 input.add(item);
             }
+            searching.setVisibility(View.GONE);
             RecyclerView.Adapter mAdapter = new ItemAdapter(input);
             recyclerView.setAdapter(mAdapter);
         } catch (JSONException e) {
