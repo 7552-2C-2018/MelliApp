@@ -29,6 +29,8 @@
     <string name="general_error">Ups! Hubo un error en la aplicación</string>
     <string name="validation_error">No puedes utilizar la aplicación en este momento.</string>
     <string name="post_ok">La publicación fue satisfactoria</string>
+    <string name="exit_title">Salir</string>
+    <string name="exit_qst">Desea cerrar la aplicación ?</string>
 
     <!-- Strings related to login -->
     <string name="login_header">Para utilizar la aplicación es necesario que ingreses con
@@ -124,6 +126,7 @@
 
     <string name="mock_seller">vendido por futbol2000</string>
     <string name="mock_price">$ 2349</string>
+    <string name="mock_status">Entregado</string>
     <string-array name="mock_payments_array">
         <item>Efectivo</item>
         <item>MercadoPago</item>

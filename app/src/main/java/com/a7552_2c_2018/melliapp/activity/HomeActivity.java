@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.fragment.AccountFragment;
+import com.a7552_2c_2018.melliapp.fragment.BuysFragment;
 import com.a7552_2c_2018.melliapp.fragment.PostsFragment;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
@@ -56,7 +57,8 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new PostsFragment();
                         break;
                     case R.id.buys:
-                        PopUpManager.showToastError(getApplicationContext(), "Buys");
+                        //PopUpManager.showToastError(getApplicationContext(), "Buys");
+                        fragment = new BuysFragment();
                         break;
                     case R.id.posts:
                         PopUpManager.showToastError(getApplicationContext(), "Posts");
@@ -101,9 +103,9 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Salir")
-                .setMessage("Desea cerrar la aplicación ?")
-                .setPositiveButton("Si", new DialogInterface.OnClickListener()
+                .setTitle(getString(R.string.exit_title))
+                .setMessage(getString(R.string.exit_qst))
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -111,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton(getString(R.string.no), null)
                 .show();
     }
 
