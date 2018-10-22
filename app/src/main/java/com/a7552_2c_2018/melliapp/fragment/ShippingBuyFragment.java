@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.BuyingActivity;
@@ -45,6 +47,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class ShippingBuyFragment extends Fragment {
 
     private static final String TAG = "ShippingBuyFragment";
+    private RadioButton noShipping, takesShipping;
+    private EditText tvStreet, tvCp, tvFloor, tvDept, tvCity;
+    private RelativeLayout rlShipping;
 
     public ShippingBuyFragment() {
         // Required empty public constructor
@@ -56,44 +61,62 @@ public class ShippingBuyFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_shipping_buys, container, false);
 
+        noShipping = v.findViewById(R.id.fsbRbOut);
+        takesShipping = v.findViewById(R.id.fsbRbShips);
+        noShipping.setChecked(true);
+        rlShipping = v.findViewById(R.id.fsbRlAddress);
+        tvStreet = v.findViewById(R.id.fsbStreet);
+        tvCp = v.findViewById(R.id.fsbPostalCode);
+        tvFloor = v.findViewById(R.id.fsbFloor);
+        tvDept = v.findViewById(R.id.fsbDep);
+        tvCity = v.findViewById(R.id.fsbCity);
+        rlShipping.setVisibility(View.GONE);
+
+        noShipping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (noShipping.isChecked()) {
+                    rlShipping.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        takesShipping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (takesShipping.isChecked()) {
+                    rlShipping.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         ImageButton b1 = v.findViewById(R.id.fsbBtnNext);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BuyingActivity)getActivity()).selectTab(1);
-            }
-        });
-        /*
-        etName = v.findViewById(R.id.faEtName);
-        etName.setText(user.getName());
-
-        etSurname = v.findViewById(R.id.faEtSurname);
-        etSurname.setText(user.getSurname());
-
-        EditText etEmail = v.findViewById(R.id.faEtEmail);
-        etEmail.setText(user.getEmail());
-
-        ProfilePictureView profilePicture;
-        profilePicture = v.findViewById(R.id.AccProfilePicture);
-        profilePicture.setProfileId(user.getFacebookID());
-
-        Button btLogin = v.findViewById(R.id.logout_button);
-        btLogin.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                logOut();
-            }
-        });
-
-        Button btSave = v.findViewById(R.id.faBtnSave);
-        btSave.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                saveChanges();
+                if (validInput()){
+                    ((BuyingActivity)getActivity()).selectTab(1);
+                } else {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.sbf_msg));
+                }
 
             }
         });
-        */
-        // Inflate the layout for this fragment
+
         return v;
+    }
+
+    private boolean validInput() {
+        if (noShipping.isChecked()){
+            return true;
+        } else {
+            if (tvStreet.getText().toString().isEmpty() || tvCp.getText().toString().isEmpty()
+                    || tvCity.getText().toString().isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
 }

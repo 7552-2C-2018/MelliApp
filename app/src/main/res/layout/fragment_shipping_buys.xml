@@ -42,15 +42,92 @@
             </RadioGroup>
 
             <RelativeLayout
+                android:id="@+id/fsbRlAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp">
 
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="?android:attr/listDivider" />
+
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/fsbFiller"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:layout_below="@+id/divider2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sbf_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="?android:attr/listDivider" />
+
+                <EditText
+                    android:id="@+id/fsbStreet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fsbFiller"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:hint="@string/sbf_street"
+                    android:inputType="textPersonName" />
+
+
+                <EditText
+                    android:id="@+id/fsbPostalCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fsbStreet"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:hint="@string/sbf_cp"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/fsbFloor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fsbPostalCode"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:hint="@string/sbf_floor"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/fsbDep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/fsbFloor"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toRightOf="@+id/fsbFloor"
+                    android:ems="10"
+                    android:hint="@string/sbf_dept"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/fsbCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fsbFloor"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:ems="10"
+                    android:hint="@string/sbf_hood"
+                    android:inputType="textPersonName" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
@@ -60,6 +137,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/ic_arrow_forward_black_24dp" />
 
 </FrameLayout>
