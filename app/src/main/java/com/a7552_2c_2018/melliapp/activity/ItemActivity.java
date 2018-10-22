@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,13 +46,14 @@ public class ItemActivity extends AppCompatActivity {
     private CarouselView carouselView;
 
     private String[] sampleImages = null;
+    private String facebookId, pubDate;
 
     private TextView tvTitle;
     private TextView tvSeller;
     private TextView tvPrice;
     private TextView tvDesc;
     private TextView tvPayments;
-    // --Commented out by Inspection (01/10/2018 23:20):Button btnBuy;
+    private Button btnBuy;
 
     private final ImageListener imageListener = new ImageListener() {
         @Override
@@ -68,12 +72,26 @@ public class ItemActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
+        facebookId = getIntent().getStringExtra("facebookId");
+        pubDate = getIntent().getStringExtra("pubDate");
+
         carouselView = findViewById(R.id.carouselView);
         tvTitle = findViewById(R.id.aiTvTitle);
         tvSeller = findViewById(R.id.aiTvSeller);
         tvPrice = findViewById(R.id.aiTvPrice);
         tvDesc = findViewById(R.id.aiTvDesc);
         tvPayments = findViewById(R.id.aiTvPayments);
+        btnBuy = findViewById(R.id.aiBtnBuy);
+
+        btnBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent buyIntent = new Intent(ItemActivity.this, BuyingActivity.class);
+                buyIntent.putExtra("facebookId", facebookId);
+                buyIntent.putExtra("pubDate", pubDate);
+                startActivity(buyIntent);
+            }
+        });
 
         //mocking();
         getPostData();
@@ -117,8 +135,8 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
-                params.put("facebookId", getIntent().getStringExtra("facebookId"));
-                params.put("publDate", getIntent().getStringExtra("pubDate"));
+                params.put("facebookId", facebookId);
+                params.put("publDate", pubDate);
                 params.put("token", SingletonUser.getInstance().getToken());
 
                 return params;

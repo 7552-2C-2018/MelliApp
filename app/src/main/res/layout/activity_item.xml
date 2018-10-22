@@ -98,6 +98,29 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="8dp"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ia_shipping"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/aiTvShipping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"/>
+
             <Button
                 android:id="@+id/aiBtnBuy"
                 android:layout_width="match_parent"
