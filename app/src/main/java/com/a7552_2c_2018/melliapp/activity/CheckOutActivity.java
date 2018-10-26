@@ -127,15 +127,17 @@ public class CheckOutActivity extends FragmentActivity implements FragmentManage
         cardCVV = secureCodeFragment.getValue();
 
         if (TextUtils.isEmpty(cardName)) {
-            Toast.makeText(CheckOutActivity.this, "Enter Valid Name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckOutActivity.this, "Ingrese un nombre valido", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(cardNumber) || !CreditCardUtils.isValid(cardNumber.replace(" ",""))) {
-            Toast.makeText(CheckOutActivity.this, "Enter Valid card number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckOutActivity.this, "Ingrese un número valido", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(cardValidity)||!CreditCardUtils.isValidDate(cardValidity)) {
-            Toast.makeText(CheckOutActivity.this, "Enter correct validity", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckOutActivity.this, "Verifique la fecha", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(cardCVV)||cardCVV.length()<3) {
-            Toast.makeText(CheckOutActivity.this, "Enter valid security number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckOutActivity.this, "Ingrese un código de seguridad válido", Toast.LENGTH_SHORT).show();
         } else
-            Toast.makeText(CheckOutActivity.this, "Your card is added", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish();
+            //Toast.makeText(CheckOutActivity.this, "Your card is added", Toast.LENGTH_SHORT).show();
 
     }
 

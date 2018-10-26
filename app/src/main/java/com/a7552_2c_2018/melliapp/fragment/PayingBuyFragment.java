@@ -15,12 +15,14 @@ import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.BuyingActivity;
 import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
 
+import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class PayingBuyFragment extends Fragment {
 
     private static final String TAG = "PayingBuyFragment";
+    private static final int RESULT_CHECK_OUT_ACTIVITY = 1;
     private RadioButton cash, creditCard;
 
     public PayingBuyFragment() {
@@ -36,12 +38,21 @@ public class PayingBuyFragment extends Fragment {
         cash = v.findViewById(R.id.fpbRbCash);
         creditCard = v.findViewById(R.id.fpbRbTc);
 
+        cash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cash.isChecked()) {
+                    ((BuyingActivity)getActivity()).selectTab(2);
+                }
+            }
+        });
+
         creditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (creditCard.isChecked()) {
                     Intent cardIntent = new Intent(getApplicationContext(), CheckOutActivity.class);
-                    startActivity(cardIntent);
+                    startActivityForResult(cardIntent, RESULT_CHECK_OUT_ACTIVITY);
                 }
             }
         });
@@ -63,8 +74,20 @@ public class PayingBuyFragment extends Fragment {
         });
 
         return v;
-
-
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RESULT_CHECK_OUT_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    ((BuyingActivity)getActivity()).selectTab(2);
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode,resultCode, data);
+        }
+    }
+
 
 }

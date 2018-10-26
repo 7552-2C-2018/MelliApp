@@ -63,7 +63,6 @@ public class ShippingBuyFragment extends Fragment {
 
         noShipping = v.findViewById(R.id.fsbRbOut);
         takesShipping = v.findViewById(R.id.fsbRbShips);
-        noShipping.setChecked(true);
         rlShipping = v.findViewById(R.id.fsbRlAddress);
         tvStreet = v.findViewById(R.id.fsbStreet);
         tvCp = v.findViewById(R.id.fsbPostalCode);
@@ -77,6 +76,8 @@ public class ShippingBuyFragment extends Fragment {
             public void onClick(View v) {
                 if (noShipping.isChecked()) {
                     rlShipping.setVisibility(View.GONE);
+                    ((BuyingActivity)getActivity()).selectTab(1);
+
                 }
             }
         });

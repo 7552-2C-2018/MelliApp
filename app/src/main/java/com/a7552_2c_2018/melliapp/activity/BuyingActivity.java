@@ -47,4 +47,6 @@ public class BuyingActivity extends AppCompatActivity {
             vpPager.setCurrentItem(vpPager.getCurrentItem() - 1);
         }
     }
+
+
 }

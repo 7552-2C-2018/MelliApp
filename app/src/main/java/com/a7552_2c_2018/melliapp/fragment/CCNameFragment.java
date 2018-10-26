@@ -69,7 +69,7 @@ public class CCNameFragment extends Fragment {
                 if(tv_Name!=null)
                 {
                     if (TextUtils.isEmpty(editable.toString().trim()))
-                        tv_Name.setText("CARD HOLDER");
+                        tv_Name.setText(getString(R.string.card_holders_name));
                     else
                         tv_Name.setText(editable.toString());
 
