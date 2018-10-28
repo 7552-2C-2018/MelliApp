@@ -10,12 +10,16 @@ import com.a7552_2c_2018.melliapp.adapters.CustomPageAdapter;
 
 import java.util.Objects;
 
+import butterknife.BindView;
+
 public class BuyingActivity extends AppCompatActivity {
 
     private String facebookId, pubDate;
 
     private FragmentPagerAdapter adapterViewPager;
-    private ViewPager vpPager;
+
+    @BindView(R.id.vpPager)
+    ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +30,7 @@ public class BuyingActivity extends AppCompatActivity {
 
         facebookId = getIntent().getStringExtra("facebookId");
         pubDate = getIntent().getStringExtra("pubDate");
-
-        vpPager = findViewById(R.id.vpPager);
+        //vpPager = findViewById(R.id.vpPager);
         adapterViewPager = new CustomPageAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
     }

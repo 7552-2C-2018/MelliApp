@@ -135,9 +135,9 @@ public class CheckOutActivity extends FragmentActivity implements FragmentManage
         } else if (TextUtils.isEmpty(cardCVV)||cardCVV.length()<3) {
             Toast.makeText(CheckOutActivity.this, "Ingrese un código de seguridad válido", Toast.LENGTH_SHORT).show();
         } else
+            Toast.makeText(CheckOutActivity.this, "Datos ingresados correctos", Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK);
             finish();
-            //Toast.makeText(CheckOutActivity.this, "Your card is added", Toast.LENGTH_SHORT).show();
 
     }
 

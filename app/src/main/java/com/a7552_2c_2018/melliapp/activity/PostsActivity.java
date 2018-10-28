@@ -55,19 +55,50 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import butterknife.BindView;
+
 
 public class PostsActivity extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
 
     private static final String TAG = "PostsActivity";
     private static final int REQUEST_IMAGE_CHOOSER = 1;
-    private EditText title, desc, stock, price;
-    private RadioButton isNew, makesShipping;
-    private MultiSelectionSpinner paymentOptions;
-    private Spinner categories;
-    private Button loadImg, validatePost;
+
+    @BindView(R.id.apTvTitle)
+    EditText title;
+
+    @BindView(R.id.apMlDesc)
+    EditText desc;
+
+    @BindView(R.id.apNstock)
+    EditText stock;
+
+    @BindView(R.id.apNprice)
+    EditText price;
+
+    @BindView(R.id.apRbNew)
+    RadioButton isNew;
+
+    @BindView(R.id.apRbMakesShips)
+    RadioButton makesShipping;
+
+    @BindView(R.id.mySpinner)
+    MultiSelectionSpinner paymentOptions;
+
+    @BindView(R.id.apScategories)
+    Spinner categories;
+
+    @BindView(R.id.apBaddpictures)
+    Button loadImg;
+
+    @BindView(R.id.apBsave)
+    Button validatePost;
+
+    @BindView(R.id.secondLayout)
+    LinearLayout secondLayout;
+
     private List<String> base64array = null;
     private double latitude, longitude;
-    private LinearLayout secondLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,18 +110,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         getServerCategories();
         getServerPayments();
 
-        title = findViewById(R.id.apTvTitle);
-        desc = findViewById(R.id.apMlDesc);
-        stock = findViewById(R.id.apNstock);
-        price = findViewById(R.id.apNprice);
-        isNew = findViewById(R.id.apRbNew);
-        makesShipping = findViewById(R.id.apRbMakesShips);
-        paymentOptions = findViewById(R.id.mySpinner);
-        categories = findViewById(R.id.apScategories);
-        secondLayout = findViewById(R.id.secondLayout);
         secondLayout.setVisibility(View.GONE);
 
-        loadImg = findViewById(R.id.apBaddpictures);
         loadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +123,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             }
         });
 
-        validatePost = findViewById(R.id.apBsave);
         validatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -13,6 +13,8 @@ import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
+import butterknife.BindView;
+
 public class FacebookLoginActivity extends AppCompatActivity {
 
     // --Commented out by Inspection (01/10/2018 23:20):private static final String TAG = "FbLoginActivity";
@@ -25,6 +27,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
     private CallbackManager mCallbackManager;
 
+    @BindView(R.id.login_button)
+    LoginButton mLoginButton;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -36,8 +41,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_login);
         mCallbackManager = CallbackManager.Factory.create();
-
-        LoginButton mLoginButton = findViewById(R.id.login_button);
 
         // Set the initial permissions to request from the user while logging in
         mLoginButton.setReadPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL, USER_BIRTHDAY, USER_POSTS));

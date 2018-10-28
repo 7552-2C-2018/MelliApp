@@ -30,12 +30,16 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+
 @SuppressWarnings("UnusedAssignment")
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final int RESULT_LOGIN_ACTIVITY = 1;
-    private ProfilePictureView profilePicture;
+
+    @BindView(R.id.profilePicture)
+    ProfilePictureView profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                             user = new UserInfo(id, name, surname, email);
                             user.setPhotoURL(profilePicUrl);
                             SingletonUser.getInstance().setUser(user);
-                            profilePicture = findViewById(R.id.profilePicture);
                             profilePicture.setProfileId(id);
                             TextView tvTitle = findViewById(R.id.tvHelloName);
                             tvTitle.setText("¡Bienvenido " + name + "!");

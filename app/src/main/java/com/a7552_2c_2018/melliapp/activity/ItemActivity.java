@@ -37,23 +37,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import butterknife.BindView;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ItemActivity extends AppCompatActivity {
 
     private static final String TAG = "ItemActivity";
 
-    private CarouselView carouselView;
-
     private String[] sampleImages = null;
     private String facebookId, pubDate;
 
-    private TextView tvTitle;
-    private TextView tvSeller;
-    private TextView tvPrice;
-    private TextView tvDesc;
-    private TextView tvPayments;
-    private Button btnBuy;
+    @BindView(R.id.carouselView)
+    CarouselView carouselView;
+
+    @BindView(R.id.aiTvTitle)
+    TextView tvTitle;
+
+    @BindView(R.id.aiTvSeller)
+    TextView tvSeller;
+
+    @BindView(R.id.aiTvPrice)
+    TextView tvPrice;
+
+    @BindView(R.id.aiTvDesc)
+    TextView tvDesc;
+
+    @BindView(R.id.aiTvPayments)
+    TextView tvPayments;
+
+    @BindView(R.id.aiBtnBuy)
+    Button btnBuy;
 
     private final ImageListener imageListener = new ImageListener() {
         @Override
@@ -74,14 +88,6 @@ public class ItemActivity extends AppCompatActivity {
 
         facebookId = getIntent().getStringExtra("facebookId");
         pubDate = getIntent().getStringExtra("pubDate");
-
-        carouselView = findViewById(R.id.carouselView);
-        tvTitle = findViewById(R.id.aiTvTitle);
-        tvSeller = findViewById(R.id.aiTvSeller);
-        tvPrice = findViewById(R.id.aiTvPrice);
-        tvDesc = findViewById(R.id.aiTvDesc);
-        tvPayments = findViewById(R.id.aiTvPayments);
-        btnBuy = findViewById(R.id.aiBtnBuy);
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
