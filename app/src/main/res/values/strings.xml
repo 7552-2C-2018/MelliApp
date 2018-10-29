@@ -5,6 +5,7 @@
     <!-- Strings for general purpose -->
     <string name="yes">Si</string>
     <string name="no">No</string>
+    <string name="money">$ </string>
     <string name="content_description">decorative</string>
 
     <!-- Strings for logging error -->
@@ -95,6 +96,14 @@
     <!-- Strings related to Paying Buy Fragment -->
     <string name="pbf_cash">Efectivo</string>
     <string name="pbf_credit_card">Tarjeta de Crédito</string>
+
+    <!-- Strings related to Confirm Buy Fragment -->
+    <string name="cbf_title">Envio</string>
+    <string name="cbf_out">Lo retiro por el domicilio del vendedor</string>
+    <string name="cbf_takes">Envio estandard a domicilio</string>
+    <string name="cbf_cash">A pagar en efectivo</string>
+    <string name="cbf_tc">A pagar con tarjeta terminada en </string>
+    <string name="cbf_button">Confirmar Compra</string>
 
     <!-- Strings related to Post Activity -->
     <string name="pa_title1">Nueva Publicación</string>
