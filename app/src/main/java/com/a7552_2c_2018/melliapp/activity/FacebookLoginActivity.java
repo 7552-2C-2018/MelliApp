@@ -1,23 +1,35 @@
 package com.a7552_2c_2018.melliapp.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class FacebookLoginActivity extends AppCompatActivity {
 
-    // --Commented out by Inspection (01/10/2018 23:20):private static final String TAG = "FbLoginActivity";
+    private static final String TAG = "FbLoginActivity";
     private static final String EMAIL = "email";
     private static final String USER_POSTS = "user_posts";
     private static final String PUBLIC_PROFILE = "public_profile";
@@ -26,6 +38,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
 
     private CallbackManager mCallbackManager;
+    private FirebaseAuth mAuth;
+
 
     @BindView(R.id.login_button)
     LoginButton mLoginButton;
@@ -41,7 +55,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook_login);
         mCallbackManager = CallbackManager.Factory.create();
-
+        mAuth = FirebaseAuth.getInstance();
+        ButterKnife.bind(this);
         // Set the initial permissions to request from the user while logging in
         mLoginButton.setReadPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL, USER_BIRTHDAY, USER_POSTS));
 
@@ -51,42 +66,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
                 setResult(RESULT_OK);
-                /*
-                UserInfo user;
-                user = new UserInfo("123", "carlos", "furnari", "asd");
-                //user.setPhotoURL(profilePicUrl);
-                SingletonUser.getInstance().setUser(user);
-
-                GraphRequest request = GraphRequest.newMeRequest(
-                        AccessToken.getCurrentAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.d(TAG, "response: " + response.toString());
-
-                                String id, name, surname, email = null;
-                                String profilePicUrl = null;
-                                try {
-                                    id = object.getString("id");
-                                    name = object.getString("first_name");
-                                    surname = object.getString("last_name");
-                                    email = object.getString("email");
-                                    profilePicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                    UserInfo user;
-                                    user = new UserInfo(id, name, surname, email);
-                                    user.setPhotoURL(profilePicUrl);
-                                    SingletonUser.getInstance().setUser(user);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,first_name,last_name,email,picture.width(100).height(100)");
-                request.setParameters(parameters);
-                request.executeAsync();
-                */
                 finish();
             }
 
@@ -102,5 +83,28 @@ public class FacebookLoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 
 }

@@ -11,6 +11,7 @@ import com.a7552_2c_2018.melliapp.adapters.CustomPageAdapter;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BuyingActivity extends AppCompatActivity {
 
@@ -25,7 +26,7 @@ public class BuyingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buying);
-
+        ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         facebookId = getIntent().getStringExtra("facebookId");

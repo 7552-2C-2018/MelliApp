@@ -56,6 +56,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class PostsActivity extends AppCompatActivity implements MultiSelectionSpinner.OnMultipleItemsSelectedListener {
@@ -105,6 +106,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
 
+        ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         getServerCategories();

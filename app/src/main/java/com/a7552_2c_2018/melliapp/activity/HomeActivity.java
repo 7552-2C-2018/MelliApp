@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.fragment.AccountFragment;
@@ -20,18 +21,23 @@ import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class HomeActivity extends AppCompatActivity {
 
-    private DrawerLayout dl;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout dl;
+
     private ActionBarDrawerToggle t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
 
-        dl = findViewById(R.id.drawer_layout);
         t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);

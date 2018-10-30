@@ -82,6 +82,9 @@
     <!-- Strings related to Posts Fragment -->
     <string name="pf_title">Buscando productos...</string>
 
+    <!-- Strings related to Chats Fragment -->
+    <string name="cf_hint">Escriba un mensaje...</string>
+
     <!-- Strings related to Shipping Buy Fragment -->
     <string name="sbf_out">Lo acuerdo con el vendedor</string>
     <string name="sbf_ships">Deseo que me lo envien</string>
