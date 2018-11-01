@@ -7,13 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.BuyingActivity;
 import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
+
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -42,7 +43,7 @@ public class PayingBuyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (cash.isChecked()) {
-                    ((BuyingActivity)getActivity()).selectTab(2);
+                    ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
                 }
             }
         });
@@ -61,7 +62,7 @@ public class PayingBuyFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BuyingActivity)getActivity()).selectTab(0);
+                ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(0);
             }
         });
 
@@ -69,7 +70,7 @@ public class PayingBuyFragment extends Fragment {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BuyingActivity)getActivity()).selectTab(2);
+                ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
             }
         });
 
@@ -81,7 +82,7 @@ public class PayingBuyFragment extends Fragment {
         switch (requestCode) {
             case RESULT_CHECK_OUT_ACTIVITY:
                 if (resultCode == RESULT_OK) {
-                    ((BuyingActivity)getActivity()).selectTab(2);
+                    ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
                 }
                 break;
             default:

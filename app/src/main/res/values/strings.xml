@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Comprame</string>
     <string name="hardcode_text">I\'m a hardcode text !</string>
 
@@ -28,7 +28,7 @@
 
     <!-- Strings related to pop ups msg-->
     <string name="general_error">Ups! Hubo un error en la aplicación</string>
-    <string name="validation_error">No puedes utilizar la aplicación en este momento.</string>
+    <string name="validation_error" tools:ignore="Typos">No puedes utilizar la aplicación en este momento.</string>
     <string name="post_ok">La publicación fue satisfactoria</string>
     <string name="exit_title">Salir</string>
     <string name="exit_qst">Desea cerrar la aplicación ?</string>
@@ -51,6 +51,13 @@
     <string name="nav_op6">Comprar con QR</string>
     <string name="nav_op7">Mi Cuenta</string>
 
+    <!-- Strings for Images Content Descriptions -->
+    <string name="icon_shop_bag">Bolsa de Compras que hace referencia al producto por comprar</string>
+    <string name="icon_shipping">Camion que hace referencia al envio elegido para la compra</string>
+    <string name="icon_money">Monto que hace referencia al total de la compra</string>
+    <string name="icon_arrow">Flecha hacia la derecha</string>
+    <string name="icon_send_chat">Envio de mensaje en el chat</string>
+    <string name="img_item">Imagen del producto</string>
 
     <!-- Strings related to Facebook -->
     <string name="facebook_app_id">2088214498095092</string>
@@ -65,6 +72,10 @@
 
     <!-- Strings related to Main Activity -->
     <string name="welcome_msg">¡Bienvenido %1$s !</string>
+
+    <!-- Strings related to Check Out Activity -->
+    <string name="coa_next">Siguiente</string>
+    <string name="coa_submit">Confirmar</string>
 
     <!-- Strings related to Account Fragment -->
     <string name="af_title1">Cerrar Sesión</string>
@@ -131,6 +142,7 @@
 
     <string name="card_header">TARJETA CREDITO</string>
     <string name="card_number_sample">XXXX XXXX XXXX XXXX</string>
+    <string name="card_cvv_sample">XXX</string>
     <string name="card_validity_label">VALIDA HASTA</string>
     <string name="card_validity_sample">MM/AA</string>
     <string name="card_name_sample">NOMBRE DUEÑO</string>

@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 
 public class BuyingActivity extends AppCompatActivity {
 
-    private String facebookId, pubDate;
+    private String pubDate;
 
     private FragmentPagerAdapter adapterViewPager;
 
@@ -29,9 +29,8 @@ public class BuyingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        facebookId = getIntent().getStringExtra("facebookId");
+        String facebookId = getIntent().getStringExtra("facebookId");
         pubDate = getIntent().getStringExtra("pubDate");
-        //vpPager = findViewById(R.id.vpPager);
         adapterViewPager = new CustomPageAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
     }

@@ -22,7 +22,7 @@
             <com.a7552_2c_2018.melliapp.utils.CreditCardEditText
                 style="@style/CardInput"
                 android:id="@+id/et_number"
-                android:hint="Card Number"
+                android:hint="@string/card_number"
                 android:inputType="number"
                 android:maxLength="19"/>
 

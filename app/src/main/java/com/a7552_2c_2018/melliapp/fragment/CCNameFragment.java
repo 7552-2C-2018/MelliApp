@@ -2,6 +2,7 @@ package com.a7552_2c_2018.melliapp.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -17,6 +18,8 @@ import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.CardFrontFragment;
 import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
 import com.a7552_2c_2018.melliapp.utils.CreditCardEditText;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +43,7 @@ public class CCNameFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
@@ -48,7 +51,7 @@ public class CCNameFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         activity = (CheckOutActivity) getActivity();
-        cardFrontFragment = activity.cardFrontFragment;
+        cardFrontFragment = Objects.requireNonNull(activity).cardFrontFragment;
 
         tv_Name = cardFrontFragment.getName();
 

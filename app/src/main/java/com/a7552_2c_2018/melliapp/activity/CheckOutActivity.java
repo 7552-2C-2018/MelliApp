@@ -82,9 +82,9 @@ public class CheckOutActivity extends FragmentActivity implements FragmentManage
             @Override
             public void onPageSelected(int position) {
                 if (position == total_item)
-                    btnNext.setText("SUBMIT");
+                    btnNext.setText(getString(R.string.coa_submit));
                 else
-                    btnNext.setText("NEXT");
+                    btnNext.setText(getString(R.string.coa_next));
 
                 Log.d("track", "onPageSelected: " + position);
 

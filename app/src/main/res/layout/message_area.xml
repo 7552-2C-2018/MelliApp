@@ -27,6 +27,7 @@
             android:padding="4dp"
             android:background="@color/colorPrimary"
             android:src="@android:drawable/ic_menu_send"
-            android:id="@+id/sendButton"/>
+            android:id="@+id/sendButton"
+            android:contentDescription="@string/icon_send_chat"/>
     </LinearLayout>
 </LinearLayout>

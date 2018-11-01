@@ -13,8 +13,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +35,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.tuanchauict.intentchooser.ImageChooserMaker;
 import com.tuanchauict.intentchooser.selectphoto.CameraChooser;
@@ -319,8 +316,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             }
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
                 params.put("title", title.getText().toString());
                 params.put("desc", desc.getText().toString());
                 params.put("stock", stock.getText().toString());

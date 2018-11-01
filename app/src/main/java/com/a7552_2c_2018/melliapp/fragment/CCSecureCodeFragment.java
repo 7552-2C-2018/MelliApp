@@ -2,6 +2,7 @@ package com.a7552_2c_2018.melliapp.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
 import com.a7552_2c_2018.melliapp.utils.CreditCardEditText;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +45,7 @@ public class CCSecureCodeFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
@@ -67,7 +70,7 @@ public class CCSecureCodeFragment extends Fragment {
 
                 if (tv_cvv != null) {
                     if (TextUtils.isEmpty(editable.toString().trim()))
-                        tv_cvv.setText("XXX");
+                        tv_cvv.setText(getString(R.string.card_cvv_sample));
                     else
                         tv_cvv.setText(editable.toString());
 
@@ -114,7 +117,7 @@ public class CCSecureCodeFragment extends Fragment {
         String getValue = "";
 
         if (et_cvv != null) {
-            getValue = et_cvv.getText().toString().trim();
+            getValue = Objects.requireNonNull(et_cvv.getText()).toString().trim();
         }
         return getValue;
     }

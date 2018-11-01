@@ -47,10 +47,7 @@ public class CreditCardFormattingTextWatcher implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(before==0)
-            isDelete=false;
-        else
-            isDelete=true;
+        isDelete = before != 0;
     }
 
     @Override
@@ -90,7 +87,7 @@ public class CreditCardFormattingTextWatcher implements TextWatcher {
 
     public interface CreditCardType
     {
-        public void setCardType(int type);
+        void setCardType(int type);
     }
 
 }

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
@@ -24,14 +23,9 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +39,6 @@ public class AccountFragment extends Fragment {
     private static final String TAG = "AccountFragment";
     private EditText etName;
     private EditText etSurname;
-    private UserInfo user;
 
 
     public AccountFragment() {
@@ -57,7 +50,7 @@ public class AccountFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        user = SingletonUser.getInstance().getUser();
+        UserInfo user = SingletonUser.getInstance().getUser();
 
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
@@ -191,8 +184,8 @@ public class AccountFragment extends Fragment {
             }
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
                 params.put("firstName", etName.getText().toString());
                 params.put("lastName", etSurname.getText().toString());
                 params.put("photoUrl", user.getPhotoURL());

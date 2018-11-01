@@ -25,7 +25,8 @@
                 android:layout_height="@dimen/chip_height"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="@dimen/items_inbetween"
-                android:src="@drawable/ic_chip" />
+                android:src="@drawable/ic_chip"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/tv_card_number"
@@ -79,7 +80,7 @@
             android:layout_marginBottom="@dimen/items_inbetween_small"
             android:layout_width="@dimen/cardtype_width"
             android:layout_height="@dimen/cardtype_height"
-             />
+            android:contentDescription="TODO" />
 
     </RelativeLayout>
 

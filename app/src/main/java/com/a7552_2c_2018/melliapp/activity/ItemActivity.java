@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -14,15 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
-import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -31,16 +27,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ItemActivity extends AppCompatActivity {
 

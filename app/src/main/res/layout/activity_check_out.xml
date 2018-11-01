@@ -23,8 +23,6 @@
         android:id="@+id/btnNext"
         style="@style/ButtonStyle"
         android:layout_alignParentBottom="true"
-        android:text="NEXT" />
-
-
+        android:text="@string/coa_next" />
 
 </RelativeLayout>

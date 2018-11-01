@@ -22,7 +22,7 @@
             <com.a7552_2c_2018.melliapp.utils.CreditCardEditText
                 style="@style/CardInput"
                 android:id="@+id/et_validity"
-                android:hint="Expiry Date"
+                android:hint="@string/card_validity"
                 android:inputType="number"
                 android:maxLength="5"/>
 

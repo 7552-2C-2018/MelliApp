@@ -10,8 +10,6 @@ import com.a7552_2c_2018.melliapp.fragment.ShippingBuyFragment;
 
 public class CustomPageAdapter extends FragmentPagerAdapter {
 
-    private static int NUM_ITEMS = 3;
-
     public CustomPageAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
@@ -19,6 +17,7 @@ public class CustomPageAdapter extends FragmentPagerAdapter {
     // Returns total number of pages.
     @Override
     public int getCount() {
+        int NUM_ITEMS = 3;
         return NUM_ITEMS;
     }
 

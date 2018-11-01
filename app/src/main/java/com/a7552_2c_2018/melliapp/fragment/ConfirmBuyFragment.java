@@ -22,9 +22,7 @@ public class ConfirmBuyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_confirm_buys, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_confirm_buys, container, false);
     }
 
 }

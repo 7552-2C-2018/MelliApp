@@ -88,7 +88,7 @@
         <activity android:name=".activity.PostsActivity" />
         <activity android:name=".activity.ItemActivity" />
         <activity android:name=".activity.BuyingActivity" />
-        <activity android:name=".activity.CheckOutActivity"></activity>
+        <activity android:name=".activity.CheckOutActivity" />
     </application>
 
 </manifest>

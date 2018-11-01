@@ -16,9 +16,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.activity.ItemActivity;
-import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.activity.PostsActivity;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.PostItem;
@@ -30,8 +28,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.facebook.AccessToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -49,7 +46,6 @@ public class PostsFragment extends Fragment {
 
     private static final String TAG = "PostsFragment";
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private RelativeLayout searching;
 
     public PostsFragment() {
@@ -69,7 +65,7 @@ public class PostsFragment extends Fragment {
 
         recyclerView = v.findViewById(R.id.fpRecycler);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
         searching = v.findViewById(R.id.fpSearching);
@@ -98,7 +94,7 @@ public class PostsFragment extends Fragment {
                         int position = recyclerView.getChildAdapterPosition(child);
 
                         ItemAdapter aux = (ItemAdapter) recyclerView.getAdapter();
-                        String fId = aux.getPostItem(position).getFacebookId();
+                        String fId = Objects.requireNonNull(aux).getPostItem(position).getFacebookId();
                         String publ = aux.getPostItem(position).getPublDate();
                         Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
                         itemIntent.putExtra("facebookId", fId);

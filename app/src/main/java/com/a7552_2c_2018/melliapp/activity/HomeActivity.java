@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.fragment.AccountFragment;

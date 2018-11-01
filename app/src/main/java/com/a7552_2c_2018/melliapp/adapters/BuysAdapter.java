@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
-import com.a7552_2c_2018.melliapp.model.PostItem;
 
 import java.util.List;
 

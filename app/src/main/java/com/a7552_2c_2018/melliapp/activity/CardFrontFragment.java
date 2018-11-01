@@ -2,6 +2,7 @@ package com.a7552_2c_2018.melliapp.activity;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.utils.FontTypeChange;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +45,7 @@ public class CardFrontFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
@@ -79,16 +82,16 @@ public class CardFrontFragment extends Fragment {
         switch(type)
         {
             case VISA:
-                ivType.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_visa));
+                ivType.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.ic_visa));
                 break;
             case MASTERCARD:
-                ivType.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_mastercard));
+                ivType.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.ic_mastercard));
                 break;
             case AMEX:
-                ivType.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_amex));
+                ivType.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.ic_amex));
                 break;
             case DISCOVER:
-                ivType.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_discover));
+                ivType.setImageDrawable(ContextCompat.getDrawable(Objects.requireNonNull(getActivity()), R.drawable.ic_discover));
                 break;
             case NONE:
                 ivType.setImageResource(android.R.color.transparent);

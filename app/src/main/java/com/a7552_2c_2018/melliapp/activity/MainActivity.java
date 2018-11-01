@@ -20,13 +20,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -203,8 +201,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
                 params.put("firstName", user.getName());
                 params.put("lastName", user.getSurname());
                 params.put("photoUrl", user.getPhotoURL());

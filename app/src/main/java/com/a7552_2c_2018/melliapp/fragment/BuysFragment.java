@@ -1,11 +1,7 @@
 package com.a7552_2c_2018.melliapp.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,29 +11,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.activity.ItemActivity;
-import com.a7552_2c_2018.melliapp.activity.MainActivity;
-import com.a7552_2c_2018.melliapp.activity.PostsActivity;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.model.PostItem;
-import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.facebook.login.LoginManager;
-import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -56,7 +41,6 @@ public class BuysFragment extends Fragment {
 
     private static final String TAG = "BuysFragment";
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
 
     public BuysFragment() {
         // Required empty public constructor
@@ -73,7 +57,7 @@ public class BuysFragment extends Fragment {
 
         recyclerView = v.findViewById(R.id.fbRecycler);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
 
         //getBuys();

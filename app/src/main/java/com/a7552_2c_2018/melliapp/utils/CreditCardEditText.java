@@ -52,6 +52,6 @@ public class CreditCardEditText extends android.support.v7.widget.AppCompatEditT
 
     public interface BackButtonListener
     {
-        public void onBackClick();
+        void onBackClick();
     }
 }

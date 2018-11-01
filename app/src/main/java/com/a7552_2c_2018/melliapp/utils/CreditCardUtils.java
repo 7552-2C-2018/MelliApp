@@ -44,8 +44,7 @@ public class CreditCardUtils {
                 return true;
             else if (getCardType(cardNumber) == AMEX && cardNumber.length() == 15)
                 return true;
-            else if (getCardType(cardNumber) == DISCOVER && cardNumber.length() == 16)
-                return true;
+            else return getCardType(cardNumber) == DISCOVER && cardNumber.length() == 16;
         return false;
     }
 
