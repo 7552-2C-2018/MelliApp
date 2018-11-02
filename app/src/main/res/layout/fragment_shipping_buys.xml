@@ -127,6 +127,28 @@
                     android:ems="10"
                     android:hint="@string/sbf_hood"
                     android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/fsbCalculate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fsbCity"
+                    android:layout_alignStart="@+id/fsbCity"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/sbf_btn_calculate" />
+
+                <TextView
+                    android:id="@+id/fsbShipCost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fsbCity"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toEndOf="@+id/fsbCalculate"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

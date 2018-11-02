@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.adapters.CustomPageAdapter;
+import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 
 import java.util.Objects;
 
@@ -15,12 +17,9 @@ import butterknife.ButterKnife;
 
 public class BuyingActivity extends AppCompatActivity {
 
-    private String pubDate;
-
     private FragmentPagerAdapter adapterViewPager;
 
-    @BindView(R.id.vpPager)
-    ViewPager vpPager;
+    @BindView(R.id.vpPager) ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +28,9 @@ public class BuyingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        String facebookId = getIntent().getStringExtra("facebookId");
-        pubDate = getIntent().getStringExtra("pubDate");
+        ActualBuy buy = new ActualBuy();
+        buy.setFacebookId(getIntent().getStringExtra("facebookId"));
+        buy.setPubDate(getIntent().getStringExtra("pubDate"));
         adapterViewPager = new CustomPageAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
     }

@@ -1,6 +1,5 @@
 package com.a7552_2c_2018.melliapp.model;
 
-@SuppressWarnings("ALL")
 public class UserInfo {
 
     private String facebookID;

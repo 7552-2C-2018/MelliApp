@@ -106,6 +106,9 @@
     <string name="sbf_dept">Depto</string>
     <string name="sbf_hood">Barrio</string>
     <string name="sbf_msg">Complete los campos de dirección para continuar</string>
+    <string name="sbf_btn_calculate">Calcular Costo</string>
+    <string name="sbf_btn_calc_prog">Calculando...</string>
+
 
     <!-- Strings related to Paying Buy Fragment -->
     <string name="pbf_cash">Efectivo</string>
