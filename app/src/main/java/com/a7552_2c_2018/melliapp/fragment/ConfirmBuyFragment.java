@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +41,27 @@ public class ConfirmBuyFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_confirm_buys, container, false);
 
         ButterKnife.bind(this, v);
+
+        ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+        int total = buy.getPrice();
+
+        tvItemDesc.setText(buy.getTitle());
+        tvItemPrice.setText("$ " + buy.getPrice());
+        if (buy.isPaysShipping()){
+            tvShipDesc.setText(getString(R.string.cbf_takes));
+            tvShipPrice.setText("$ " + buy.getShippingPrice());
+            total =+ buy.getShippingPrice();
+        } else {
+            tvShipDesc.setText(getString(R.string.cbf_out));
+            tvShipPrice.setText("$ 0");
+        }
+        if (buy.isPaysWithCard()){
+            tvPayDesc.setText(getString(R.string.cbf_tc) + buy.getCardNumber().substring(12,15));
+        } else {
+            tvPayDesc.setText(getString(R.string.cbf_cash));
+        }
+        tvPayPrice.setText("$ " + total);
+
 
         return v;
     }

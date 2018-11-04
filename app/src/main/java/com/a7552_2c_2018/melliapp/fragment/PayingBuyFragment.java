@@ -13,7 +13,10 @@ import android.widget.RadioButton;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.BuyingActivity;
 import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
+import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 
+import java.security.Signature;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -49,6 +52,7 @@ public class PayingBuyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (cash.isChecked()) {
+                    saveValues();
                     ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
                 }
             }
@@ -74,11 +78,18 @@ public class PayingBuyFragment extends Fragment {
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveValues();
                 ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
             }
         });
 
         return v;
+    }
+
+    private void saveValues() {
+        ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+        buy.setPaysWithCard(false);
+        SingletonUser.getInstance().setActualBuy(buy);
     }
 
     @Override

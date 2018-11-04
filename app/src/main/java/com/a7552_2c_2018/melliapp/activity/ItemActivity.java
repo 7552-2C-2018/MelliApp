@@ -40,6 +40,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private String[] sampleImages = null;
     private String Id;
+    private int price;
 
     @BindView(R.id.carouselView)
     CarouselView carouselView;
@@ -88,6 +89,8 @@ public class ItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent buyIntent = new Intent(ItemActivity.this, BuyingActivity.class);
                 buyIntent.putExtra("ID", Id);
+                buyIntent.putExtra("title", tvTitle.getText().toString());
+                buyIntent.putExtra("price", price);
                 startActivity(buyIntent);
             }
         });
@@ -149,7 +152,8 @@ public class ItemActivity extends AppCompatActivity {
         try {
             tvTitle.setText(response.getString("title"));
             tvDesc.setText(response.getString("description"));
-            tvPrice.setText("$ " + String.valueOf(response.getInt("price")));
+            price = response.getInt("price");
+            tvPrice.setText("$ " + String.valueOf(price));
             JSONObject seller = response.getJSONObject("name");
             tvSeller.setText("vendido por " + seller.getString("nombre") + " " +
                     seller.getString("apellido"));

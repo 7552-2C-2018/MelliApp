@@ -2,8 +2,9 @@ package com.a7552_2c_2018.melliapp.model;
 
 public class ActualBuy {
 
-    private String facebookId;
-    private String pubDate;
+    private String id;
+    private String title;
+    private int price;
     private boolean paysShipping;
     private int shippingPrice;
     private boolean paysWithCard;
@@ -14,8 +15,9 @@ public class ActualBuy {
     private String street, cp, floor, dept, city;
 
     public ActualBuy() {
-        this.facebookId = "";
-        this.pubDate = "";
+        this.id = "";
+        this.title = "";
+        this.price = 0;
         this.paysShipping = false;
         this.shippingPrice = 0;
         this.paysWithCard = false;
@@ -30,20 +32,12 @@ public class ActualBuy {
         this.city = "";
     }
 
-    public String getFacebookId() {
-        return facebookId;
+    public String getId() {
+        return id;
     }
 
-    public void setFacebookId(String facebookId) {
-        this.facebookId = facebookId;
-    }
-
-    public String getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(String publDate) {
-        this.pubDate = publDate;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public boolean isPaysShipping() {
@@ -140,5 +134,21 @@ public class ActualBuy {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

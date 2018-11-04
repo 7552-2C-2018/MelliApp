@@ -42,6 +42,7 @@ public class ShippingBuyFragment extends Fragment {
     @BindView(R.id.fsbCity) EditText tvCity;
     @BindView(R.id.fsbCalculate) Button btCalculateCost;
     @BindView(R.id.fsbShipCost) TextView tvShipCost;
+    @BindView(R.id.fsbBtnNext) ImageButton btNext;
 
     public ShippingBuyFragment() {
         // Required empty public constructor
@@ -56,12 +57,12 @@ public class ShippingBuyFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         rlShipping.setVisibility(View.GONE);
-
         noShipping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (noShipping.isChecked()) {
                     rlShipping.setVisibility(View.GONE);
+                    saveValues();
                     ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(1);
 
                 }
@@ -77,8 +78,7 @@ public class ShippingBuyFragment extends Fragment {
             }
         });
 
-        ImageButton b1 = v.findViewById(R.id.fsbBtnNext);
-        b1.setOnClickListener(new View.OnClickListener() {
+        btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validInput()){
@@ -127,6 +127,7 @@ public class ShippingBuyFragment extends Fragment {
         } else {
             buy.setPaysShipping(false);
         }
+        SingletonUser.getInstance().setActualBuy(buy);
     }
 
     private void calculateCost(String street, String cp, String city) {

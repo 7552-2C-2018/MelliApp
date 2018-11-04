@@ -33,7 +33,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private static final String USER_POSTS = "user_posts";
     private static final String PUBLIC_PROFILE = "public_profile";
     private static final String USER_BIRTHDAY = "user_birthday";
-    private static final String AUTH_TYPE = "request";
+    private static final String AUTH_TYPE = "rerequest";
 
 
     private CallbackManager mCallbackManager;

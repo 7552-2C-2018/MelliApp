@@ -29,8 +29,10 @@ public class BuyingActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         ActualBuy buy = new ActualBuy();
-        buy.setFacebookId(getIntent().getStringExtra("facebookId"));
-        buy.setPubDate(getIntent().getStringExtra("pubDate"));
+        buy.setId(getIntent().getStringExtra("ID"));
+        buy.setTitle(getIntent().getStringExtra("title"));
+        buy.setPrice(getIntent().getIntExtra("price", 0));
+        SingletonUser.getInstance().setActualBuy(buy);
         adapterViewPager = new CustomPageAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
     }
