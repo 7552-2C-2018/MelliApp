@@ -34,13 +34,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class BuysFragment extends Fragment {
 
     private static final String TAG = "BuysFragment";
-    private RecyclerView recyclerView;
+    @BindView(R.id.fbRecycler) RecyclerView recyclerView;
 
     public BuysFragment() {
         // Required empty public constructor
@@ -55,13 +58,14 @@ public class BuysFragment extends Fragment {
 
         // Inflate the layout for this fragment
 
-        recyclerView = v.findViewById(R.id.fbRecycler);
+        ButterKnife.bind(this, v);
+
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
 
-        getBuys();
-        //mocking();
+        //getBuys();
+        mocking();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {

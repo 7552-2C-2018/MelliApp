@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.tuanchauict.intentchooser:intentchooser:0.1.+'
     implementation 'com.synnapps:carouselview:0.1.4'
     implementation 'com.jakewharton:butterknife:9.0.0-rc1'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

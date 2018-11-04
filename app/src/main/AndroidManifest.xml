@@ -89,6 +89,7 @@
         <activity android:name=".activity.ItemActivity" />
         <activity android:name=".activity.BuyingActivity" />
         <activity android:name=".activity.CheckOutActivity" />
+        <activity android:name=".activity.ChatActivity"></activity>
     </application>
 
 </manifest>

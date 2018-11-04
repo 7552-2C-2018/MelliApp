@@ -22,6 +22,8 @@
     <string name="remote_users">https://app-server-23.herokuapp.com/users/</string>
     <string name="remote_posts">https://app-server-23.herokuapp.com/posts/</string>
     <string name="remote_posts_all">https://app-server-23.herokuapp.com/posts/get_all</string>
+    <string name="remote_chats">https://melli-7552.firebaseio.com/</string>
+
 
     <!-- Strings related to steady screen text -->
     <string name="validating">Espera mientras validamos tus datos.</string>

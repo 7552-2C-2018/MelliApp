@@ -6,41 +6,17 @@
     android:background="#d6d2d2"
     tools:context=".fragment.ChatsFragment">
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:orientation="vertical">
-        <ScrollView
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="5dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fcsRecycler"
             android:layout_width="match_parent"
-            android:layout_weight="20"
-            android:layout_height="wrap_content"
-            android:id="@+id/fcScrollView">
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/fcRl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="10dp"
-                    android:id="@+id/fcLl">
-                </LinearLayout>
-            </RelativeLayout>
-        </ScrollView>
-        <include
-            layout="@layout/message_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:layout_marginTop="5dp"/>
-    </LinearLayout>
+            android:layout_height="match_parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>
