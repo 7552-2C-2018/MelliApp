@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.BuyingActivity;
@@ -22,6 +23,7 @@ import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -39,7 +41,7 @@ public class ShippingBuyFragment extends Fragment {
     @BindView(R.id.fsbDep) EditText tvDept;
     @BindView(R.id.fsbCity) EditText tvCity;
     @BindView(R.id.fsbCalculate) Button btCalculateCost;
-    @BindView(R.id.fsbShipCost) EditText tvShipCost;
+    @BindView(R.id.fsbShipCost) TextView tvShipCost;
 
     public ShippingBuyFragment() {
         // Required empty public constructor
@@ -50,6 +52,8 @@ public class ShippingBuyFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_shipping_buys, container, false);
+
+        ButterKnife.bind(this, v);
 
         rlShipping.setVisibility(View.GONE);
 

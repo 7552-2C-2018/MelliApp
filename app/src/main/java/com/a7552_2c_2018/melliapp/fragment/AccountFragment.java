@@ -31,15 +31,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class AccountFragment extends Fragment {
 
     private static final String TAG = "AccountFragment";
-    private EditText etName;
-    private EditText etSurname;
-
+    @BindView(R.id.faEtName) EditText etName;
+    @BindView(R.id.faEtSurname) EditText etSurname;
+    @BindView(R.id.faEtEmail) EditText etEmail;
+    @BindView(R.id.AccProfilePicture) ProfilePictureView profilePicture;
+    @BindView(R.id.logout_button) Button btLogin;
+    @BindView(R.id.faBtnSave) Button btSave;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -54,27 +60,17 @@ public class AccountFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
-        etName = v.findViewById(R.id.faEtName);
+        ButterKnife.bind(this, v);
+
         etName.setText(user.getName());
-
-        etSurname = v.findViewById(R.id.faEtSurname);
         etSurname.setText(user.getSurname());
-
-        EditText etEmail = v.findViewById(R.id.faEtEmail);
         etEmail.setText(user.getEmail());
-
-        ProfilePictureView profilePicture;
-        profilePicture = v.findViewById(R.id.AccProfilePicture);
         profilePicture.setProfileId(user.getFacebookID());
-
-        Button btLogin = v.findViewById(R.id.logout_button);
         btLogin.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 logOut();
             }
         });
-
-        Button btSave = v.findViewById(R.id.faBtnSave);
         btSave.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 saveChanges();

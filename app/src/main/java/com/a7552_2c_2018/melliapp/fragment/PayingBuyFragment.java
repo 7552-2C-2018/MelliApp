@@ -16,6 +16,9 @@ import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
 
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -24,7 +27,11 @@ public class PayingBuyFragment extends Fragment {
 
     private static final String TAG = "PayingBuyFragment";
     private static final int RESULT_CHECK_OUT_ACTIVITY = 1;
-    private RadioButton cash, creditCard;
+
+    @BindView(R.id.fpbRbCash) RadioButton cash;
+    @BindView(R.id.fpbRbTc) RadioButton creditCard;
+    @BindView(R.id.fpbBtBack) ImageButton btBack;
+    @BindView(R.id.fpbBtNext) ImageButton btNext;
 
     public PayingBuyFragment() {
         // Required empty public constructor
@@ -36,8 +43,7 @@ public class PayingBuyFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_paying_buys, container, false);
 
-        cash = v.findViewById(R.id.fpbRbCash);
-        creditCard = v.findViewById(R.id.fpbRbTc);
+        ButterKnife.bind(this, v);
 
         cash.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,16 +64,14 @@ public class PayingBuyFragment extends Fragment {
             }
         });
 
-        ImageButton b1 = v.findViewById(R.id.fpbBtBack);
-        b1.setOnClickListener(new View.OnClickListener() {
+        btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(0);
             }
         });
 
-        ImageButton b2 = v.findViewById(R.id.fpbBtNext);
-        b2.setOnClickListener(new View.OnClickListener() {
+        btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);

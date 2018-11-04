@@ -39,7 +39,7 @@ public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
 
     private String[] sampleImages = null;
-    private String facebookId, pubDate;
+    private String Id;
 
     @BindView(R.id.carouselView)
     CarouselView carouselView;
@@ -81,15 +81,13 @@ public class ItemActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        facebookId = getIntent().getStringExtra("facebookId");
-        pubDate = getIntent().getStringExtra("pubDate");
+        Id = getIntent().getStringExtra("ID");
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent buyIntent = new Intent(ItemActivity.this, BuyingActivity.class);
-                buyIntent.putExtra("facebookId", facebookId);
-                buyIntent.putExtra("pubDate", pubDate);
+                buyIntent.putExtra("ID", Id);
                 startActivity(buyIntent);
             }
         });
@@ -103,6 +101,7 @@ public class ItemActivity extends AppCompatActivity {
         String REQUEST_TAG = "getPost";
         //String url = getString(R.string.remote_login);
         String url = getString(R.string.remote_posts);
+        url = url + Id;
         JsonObjectRequest jsonObtRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -136,8 +135,7 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
-                params.put("facebookId", facebookId);
-                params.put("publDate", pubDate);
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
                 params.put("token", SingletonUser.getInstance().getToken());
 
                 return params;

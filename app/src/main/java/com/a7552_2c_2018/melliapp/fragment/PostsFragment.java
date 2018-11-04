@@ -39,14 +39,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class PostsFragment extends Fragment {
 
     private static final String TAG = "PostsFragment";
-    private RecyclerView recyclerView;
-    private RelativeLayout searching;
+
+    @BindView(R.id.fpRecycler) RecyclerView recyclerView;
+    @BindView(R.id.fpSearching) RelativeLayout searching;
+    @BindView(R.id.fpAbNew) FloatingActionButton fabNew;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -61,14 +66,11 @@ public class PostsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_posts, container, false);
 
-        // Inflate the layout for this fragment
+        ButterKnife.bind(this, v);
 
-        recyclerView = v.findViewById(R.id.fpRecycler);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
-
-        searching = v.findViewById(R.id.fpSearching);
 
         getPosts();
 
@@ -94,11 +96,9 @@ public class PostsFragment extends Fragment {
                         int position = recyclerView.getChildAdapterPosition(child);
 
                         ItemAdapter aux = (ItemAdapter) recyclerView.getAdapter();
-                        String fId = Objects.requireNonNull(aux).getPostItem(position).getFacebookId();
-                        String publ = aux.getPostItem(position).getPublDate();
+                        String Id = Objects.requireNonNull(aux).getPostItem(position).getId();
                         Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                        itemIntent.putExtra("facebookId", fId);
-                        itemIntent.putExtra("pubDate", publ);
+                        itemIntent.putExtra("ID", Id);
                         startActivity(itemIntent);
 
                         return true;
@@ -116,7 +116,6 @@ public class PostsFragment extends Fragment {
             }
         });
 
-        FloatingActionButton fabNew = v.findViewById(R.id.fpAbNew);
         fabNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +129,7 @@ public class PostsFragment extends Fragment {
     private void getPosts() {
         String REQUEST_TAG = "getPosts";
         //String url = getString(R.string.remote_login);
-        String url = getString(R.string.remote_posts_all);
+        String url = getString(R.string.remote_posts);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -166,7 +165,6 @@ public class PostsFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
                 params.put("token", SingletonUser.getInstance().getToken());
-
                 return params;
             }
         };
@@ -189,9 +187,7 @@ public class PostsFragment extends Fragment {
                 }
                 item.setPrice(jItem.getInt("price"));
                 item.setDesc(jItem.getString("title"));
-                JSONObject jIdItem = jItem.getJSONObject("_id");
-                item.setFacebookId(jIdItem.getString("facebookId"));
-                item.setPublDate(String.valueOf(jIdItem.getLong("publication_date")));
+                item.setId(jItem.getString("ID"));
                 input.add(item);
             }
             searching.setVisibility(View.GONE);

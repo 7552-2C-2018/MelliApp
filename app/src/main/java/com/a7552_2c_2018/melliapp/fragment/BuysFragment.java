@@ -60,8 +60,8 @@ public class BuysFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
 
-        //getBuys();
-        mocking();
+        getBuys();
+        //mocking();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {
@@ -112,7 +112,8 @@ public class BuysFragment extends Fragment {
 
     private void getBuys() {
         String REQUEST_TAG = "getBuys";
-        String url = getString(R.string.remote_posts_all);
+        String url = getString(R.string.remote_posts);
+        url = url + SingletonUser.getInstance().getUser().getFacebookID();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -132,7 +133,6 @@ public class BuysFragment extends Fragment {
                         //OR
                         Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
                         //Or if nothing works than splitting is the only option
-                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
                         PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                     }
@@ -171,9 +171,7 @@ public class BuysFragment extends Fragment {
                 }
                 item.setPrice(jItem.getInt("price"));
                 item.setDesc(jItem.getString("title"));
-                JSONObject jIdItem = jItem.getJSONObject("_id");
-                item.setFacebookId(jIdItem.getString("facebookId"));
-                item.setPublDate(String.valueOf(jIdItem.getLong("publication_date")));
+                item.setId(jItem.getString("ID"));
                 input.add(item);
             }
             RecyclerView.Adapter mAdapter = new ItemAdapter(input);

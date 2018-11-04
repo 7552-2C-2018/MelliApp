@@ -58,11 +58,9 @@ public class HomeActivity extends AppCompatActivity {
                 switch(id)
                 {
                     case R.id.home:
-                        //PopUpManager.showToastError(getApplicationContext(), "Home");
                         fragment = new PostsFragment();
                         break;
                     case R.id.buys:
-                        //PopUpManager.showToastError(getApplicationContext(), "Buys");
                         fragment = new BuysFragment();
                         break;
                     case R.id.posts:
