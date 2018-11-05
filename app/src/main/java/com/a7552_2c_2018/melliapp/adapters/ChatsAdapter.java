@@ -74,7 +74,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder>{
         return values.size();
     }
 
-    public ChatItem getPostItem(int position) {
+    public ChatItem getChatItem(int position) {
         return values.get(position);
     }
 

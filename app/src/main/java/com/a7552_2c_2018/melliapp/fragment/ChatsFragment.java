@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.ChatActivity;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
 import com.a7552_2c_2018.melliapp.adapters.ChatsAdapter;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
@@ -94,15 +96,11 @@ public class ChatsFragment extends Fragment {
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
 
                         int position = recyclerView.getChildAdapterPosition(child);
-                        /*
-                        ItemAdapter aux = (ItemAdapter) recyclerView.getAdapter();
-                        String fId = aux.getPostItem(position).getFacebookId();
-                        String publ = aux.getPostItem(position).getPublDate();
-                        Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                        itemIntent.putExtra("facebookId", fId);
-                        itemIntent.putExtra("pubDate", publ);
-                        startActivity(itemIntent);
-                        */
+                        ChatsAdapter aux = (ChatsAdapter) recyclerView.getAdapter();
+                        int chatId = aux.getChatItem(position).getChatId();
+                        Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
+                        chatIntent.putExtra("chatId", chatId);
+                        startActivity(chatIntent);
                         return true;
                     }
                 }catch (Exception e){
@@ -147,7 +145,7 @@ public class ChatsFragment extends Fragment {
             JSONObject obj = new JSONObject(response);
             JSONArray chats = obj.getJSONArray("chats");
             for (int i=0; i<chats.length(); i++){
-                addChat(chats.getInt(i));
+                addChat(chats.optInt(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();
