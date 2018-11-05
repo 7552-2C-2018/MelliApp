@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.fragment.AccountFragment;
 import com.a7552_2c_2018.melliapp.fragment.BuysFragment;
+import com.a7552_2c_2018.melliapp.fragment.ChatsFragment;
 import com.a7552_2c_2018.melliapp.fragment.PostsFragment;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
@@ -70,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
                         PopUpManager.showToastError(getApplicationContext(), "Solds");
                         break;
                     case R.id.chats:
-                        PopUpManager.showToastError(getApplicationContext(), "Chats");
+                        fragment = new ChatsFragment();
                         break;
                     case R.id.qr:
                         PopUpManager.showToastError(getApplicationContext(), "QR");

@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
+import com.a7552_2c_2018.melliapp.adapters.ChatsAdapter;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
+import com.a7552_2c_2018.melliapp.model.ChatItem;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
@@ -24,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +47,8 @@ public class ChatsFragment extends Fragment {
 
     private static final String TAG = "ChatsFragment";
 
+    List<ChatItem> chatList;
+
     @BindView(R.id.fcsRecycler) RecyclerView recyclerView;
 
     public ChatsFragment() {
@@ -60,6 +65,8 @@ public class ChatsFragment extends Fragment {
 
 
         ButterKnife.bind(this, v);
+
+        chatList = new ArrayList<>();
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -116,69 +123,69 @@ public class ChatsFragment extends Fragment {
 
     private void getChats() {
         String REQUEST_TAG = "getChats";
-        String url = getString(R.string.remote_posts);
-        url = url + SingletonUser.getInstance().getUser().getFacebookID();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        getChatsResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
+        String url = getString(R.string.remote_chats) +
+                "userChats/" + SingletonUser.getInstance().getUser().getFacebookID() + ".json";
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
-                }) {
-
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
             @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
+            public void onResponse(String s) {
+                getChatsResponse(s);
             }
-
+        },new Response.ErrorListener(){
             @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
-                params.put("token", SingletonUser.getInstance().getToken());
-
-                return params;
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d(TAG, volleyError.toString());
             }
-        };
-        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
+        });
+
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(request,REQUEST_TAG);
     }
 
-    private void getChatsResponse(JSONArray response) {
-        Log.d(TAG, response.toString());
+    private void getChatsResponse(String response) {
+        Log.d(TAG, response);
         try {
-            List<PostItem> input = new ArrayList<>();
-            PostItem item;
-            for (int i = 0; i < response.length(); ++i) {
-                JSONObject jItem = response.getJSONObject(i);
-                item = new PostItem();
-                if (jItem.isNull("pictures")) {
-                    item.setImage(getString(R.string.base64mock));
-                } else {
-                    JSONArray pictures = jItem.getJSONArray("pictures");
-                    item.setImage(pictures.getString(0));
-                }
-                item.setPrice(jItem.getInt("price"));
-                item.setDesc(jItem.getString("title"));
-                item.setId(jItem.getString("ID"));
-                input.add(item);
+            JSONObject obj = new JSONObject(response);
+            JSONArray chats = obj.getJSONArray("chats");
+            for (int i=0; i<chats.length(); i++){
+                addChat(chats.getInt(i));
             }
-            RecyclerView.Adapter mAdapter = new ItemAdapter(input);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addChat(final Integer chatId) {
+
+        String REQUEST_TAG = "getChat";
+        String url = getString(R.string.remote_chats) +
+                "chats/" + chatId + ".json";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String s) {
+                addChatResponse(s, chatId);
+            }
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d(TAG, volleyError.toString());
+            }
+        });
+
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(request,REQUEST_TAG);
+    }
+
+    private void addChatResponse(String s, Integer chatId) {
+        Log.d(TAG, s);
+        try {
+            JSONObject obj = new JSONObject(s);
+            ChatItem aux = new ChatItem();
+            aux.setChatId(chatId);
+            aux.setImage(obj.getString("picture"));
+            aux.setPublicationId(obj.getString("publicationId"));
+            aux.setTitle(obj.getString("title"));
+            chatList.add(aux);
+            RecyclerView.Adapter mAdapter = new ChatsAdapter(chatList);
             recyclerView.setAdapter(mAdapter);
         } catch (JSONException e) {
             e.printStackTrace();
