@@ -98,8 +98,10 @@ public class ChatsFragment extends Fragment {
                         int position = recyclerView.getChildAdapterPosition(child);
                         ChatsAdapter aux = (ChatsAdapter) recyclerView.getAdapter();
                         int chatId = aux.getChatItem(position).getChatId();
+                        String title = aux.getChatItem(position).getTitle();
                         Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
                         chatIntent.putExtra("chatId", chatId);
+                        chatIntent.putExtra("title", title);
                         startActivity(chatIntent);
                         return true;
                     }

@@ -38,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     @BindView(R.id.sendButton) ImageView sendButton;
     @BindView(R.id.messageArea) EditText messageArea;
     @BindView(R.id.achatScrollView) ScrollView scrollView;
+    @BindView(R.id.cfTitle) TextView chatTitle;
 
     DatabaseReference reference1;
     private static FirebaseDatabase firebaseDatabase;
@@ -51,18 +52,13 @@ public class ChatActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        /*
-        if(!FirebaseApp.getApps(this).isEmpty()) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        }
-        */
-
         if (firebaseDatabase == null) {
             firebaseDatabase=FirebaseDatabase.getInstance();
             firebaseDatabase.setPersistenceEnabled(true);
         }
 
         chatId = getIntent().getIntExtra("chatId",0);
+        chatTitle.setText(getIntent().getStringExtra("title"));
 
         reference1 = FirebaseDatabase.getInstance()
                 .getReferenceFromUrl(getString(R.string.remote_chats) +

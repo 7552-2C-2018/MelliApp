@@ -123,6 +123,7 @@
     <string name="cbf_cash">A pagar en efectivo</string>
     <string name="cbf_tc">A pagar con tarjeta terminada en </string>
     <string name="cbf_button">Confirmar Compra</string>
+    <string name="cbf_confirm">Compra realizada</string>
 
     <!-- Strings related to Post Activity -->
     <string name="pa_title1">Nueva Publicación</string>
@@ -144,6 +145,9 @@
     <string name="ia_desc">Descripción</string>
     <string name="ia_pays">Medios de Pago</string>
     <string name="ia_shipping">Envios</string>
+    <string name="ia_ship_yes">Realiza Envios</string>
+    <string name="ia_ship_no">No Realiza Envios</string>
+
 
     <string name="card_header">TARJETA CREDITO</string>
     <string name="card_number_sample">XXXX XXXX XXXX XXXX</string>

@@ -60,6 +60,9 @@ public class ItemActivity extends AppCompatActivity {
     @BindView(R.id.aiTvPayments)
     TextView tvPayments;
 
+    @BindView(R.id.aiTvShipping)
+    TextView tvShipping;
+
     @BindView(R.id.aiBtnBuy)
     Button btnBuy;
 
@@ -167,6 +170,11 @@ public class ItemActivity extends AppCompatActivity {
             sampleImages = new String[pictures.length()];
             for (int i=0; i<pictures.length(); i++){
                 sampleImages[i]= pictures.getString(i);
+            }
+            if (response.getBoolean("shipping")){
+                tvShipping.setText(getString(R.string.ia_ship_yes));
+            } else {
+                tvShipping.setText(getString(R.string.ia_ship_no));
             }
 
             carouselView.setImageListener(imageListener);
