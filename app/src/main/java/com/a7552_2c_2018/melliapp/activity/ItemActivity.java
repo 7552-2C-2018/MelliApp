@@ -88,6 +88,7 @@ public class ItemActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Publicación");
 
         Id = getIntent().getStringExtra("ID");
 

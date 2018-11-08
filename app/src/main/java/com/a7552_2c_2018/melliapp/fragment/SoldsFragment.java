@@ -3,6 +3,7 @@ package com.a7552_2c_2018.melliapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,6 +58,8 @@ public class SoldsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ButterKnife.bind(this, v);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Mis Ventas");
+
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -67,6 +68,7 @@ public class PostsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_posts, container, false);
 
         ButterKnife.bind(this, v);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Comprame");
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);

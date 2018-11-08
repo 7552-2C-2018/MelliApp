@@ -27,6 +27,7 @@ public class BuyingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_buying);
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Comprando");
 
         ActualBuy buy = new ActualBuy();
         buy.setId(getIntent().getStringExtra("ID"));

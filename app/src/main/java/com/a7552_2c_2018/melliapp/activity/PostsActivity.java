@@ -111,6 +111,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
 
         ButterKnife.bind(this);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Nueva Publicación");
 
         getServerCategories();
         getServerPayments();

@@ -51,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Chats");
 
         if (firebaseDatabase == null) {
             firebaseDatabase=FirebaseDatabase.getInstance();

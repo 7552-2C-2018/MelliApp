@@ -3,6 +3,7 @@ package com.a7552_2c_2018.melliapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +59,7 @@ public class MyPostsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ButterKnife.bind(this, v);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Mis Publicaciones");
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);

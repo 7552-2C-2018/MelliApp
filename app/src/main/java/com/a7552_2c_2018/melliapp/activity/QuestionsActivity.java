@@ -19,6 +19,7 @@ public class QuestionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_questions);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Preguntas");
 
         Id = getIntent().getStringExtra("ID");
     }

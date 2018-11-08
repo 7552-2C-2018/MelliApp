@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,8 @@ public class AccountFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
         ButterKnife.bind(this, v);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Mi Cuenta");
 
         etName.setText(user.getName());
         etSurname.setText(user.getSurname());
