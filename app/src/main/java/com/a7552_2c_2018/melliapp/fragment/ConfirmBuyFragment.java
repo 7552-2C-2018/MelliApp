@@ -100,7 +100,7 @@ public class ConfirmBuyFragment extends Fragment {
 
     private void callBackend(){
         String REQUEST_TAG = "confirmBuy";
-        String url = getString(R.string.remote_posts);
+        String url = getString(R.string.remote_buys);
         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                 url,
                 new Response.Listener<String>() {
@@ -136,7 +136,6 @@ public class ConfirmBuyFragment extends Fragment {
             protected Map<String, String> getParams() {
                 ActualBuy buy = SingletonUser.getInstance().getActualBuy();
                 Map<String, String> params = new HashMap<>();
-                params.put("publicationId", buy.getId());
                 params.put("price", String.valueOf(total));
                 if (buy.isPaysShipping()){
                     params.put("street", buy.getStreet());
@@ -156,9 +155,11 @@ public class ConfirmBuyFragment extends Fragment {
 
             @Override
             public Map<String, String> getHeaders() {
+                ActualBuy buy = SingletonUser.getInstance().getActualBuy();
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
                 params.put("token", SingletonUser.getInstance().getToken());
+                params.put("postId", buy.getId());
                 return params;
             }
 

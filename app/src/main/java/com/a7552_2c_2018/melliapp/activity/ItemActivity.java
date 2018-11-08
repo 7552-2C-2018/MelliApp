@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
@@ -63,6 +64,9 @@ public class ItemActivity extends AppCompatActivity {
     @BindView(R.id.aiTvShipping)
     TextView tvShipping;
 
+    @BindView(R.id.aiRlQuestions)
+    RelativeLayout rlQuestions;
+
     @BindView(R.id.aiBtnBuy)
     Button btnBuy;
 
@@ -95,6 +99,15 @@ public class ItemActivity extends AppCompatActivity {
                 buyIntent.putExtra("title", tvTitle.getText().toString());
                 buyIntent.putExtra("price", price);
                 startActivity(buyIntent);
+            }
+        });
+
+        rlQuestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent qstIntent = new Intent(ItemActivity.this, QuestionsActivity.class);
+                qstIntent.putExtra("ID", Id);
+                startActivity(qstIntent);
             }
         });
 
@@ -176,7 +189,11 @@ public class ItemActivity extends AppCompatActivity {
             } else {
                 tvShipping.setText(getString(R.string.ia_ship_no));
             }
-
+            JSONObject id = response.getJSONObject("_id");
+            String sellerId = id.getString("facebookId");
+            if (sellerId.equals(SingletonUser.getInstance().getUser().getFacebookID())){
+                btnBuy.setEnabled(false);
+            }
             carouselView.setImageListener(imageListener);
             carouselView.setPageCount(sampleImages.length);
 

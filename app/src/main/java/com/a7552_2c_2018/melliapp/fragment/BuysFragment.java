@@ -116,8 +116,8 @@ public class BuysFragment extends Fragment {
 
     private void getBuys() {
         String REQUEST_TAG = "getBuys";
-        String url = getString(R.string.remote_posts);
-        url = url + SingletonUser.getInstance().getUser().getFacebookID();
+        String url = getString(R.string.remote_buys);
+        url = url + "user=" + SingletonUser.getInstance().getUser().getFacebookID();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,

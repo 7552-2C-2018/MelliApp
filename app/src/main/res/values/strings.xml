@@ -21,6 +21,7 @@
     <string name="remote_getPays">https://app-server-23.herokuapp.com/products/payments</string>
     <string name="remote_users">https://app-server-23.herokuapp.com/users/</string>
     <string name="remote_posts">https://app-server-23.herokuapp.com/posts/</string>
+    <string name="remote_buys">https://app-server-23.herokuapp.com/buys/</string>
     <string name="remote_posts_all">https://app-server-23.herokuapp.com/posts/get_all</string>
     <string name="remote_chats">https://melli-7552.firebaseio.com/</string>
 
@@ -147,6 +148,7 @@
     <string name="ia_shipping">Envios</string>
     <string name="ia_ship_yes">Realiza Envios</string>
     <string name="ia_ship_no">No Realiza Envios</string>
+    <string name="ia_questions">Preguntas</string>
 
 
     <string name="card_header">TARJETA CREDITO</string>
