@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
-import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
-import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
@@ -40,12 +38,12 @@ import butterknife.ButterKnife;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class BuysFragment extends Fragment {
+public class SoldsFragment extends Fragment {
 
-    private static final String TAG = "BuysFragment";
-    @BindView(R.id.fbRecycler) RecyclerView recyclerView;
+    private static final String TAG = "SoldsFragment";
+    @BindView(R.id.fsRecycler) RecyclerView recyclerView;
 
-    public BuysFragment() {
+    public SoldsFragment() {
         // Required empty public constructor
     }
 
@@ -54,7 +52,7 @@ public class BuysFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_buys, container, false);
+        View v = inflater.inflate(R.layout.fragment_solds, container, false);
 
         // Inflate the layout for this fragment
 
@@ -64,7 +62,7 @@ public class BuysFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
 
-        getBuys();
+        getSolds();
         //mocking();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
@@ -114,10 +112,10 @@ public class BuysFragment extends Fragment {
         return v;
     }
 
-    private void getBuys() {
+    private void getSolds() {
         String REQUEST_TAG = "getBuys";
         String url = getString(R.string.remote_buys);
-        url = url + "user=" + SingletonUser.getInstance().getUser().getFacebookID();
+        url = url + "seller=" + SingletonUser.getInstance().getUser().getFacebookID();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -125,7 +123,7 @@ public class BuysFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        getPostsResponse(response);
+                        getSoldsResponse(response);
                     }
                 },
                 new Response.ErrorListener(){
@@ -159,7 +157,7 @@ public class BuysFragment extends Fragment {
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
     }
 
-    private void getPostsResponse(JSONArray response) {
+    private void getSoldsResponse(JSONArray response) {
         Log.d(TAG, response.toString());
         try {
             List<BuyItem> input = new ArrayList<>();

@@ -3,7 +3,7 @@ package com.a7552_2c_2018.melliapp.model;
 public class ChatItem {
     private String image;
     private String title;
-    private int chatId;
+    private String chatId;
     private String publicationId;
 
     public ChatItem() {
@@ -25,11 +25,11 @@ public class ChatItem {
         this.publicationId = publicationId;
     }
 
-    public int getChatId() {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(int chatId) {
+    public void setChatId(String chatId) {
         this.chatId = chatId;
     }
 

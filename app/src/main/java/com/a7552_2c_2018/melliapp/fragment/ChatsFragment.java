@@ -97,7 +97,7 @@ public class ChatsFragment extends Fragment {
 
                         int position = recyclerView.getChildAdapterPosition(child);
                         ChatsAdapter aux = (ChatsAdapter) recyclerView.getAdapter();
-                        int chatId = aux.getChatItem(position).getChatId();
+                        String chatId = aux.getChatItem(position).getChatId();
                         String title = aux.getChatItem(position).getTitle();
                         Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
                         chatIntent.putExtra("chatId", chatId);
@@ -147,14 +147,14 @@ public class ChatsFragment extends Fragment {
             JSONObject obj = new JSONObject(response);
             JSONArray chats = obj.getJSONArray("chats");
             for (int i=0; i<chats.length(); i++){
-                addChat(chats.optInt(i));
+                addChat(chats.getString(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void addChat(final Integer chatId) {
+    private void addChat(final String chatId) {
 
         String REQUEST_TAG = "getChat";
         String url = getString(R.string.remote_chats) +
@@ -175,13 +175,14 @@ public class ChatsFragment extends Fragment {
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(request,REQUEST_TAG);
     }
 
-    private void addChatResponse(String s, Integer chatId) {
+    private void addChatResponse(String s, String chatId) {
         Log.d(TAG, s);
         try {
             JSONObject obj = new JSONObject(s);
             ChatItem aux = new ChatItem();
             aux.setChatId(chatId);
-            aux.setImage(obj.getString("picture"));
+            JSONArray pictures = obj.getJSONArray("picture");
+            aux.setImage(pictures.getString(0));
             aux.setPublicationId(obj.getString("publicationId"));
             aux.setTitle(obj.getString("title"));
             chatList.add(aux);

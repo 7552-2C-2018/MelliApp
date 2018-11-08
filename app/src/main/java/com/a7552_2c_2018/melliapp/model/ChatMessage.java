@@ -3,7 +3,7 @@ package com.a7552_2c_2018.melliapp.model;
 public class ChatMessage {
     private String text;
     private String senderId;
-    private String timestamp;
+    private Long timestamp;
 
     public ChatMessage() {
     }
@@ -24,11 +24,11 @@ public class ChatMessage {
         this.senderId = senderId;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 }

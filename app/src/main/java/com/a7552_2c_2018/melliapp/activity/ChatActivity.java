@@ -42,7 +42,7 @@ public class ChatActivity extends AppCompatActivity {
 
     DatabaseReference reference1;
     private static FirebaseDatabase firebaseDatabase;
-    int chatId;
+    String chatId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity {
             firebaseDatabase.setPersistenceEnabled(true);
         }
 
-        chatId = getIntent().getIntExtra("chatId",0);
+        chatId = getIntent().getStringExtra("chatId");
         chatTitle.setText(getIntent().getStringExtra("title"));
 
         reference1 = FirebaseDatabase.getInstance()
@@ -74,7 +74,7 @@ public class ChatActivity extends AppCompatActivity {
                     msg.setText(messageText);
                     msg.setSenderId(SingletonUser.getInstance().getUser().getFacebookID());
                     Long tsLong = System.currentTimeMillis()/1000;
-                    msg.setTimestamp(tsLong.toString());
+                    msg.setTimestamp(tsLong);
                     reference1.push().setValue(msg);
                     messageArea.setText("");
                 }

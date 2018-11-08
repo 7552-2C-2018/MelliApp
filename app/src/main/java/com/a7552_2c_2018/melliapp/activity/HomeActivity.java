@@ -16,7 +16,9 @@ import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.fragment.AccountFragment;
 import com.a7552_2c_2018.melliapp.fragment.BuysFragment;
 import com.a7552_2c_2018.melliapp.fragment.ChatsFragment;
+import com.a7552_2c_2018.melliapp.fragment.MyPostsFragment;
 import com.a7552_2c_2018.melliapp.fragment.PostsFragment;
+import com.a7552_2c_2018.melliapp.fragment.SoldsFragment;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
 import java.util.Objects;
@@ -65,10 +67,10 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new BuysFragment();
                         break;
                     case R.id.posts:
-                        PopUpManager.showToastError(getApplicationContext(), "Posts");
+                        fragment = new MyPostsFragment();
                         break;
                     case R.id.solds:
-                        PopUpManager.showToastError(getApplicationContext(), "Solds");
+                        fragment = new SoldsFragment();
                         break;
                     case R.id.chats:
                         fragment = new ChatsFragment();

@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
-import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
-import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
@@ -40,12 +38,12 @@ import butterknife.ButterKnife;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class BuysFragment extends Fragment {
+public class MyPostsFragment extends Fragment {
 
-    private static final String TAG = "BuysFragment";
-    @BindView(R.id.fbRecycler) RecyclerView recyclerView;
+    private static final String TAG = "MyPostsFragment";
+    @BindView(R.id.fmpRecycler) RecyclerView recyclerView;
 
-    public BuysFragment() {
+    public MyPostsFragment() {
         // Required empty public constructor
     }
 
@@ -54,7 +52,7 @@ public class BuysFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_buys, container, false);
+        View v = inflater.inflate(R.layout.fragment_myposts, container, false);
 
         // Inflate the layout for this fragment
 
@@ -64,7 +62,7 @@ public class BuysFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
 
-        getBuys();
+        getMyPosts();
         //mocking();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
@@ -114,9 +112,9 @@ public class BuysFragment extends Fragment {
         return v;
     }
 
-    private void getBuys() {
+    private void getMyPosts() {
         String REQUEST_TAG = "getBuys";
-        String url = getString(R.string.remote_buys);
+        String url = getString(R.string.remote_posts);
         url = url + "user=" + SingletonUser.getInstance().getUser().getFacebookID();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
@@ -173,7 +171,9 @@ public class BuysFragment extends Fragment {
                     JSONArray pictures = jItem.getJSONArray("pictures");
                     item.setImage(pictures.getString(0));
                 }
-                item.setStatus(jItem.getString("estado"));
+                //item.setStatus(jItem.getString("estado"));
+                // TODO agregar al back
+                item.setStatus("Activa");
                 item.setTitle(jItem.getString("title"));
                 input.add(item);
             }
