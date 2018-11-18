@@ -12,15 +12,31 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.ChatActivity;
 import com.a7552_2c_2018.melliapp.activity.HomeActivity;
+import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 import java.util.Objects;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    private String chatId = "";
+    private String title = "";
 
     /**
      * Called when message is received.
@@ -29,7 +45,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     // [START receive_message]
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+        public void onMessageReceived(RemoteMessage remoteMessage) {
         // [START_EXCLUDE]
         // There are two types of messages data messages and notification messages. Data messages are handled
         // here in onMessageReceived whether the app is in the foreground or background. Data messages are the type
@@ -52,15 +68,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            try {
+                title = remoteMessage.getData().get("title");
+                checkMessage(remoteMessage);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-
-        sendNotification(remoteMessage.getData().get("title"));
     }
-    // [END receive_message]
 
+    private void checkMessage(RemoteMessage remoteMessage) throws JSONException {
+        Map<String, String> params = remoteMessage.getData();
+        JSONObject object = new JSONObject(params);
+        chatId = object.getString("id");
+        getChats();
+    }
 
 
     /**
@@ -69,9 +94,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * @param messageBody FCM message body received.
      */
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("chatId", chatId);
+        intent.putExtra("title", title);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 2 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.default_notification_channel_id);
@@ -79,7 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_notifications_active_black_24dp)
-                        .setContentTitle("FCM Message")
+                        .setContentTitle("Comprame")
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
@@ -96,12 +123,47 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }
 
-        Objects.requireNonNull(notificationManager).notify(0 /* ID of notification */, notificationBuilder.build());
+        Objects.requireNonNull(notificationManager).notify(1 /* ID of notification */, notificationBuilder.build());
     }
 
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
         Log.e("NEW_TOKEN",s);
+    }
+
+    private void getChats() {
+        String REQUEST_TAG = "getChats";
+        String url = getString(R.string.remote_chats) +
+                "userChats/" + SingletonUser.getInstance().getUser().getFacebookID() + ".json";
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String s) {
+                getChatsResponse(s);
+            }
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d(TAG, volleyError.toString());
+            }
+        });
+
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(request,REQUEST_TAG);
+    }
+
+    private void getChatsResponse(String response) {
+        Log.d(TAG, response);
+        try {
+            JSONObject obj = new JSONObject(response);
+            JSONArray chats = obj.getJSONArray("chats");
+            for (int i=0; i<chats.length(); i++){
+                if (chatId == chats.getString(i)){
+                    sendNotification(title);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

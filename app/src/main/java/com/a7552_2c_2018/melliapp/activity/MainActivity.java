@@ -21,6 +21,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
             LoginManager.getInstance().logOut();
         }
         */
+
+        FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
 
         if (AccessToken.getCurrentAccessToken() == null) {
             Intent loginIntent = new Intent(MainActivity.this, FacebookLoginActivity.class);
