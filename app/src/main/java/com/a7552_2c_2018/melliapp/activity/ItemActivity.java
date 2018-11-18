@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,10 +19,12 @@ import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -29,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -67,6 +72,12 @@ public class ItemActivity extends AppCompatActivity {
     @BindView(R.id.aiRlQuestions)
     RelativeLayout rlQuestions;
 
+    @BindView(R.id.aiEtQuestion)
+    EditText etQuestion;
+
+    @BindView(R.id.eiBtSendQuestion)
+    Button btnAsk;
+
     @BindView(R.id.aiBtnBuy)
     Button btnBuy;
 
@@ -92,6 +103,39 @@ public class ItemActivity extends AppCompatActivity {
 
         Id = getIntent().getStringExtra("ID");
 
+
+        rlQuestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent qstIntent = new Intent(ItemActivity.this, QuestionsActivity.class);
+                qstIntent.putExtra("ID", Id);
+                startActivity(qstIntent);
+            }
+        });
+
+        etQuestion.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+
+        btnAsk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String qst = etQuestion.getText().toString();
+                if (qst.isEmpty()){
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_error));
+                } else {
+                    sendQuestion(qst);
+                }
+            }
+        });
+
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,18 +147,67 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
-        rlQuestions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent qstIntent = new Intent(ItemActivity.this, QuestionsActivity.class);
-                qstIntent.putExtra("ID", Id);
-                startActivity(qstIntent);
-            }
-        });
-
         //mocking();
         getPostData();
 
+    }
+
+    private void sendQuestion(final String qst) {
+        String REQUEST_TAG = "sendQuestion";
+        String url = getString(R.string.remote_posts);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "Success");
+                        etQuestion.setText("");
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_ok));
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "volley error create " + error.getMessage());
+                //OR
+                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                //OR
+                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                //Or if nothing works than splitting is the only option
+                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
+
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+            }
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("ID", Id);
+                params.put("question", qst);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", SingletonUser.getInstance().getToken());
+                return params;
+            }
+
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(stringRequest,REQUEST_TAG);
     }
 
     private void getPostData() {

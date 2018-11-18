@@ -147,9 +147,39 @@
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="false"
                     app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
 
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/aiRlAsk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp">
+
+
+                <EditText
+                    android:id="@+id/aiEtQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/ia_ask_hint"
+                    android:inputType="textMultiLine"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/eiBtSendQuestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/aiEtQuestion"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/ia_btn_ask" />
             </RelativeLayout>
 
             <Button
