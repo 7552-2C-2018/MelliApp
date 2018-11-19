@@ -58,7 +58,7 @@ public class SoldsFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ButterKnife.bind(this, v);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Mis Ventas");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.st_solds));
 
 
         recyclerView.setHasFixedSize(true);

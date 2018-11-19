@@ -18,6 +18,7 @@ import com.a7552_2c_2018.melliapp.fragment.BuysFragment;
 import com.a7552_2c_2018.melliapp.fragment.ChatsFragment;
 import com.a7552_2c_2018.melliapp.fragment.MyPostsFragment;
 import com.a7552_2c_2018.melliapp.fragment.PostsFragment;
+import com.a7552_2c_2018.melliapp.fragment.QrFragment;
 import com.a7552_2c_2018.melliapp.fragment.SoldsFragment;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 
@@ -76,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                         fragment = new ChatsFragment();
                         break;
                     case R.id.qr:
-                        PopUpManager.showToastError(getApplicationContext(), "QR");
+                        fragment = new QrFragment();
                         break;
                     case R.id.profile:
                         fragment = new AccountFragment();
