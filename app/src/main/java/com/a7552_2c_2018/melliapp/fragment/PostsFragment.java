@@ -14,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.FiltersActivity;
 import com.a7552_2c_2018.melliapp.activity.ItemActivity;
 import com.a7552_2c_2018.melliapp.activity.PostsActivity;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
@@ -53,6 +56,10 @@ public class PostsFragment extends Fragment {
     @BindView(R.id.fpRecycler) RecyclerView recyclerView;
     @BindView(R.id.fpSearching) RelativeLayout searching;
     @BindView(R.id.fpAbNew) FloatingActionButton fabNew;
+    @BindView(R.id.fbEtSearch) EditText fabInput;
+    @BindView(R.id.fpBtnSearch) ImageButton fabSearch;
+    @BindView(R.id.fpBtnFilter) ImageButton fabFilter;
+    @BindView(R.id.fbBtnMap) ImageButton fabMap;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -125,12 +132,30 @@ public class PostsFragment extends Fragment {
                 startActivity(postIntent);
             }
         });
+
+        fabFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent filterIntent = new Intent(getApplicationContext(), FiltersActivity.class);
+                startActivity(filterIntent);
+            }
+        });
+
+        fabInput.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
         return v;
     }
 
     private void getPosts() {
         String REQUEST_TAG = "getPosts";
-        //String url = getString(R.string.remote_login);
         String url = getString(R.string.remote_posts);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,

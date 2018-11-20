@@ -89,6 +89,7 @@
 
     <!-- Strings related to Filters Activity -->
     <string name="fa_cond">Condición</string>
+    <string name="fa_price">Rango de Precios</string>
 
     <!-- Strings related to Account Fragment -->
     <string name="af_title1">Cerrar Sesión</string>
