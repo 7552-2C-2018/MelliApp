@@ -24,10 +24,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Buscar"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:inputType="textPersonName" />
+                android:hint="Buscar"
+                android:inputType="textPersonName"
+                android:textColor="@color/card_text_color"
+                android:textColorHint="@color/card_text_color"
+                android:textColorLink="@android:color/holo_blue_dark" />
 
             <ImageButton
                 android:id="@+id/fpBtnSearch"

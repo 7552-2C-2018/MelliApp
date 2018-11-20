@@ -6,7 +6,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
+
+import org.florescu.android.rangeseekbar.RangeSeekBar;
 
 import java.util.Objects;
 
@@ -14,8 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FiltersActivity extends AppCompatActivity {
-
-    @BindView(R.id.rangeSeekbar) RangeSeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +25,7 @@ public class FiltersActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.st_filters));
 
+        RangeSeekBar seekBar = findViewById(R.id.rangeSeekbar);
         seekBar.setRangeValues(0, 99999);
         seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
@@ -36,5 +36,7 @@ public class FiltersActivity extends AppCompatActivity {
         });
 
         seekBar.setNotifyWhileDragging(true);
+
+        seekBar.setTextAboveThumbsColorResource(android.R.color.holo_blue_dark);
     }
 }

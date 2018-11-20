@@ -70,8 +70,6 @@ public class PostsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        UserInfo user = SingletonUser.getInstance().getUser();
-
         View v = inflater.inflate(R.layout.fragment_posts, container, false);
 
         ButterKnife.bind(this, v);

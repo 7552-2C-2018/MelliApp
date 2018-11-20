@@ -27,7 +27,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/fa_cond"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -41,14 +42,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/pa_title6" />
+                        android:text="@string/pa_title6"
+                        android:textColor="@color/com_facebook_button_background_color_focused_disabled"
+                        android:textColorLink="@android:color/holo_blue_dark"
+                        android:buttonTint="@android:color/holo_blue_dark"/>
 
                     <RadioButton
                         android:id="@+id/faRbUsed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/pa_title7" />
+                        android:text="@string/pa_title7"
+                        android:textColor="@color/com_facebook_button_background_color_focused_disabled"
+                        android:textColorLink="@android:color/holo_blue_dark"
+                        android:buttonTint="@android:color/holo_blue_dark"/>
                 </RadioGroup>
             </RelativeLayout>
 
@@ -68,15 +75,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/fa_price"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black" />
 
-                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+                <org.florescu.android.rangeseekbar.RangeSeekBar
                     android:id="@+id/rangeSeekbar"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    app:absoluteMaxValue="99999"
-                    app:absoluteMinValue="0" />
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="12dp" />
 
             </RelativeLayout>
 
