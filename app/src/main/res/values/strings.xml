@@ -75,6 +75,8 @@
 
     <!-- Strings related to Screen title -->
     <string name="st_questions">Preguntas</string>
+    <string name="st_item">Publicación</string>
+    <string name="st_filters">Filtros de Búsqueda</string>
     <string name="st_solds">Mis Ventas</string>
     <string name="st_qr">Lector QR</string>
 
@@ -83,7 +85,10 @@
 
     <!-- Strings related to Check Out Activity -->
     <string name="coa_next">Siguiente</string>
-    <string name="coa_submit">Confirmar</string>
+    <string name="coa_submit" tools:ignore="ExtraTranslation">Confirmar</string>
+
+    <!-- Strings related to Filters Activity -->
+    <string name="fa_cond">Condición</string>
 
     <!-- Strings related to Account Fragment -->
     <string name="af_title1">Cerrar Sesión</string>
