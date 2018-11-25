@@ -2,6 +2,7 @@ package com.a7552_2c_2018.melliapp.singletons;
 
 
 import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.model.ActualFilters;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
 
 public class SingletonUser {
@@ -10,11 +11,13 @@ public class SingletonUser {
     private UserInfo user;
     private String token;
     private ActualBuy buy;
+    private ActualFilters filters;
 
     private SingletonUser() {
         user = new UserInfo();
         token = "";
         buy = new ActualBuy();
+        filters = new ActualFilters();
     }
 
 
@@ -47,5 +50,13 @@ public class SingletonUser {
 
     public ActualBuy getActualBuy() {
         return buy;
+    }
+
+    public void setActualFilters(ActualFilters aux) {
+        filters = aux;
+    }
+
+    public ActualFilters getActualFilters() {
+        return filters;
     }
 }

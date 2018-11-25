@@ -90,6 +90,10 @@
     <!-- Strings related to Filters Activity -->
     <string name="fa_cond">Condición</string>
     <string name="fa_price">Rango de Precios</string>
+    <string name="fa_categ">Categoría</string>
+    <string name="fa_dist">Distancia Máxima</string>
+    <string name="fa_btn_clean">Limpiar Filtros"</string>
+    <string name="fa_btn_apply">Aplicar Filtros</string>
 
     <!-- Strings related to Account Fragment -->
     <string name="af_title1">Cerrar Sesión</string>
