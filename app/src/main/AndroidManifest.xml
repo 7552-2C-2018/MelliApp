@@ -113,7 +113,8 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".activity.FiltersActivity"></activity>
+        <activity android:name=".activity.FiltersActivity" />
+        <activity android:name=".activity.MapActivity"></activity>
     </application>
 
 </manifest>

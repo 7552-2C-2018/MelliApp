@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.FiltersActivity;
 import com.a7552_2c_2018.melliapp.activity.ItemActivity;
+import com.a7552_2c_2018.melliapp.activity.MapActivity;
 import com.a7552_2c_2018.melliapp.activity.PostsActivity;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.ActualFilters;
@@ -153,6 +154,14 @@ public class PostsFragment extends Fragment {
         });
 
         fabFilter.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
+
+        fabMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(mapIntent);
+            }
+        });
         fabMap.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
 
         fabInput.setOnTouchListener(new View.OnTouchListener() {
