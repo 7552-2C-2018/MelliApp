@@ -46,12 +46,14 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class PostsFragment extends Fragment {
 
     private static final String TAG = "PostsFragment";
+    private static final int RESULT_FILTERS_ACTIVITY = 1;
 
     @BindView(R.id.fpRecycler) RecyclerView recyclerView;
     @BindView(R.id.fpSearching) RelativeLayout searching;
@@ -135,7 +137,7 @@ public class PostsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent filterIntent = new Intent(getApplicationContext(), FiltersActivity.class);
-                startActivity(filterIntent);
+                startActivityForResult(filterIntent, RESULT_FILTERS_ACTIVITY);
             }
         });
 
@@ -155,6 +157,8 @@ public class PostsFragment extends Fragment {
     private void getPosts() {
         String REQUEST_TAG = "getPosts";
         String url = getString(R.string.remote_posts);
+        recyclerView.setVisibility(View.GONE);
+        searching.setVisibility(View.VISIBLE);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -218,8 +222,20 @@ public class PostsFragment extends Fragment {
             searching.setVisibility(View.GONE);
             RecyclerView.Adapter mAdapter = new ItemAdapter(input);
             recyclerView.setAdapter(mAdapter);
+            recyclerView.setVisibility(View.VISIBLE);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RESULT_FILTERS_ACTIVITY:
+                getPosts();
+                break;
+            default:
+                super.onActivityResult(requestCode,resultCode, data);
         }
     }
 }

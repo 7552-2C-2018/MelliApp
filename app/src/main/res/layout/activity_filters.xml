@@ -134,6 +134,58 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
+                    android:id="@+id/faFiller5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fa_ship"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/faFiller5"
+                    android:layout_centerInParent="false"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerVertical="false"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/faRbShipYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="@string/fa_ship_yes"
+                        android:textColor="@color/com_facebook_button_background_color_focused_disabled"
+                        android:textColorLink="@color/colorPrimary" />
+
+                    <RadioButton
+                        android:id="@+id/faRbShipNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="100dp"
+                        android:buttonTint="@color/colorPrimary"
+                        android:text="@string/fa_ship_no"
+                        android:textColor="@color/com_facebook_button_background_color_focused_disabled"
+                        android:textColorLink="@color/colorPrimary" />
+                </RadioGroup>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="?android:attr/listDivider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
+
+                <TextView
                     android:id="@+id/faFiller4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -155,6 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/faTvDist"
                     android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/faTvDist"
                     android:layout_toRightOf="@+id/faTvDist"
                     android:max="99"
                     android:progress="100" />

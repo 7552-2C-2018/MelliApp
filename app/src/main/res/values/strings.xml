@@ -92,6 +92,9 @@
     <string name="fa_price">Rango de Precios</string>
     <string name="fa_categ">Categoría</string>
     <string name="fa_dist">Distancia Máxima</string>
+    <string name="fa_ship">Envíos</string>
+    <string name="fa_ship_yes">Con envío</string>
+    <string name="fa_ship_no">Sin envío</string>
     <string name="fa_btn_clean">Limpiar Filtros"</string>
     <string name="fa_btn_apply">Aplicar Filtros</string>
 

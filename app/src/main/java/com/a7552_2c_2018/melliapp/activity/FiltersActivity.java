@@ -43,6 +43,8 @@ public class FiltersActivity extends AppCompatActivity {
     @BindView(R.id.faRbNew) RadioButton rbNew;
     @BindView(R.id.faRbUsed) RadioButton rbUsed;
     @BindView(R.id.faSpCateg) Spinner spCateg;
+    @BindView(R.id.faRbShipYes) RadioButton rbShipYes;
+    @BindView(R.id.faRbShipNo) RadioButton rbShipNo;
     @BindView(R.id.faTvDist) TextView tvDist;
     @BindView(R.id.faqSbDist) SeekBar sbDist;
     @BindView(R.id.faBtClean) Button btClean;
@@ -100,6 +102,8 @@ public class FiltersActivity extends AppCompatActivity {
                 rgSeekBar.setSelectedMinValue(0);
                 rgSeekBar.setSelectedMaxValue(9999);
                 spCateg.setSelection(0);
+                rbShipYes.setChecked(false);
+                rbShipNo.setChecked(false);
                 sbDist.setProgress(100);
                 tvDist.setText("");
                 ActualFilters filters = SingletonUser.getInstance().getActualFilters();
@@ -108,6 +112,9 @@ public class FiltersActivity extends AppCompatActivity {
                 filters.setCondSelected(false);
                 filters.setDistSelected(false);
                 SingletonUser.getInstance().setActualFilters(filters);
+                finish();
+                setResult(RESULT_OK);
+                return;
             }
         });
 
@@ -137,12 +144,22 @@ public class FiltersActivity extends AppCompatActivity {
                     filters.setCateg(spCateg.getSelectedItem().toString());
                     filters.setCategSelected(true);
                 }
+                if (rbShipYes.isChecked()){
+                    filters.setShipYes(true);
+                    filters.setShipSelected(true);
+                }
+                if (rbShipNo.isChecked()){
+                    filters.setShipNo(true);
+                    filters.setShipSelected(true);
+                }
                 if (sbDist.getProgress() < sbDist.getMax()){
                     filters.setMaxDist(sbDist.getProgress());
                     filters.setDistSelected(true);
                 }
                 SingletonUser.getInstance().setActualFilters(filters);
-                onBackPressed();
+                finish();
+                setResult(RESULT_OK);
+                return;
             }
         });
     }
@@ -166,6 +183,14 @@ public class FiltersActivity extends AppCompatActivity {
             spCateg.setSelection(getSelectedItem(filters.getCateg()));
         }
         */
+        if (filters.isShipSelected()) {
+            if (filters.isShipYes()){
+                rbShipYes.setChecked(true);
+            }
+            if (filters.isShipNo()){
+                rbShipNo.setChecked(true);
+            }
+        }
         if (filters.isDistSelected()){
             sbDist.setProgress(filters.getMaxDist());
             sbDist.refreshDrawableState();

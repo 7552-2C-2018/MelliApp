@@ -5,12 +5,15 @@ public class ActualFilters {
     private boolean condSelected;
     private boolean priceSelected;
     private boolean categSelected;
+    private boolean shipSelected;
     private boolean distSelected;
     private boolean onlyNew;
     private boolean onlyUsed;
     private int minPrice;
     private int maxPrice;
     private String categ;
+    private boolean shipYes;
+    private boolean shipNo;
     private int maxDist;
 
     public ActualFilters() {
@@ -18,6 +21,7 @@ public class ActualFilters {
         this.priceSelected = false;
         this.categSelected = false;
         this.distSelected = false;
+        this.shipSelected = false;
     }
 
     public boolean isCondSelected() {
@@ -98,5 +102,29 @@ public class ActualFilters {
 
     public void setMaxDist(int maxDist) {
         this.maxDist = maxDist;
+    }
+
+    public boolean isShipSelected() {
+        return shipSelected;
+    }
+
+    public void setShipSelected(boolean shipSelected) {
+        this.shipSelected = shipSelected;
+    }
+
+    public boolean isShipYes() {
+        return shipYes;
+    }
+
+    public void setShipYes(boolean shipYes) {
+        this.shipYes = shipYes;
+    }
+
+    public boolean isShipNo() {
+        return shipNo;
+    }
+
+    public void setShipNo(boolean shipNo) {
+        this.shipNo = shipNo;
     }
 }
