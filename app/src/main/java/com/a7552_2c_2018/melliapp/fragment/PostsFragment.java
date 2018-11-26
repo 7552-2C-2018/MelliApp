@@ -1,6 +1,8 @@
 package com.a7552_2c_2018.melliapp.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +25,7 @@ import com.a7552_2c_2018.melliapp.activity.FiltersActivity;
 import com.a7552_2c_2018.melliapp.activity.ItemActivity;
 import com.a7552_2c_2018.melliapp.activity.PostsActivity;
 import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
+import com.a7552_2c_2018.melliapp.model.ActualFilters;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
@@ -46,7 +49,6 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -133,6 +135,15 @@ public class PostsFragment extends Fragment {
             }
         });
 
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPosts();
+            }
+        });
+
+        fabSearch.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
+
         fabFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +151,9 @@ public class PostsFragment extends Fragment {
                 startActivityForResult(filterIntent, RESULT_FILTERS_ACTIVITY);
             }
         });
+
+        fabFilter.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
+        fabMap.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
 
         fabInput.setOnTouchListener(new View.OnTouchListener() {
 
@@ -157,6 +171,9 @@ public class PostsFragment extends Fragment {
     private void getPosts() {
         String REQUEST_TAG = "getPosts";
         String url = getString(R.string.remote_posts);
+        String params = getFilterParams();
+        url += params;
+        Log.d(TAG, "Get Post URL" + url);
         recyclerView.setVisibility(View.GONE);
         searching.setVisibility(View.VISIBLE);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -198,6 +215,53 @@ public class PostsFragment extends Fragment {
             }
         };
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
+    }
+
+    private String getFilterParams() {
+        String result = "?search=";
+        String search = fabInput.getText().toString();
+        result += search;
+
+        ActualFilters filters = SingletonUser.getInstance().getActualFilters();
+        UserInfo user = SingletonUser.getInstance().getUser();
+        if (filters.isCondSelected()) {
+            result += "&cond=";
+            if (filters.isOnlyNew()){
+                result += "new";
+            }
+            if (filters.isOnlyUsed()){
+                result += "used";
+            }
+        }
+        if (filters.isPriceSelected()){
+            result += "&minPrice=" + filters.getMinPrice();
+            result += "&maxPrice=" + filters.getMaxPrice();
+        }
+        if (filters.isCategSelected()){
+            result += "&categ=" + filters.getCateg();
+        }
+        if (filters.isShipSelected()) {
+            result += "&shipping=";
+            if (filters.isShipYes()){
+                result += "yes";
+            }
+            if (filters.isShipNo()){
+                result += "no";
+            }
+        }
+        if (filters.isDistSelected()){
+            result += "&distance=" + filters.getMaxDist();
+            result += "&lat=" + String.valueOf(user.getLatitude());
+            result += "&long=" + String.valueOf(user.getLongitude());
+        }
+
+        if (filters.anyFilterOn()){
+            //fabFilter.setBackgroundColor(Color.YELLOW);
+            fabFilter.getBackground().setColorFilter(0xFFFFFF00,PorterDuff.Mode.MULTIPLY);
+        } else {
+            fabFilter.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
+        }
+        return result;
     }
 
     private void getPostsResponse(JSONArray response) {

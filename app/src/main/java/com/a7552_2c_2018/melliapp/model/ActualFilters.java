@@ -127,4 +127,9 @@ public class ActualFilters {
     public void setShipNo(boolean shipNo) {
         this.shipNo = shipNo;
     }
+
+    public boolean anyFilterOn(){
+        return isShipSelected() || isCategSelected() || isPriceSelected() ||
+                isCondSelected() || isDistSelected();
+    }
 }

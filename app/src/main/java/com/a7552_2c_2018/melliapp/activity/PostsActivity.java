@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner;
@@ -275,16 +276,17 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private void callBackend(){
         String REQUEST_TAG = "createPost";
         String url = getString(R.string.remote_posts);
+        /*
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED) {
-            /*
-            Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            longitude = location.getLongitude();
-            latitude = location.getLatitude();
-            */
+
+            //Location location = Objects.requireNonNull(lm).getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            //longitude = location.getLongitude();
+            //latitude = location.getLatitude();
+
             criteria = new Criteria();
             bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
 
@@ -308,7 +310,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             longitude = location.getLongitude();
             latitude = location.getLatitude();
         }
-
+        */
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url,
                 new Response.Listener<String>() {
@@ -357,8 +359,9 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                         params.put("pictures", base64array.get(j));
                     }
                 }
-                params.put("latitude", String.valueOf(latitude));
-                params.put("longitude", String.valueOf(longitude));
+                UserInfo user = SingletonUser.getInstance().getUser();
+                params.put("latitude", String.valueOf(user.getLatitude()));
+                params.put("longitude", String.valueOf(user.getLongitude()));
                 return params;
             }
 

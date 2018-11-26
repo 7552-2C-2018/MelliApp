@@ -109,8 +109,9 @@ public class FiltersActivity extends AppCompatActivity {
                 ActualFilters filters = SingletonUser.getInstance().getActualFilters();
                 filters.setCategSelected(false);
                 filters.setCondSelected(false);
-                filters.setCondSelected(false);
+                filters.setPriceSelected(false);
                 filters.setDistSelected(false);
+                filters.setShipSelected(false);
                 SingletonUser.getInstance().setActualFilters(filters);
                 finish();
                 setResult(RESULT_OK);

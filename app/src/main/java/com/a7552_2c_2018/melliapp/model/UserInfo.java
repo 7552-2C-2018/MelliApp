@@ -7,6 +7,7 @@ public class UserInfo {
     private String surname;
     private String email;
     private String photoURL;
+    private double latitude, longitude;
 
     public UserInfo (){
 
@@ -61,5 +62,21 @@ public class UserInfo {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
