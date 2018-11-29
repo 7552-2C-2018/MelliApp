@@ -5,6 +5,8 @@ public class PostItem {
     private Integer price;
     private String desc;
     private String id;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     public PostItem() {
     }
@@ -41,4 +43,23 @@ public class PostItem {
         this.id = id;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getJsonForm(){
+        return "{\"price\":" + getPrice() + ",\"id\":" + getId() + ",\"image\":" + getImage() + "}";
+    }
 }

@@ -3,12 +3,21 @@ package com.a7552_2c_2018.melliapp.activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.model.PostItem;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -27,6 +36,9 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +62,7 @@ public class MapActivity extends AppCompatActivity implements
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.st_map));
 
-        mapView = (MapView) findViewById(R.id.mapView);
+        mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -59,22 +71,45 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         MapActivity.this.mapboxMap = mapboxMap;
-        IconFactory iconFactory = IconFactory.getInstance(MapActivity.this);
-        String base64Image = getString(R.string.base64mock);
-        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        Icon icon = iconFactory.fromBitmap(decodedByte);
-        mapboxMap.addMarker(new MarkerOptions()
-                .position(new LatLng(-34.601713, -58.3855827))
-                .title("Remera Selección")
-                .snippet("$ 2950")
-                .icon(icon));
-        SymbolLayer markerStyleLayer = new SymbolLayer(MARKER_STYLE_LAYER, MARKER_SOURCE)
-                .withProperties(
-                        PropertyFactory.iconAllowOverlap(true),
-                        PropertyFactory.iconImage(MARKER_IMAGE)
-                );
-        mapboxMap.addLayer(markerStyleLayer);
+        List<PostItem> markers = SingletonUser.getInstance().getItemList();
+        for (int i=0; i<markers.size(); i++){
+            PostItem item = markers.get(i);
+            mapboxMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(item.getLatitude(), item.getLongitude()))
+                    .title(item.getDesc())
+                    .snippet(item.getJsonForm()));
+        }
+
+        mapboxMap.setInfoWindowAdapter(new MapboxMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(@NonNull Marker marker) {
+
+                View v = getLayoutInflater().inflate(R.layout.map_window, null);
+
+                TextView title = v.findViewById(R.id.mwTitle);
+                TextView price = v.findViewById(R.id.mwPrice);
+                ImageView picture = v.findViewById(R.id.mwPicture);
+
+                String aux = marker.getTitle();
+                title.setText(aux.substring(0,Math.min(aux.length(),30)));
+                String aux2 = marker.getSnippet();
+                try {
+                    JSONObject aux3 = new JSONObject(aux2);
+                    price.setText("$ " + String.valueOf(aux3.getInt("price")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String base64Image = getString(R.string.base64mock);
+                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                picture.setImageBitmap(decodedByte);
+
+                return v;
+            }
+        });
+
+
         /*
         mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
             @Override
@@ -85,6 +120,8 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
         */
+
+
         enableLocationComponent();
     }
 

@@ -57,6 +57,7 @@ public class PostsFragment extends Fragment {
 
     private static final String TAG = "PostsFragment";
     private static final int RESULT_FILTERS_ACTIVITY = 1;
+    private String url = "";
 
     @BindView(R.id.fpRecycler) RecyclerView recyclerView;
     @BindView(R.id.fpSearching) RelativeLayout searching;
@@ -128,39 +129,25 @@ public class PostsFragment extends Fragment {
             }
         });
 
-        fabNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent postIntent = new Intent(getApplicationContext(), PostsActivity.class);
-                startActivity(postIntent);
-            }
+        fabNew.setOnClickListener(v1 -> {
+            Intent postIntent = new Intent(getApplicationContext(), PostsActivity.class);
+            startActivity(postIntent);
         });
 
-        fabSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPosts();
-            }
-        });
+        fabSearch.setOnClickListener(v12 -> getPosts());
 
         fabSearch.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
 
-        fabFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent filterIntent = new Intent(getApplicationContext(), FiltersActivity.class);
-                startActivityForResult(filterIntent, RESULT_FILTERS_ACTIVITY);
-            }
+        fabFilter.setOnClickListener(v13 -> {
+            Intent filterIntent = new Intent(getApplicationContext(), FiltersActivity.class);
+            startActivityForResult(filterIntent, RESULT_FILTERS_ACTIVITY);
         });
 
         fabFilter.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
 
-        fabMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(mapIntent);
-            }
+        fabMap.setOnClickListener(v14 -> {
+            Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+            startActivity(mapIntent);
         });
         fabMap.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
 
@@ -179,7 +166,7 @@ public class PostsFragment extends Fragment {
 
     private void getPosts() {
         String REQUEST_TAG = "getPosts";
-        String url = getString(R.string.remote_posts);
+        url = getString(R.string.remote_posts);
         String params = getFilterParams();
         url += params;
         Log.d(TAG, "Get Post URL" + url);
@@ -189,25 +176,17 @@ public class PostsFragment extends Fragment {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        getPostsResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
-                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                response -> getPostsResponse(response),
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override
@@ -265,7 +244,6 @@ public class PostsFragment extends Fragment {
         }
 
         if (filters.anyFilterOn()){
-            //fabFilter.setBackgroundColor(Color.YELLOW);
             fabFilter.getBackground().setColorFilter(0xFFFFFF00,PorterDuff.Mode.MULTIPLY);
         } else {
             fabFilter.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
@@ -292,6 +270,7 @@ public class PostsFragment extends Fragment {
                 item.setId(jItem.getString("ID"));
                 input.add(item);
             }
+            SingletonUser.getInstance().setItemList(input);
             searching.setVisibility(View.GONE);
             RecyclerView.Adapter mAdapter = new ItemAdapter(input);
             recyclerView.setAdapter(mAdapter);
