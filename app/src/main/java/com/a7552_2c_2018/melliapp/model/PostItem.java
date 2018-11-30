@@ -1,5 +1,8 @@
 package com.a7552_2c_2018.melliapp.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class PostItem {
     private String image;
     private Integer price;
@@ -60,6 +63,15 @@ public class PostItem {
     }
 
     public String getJsonForm(){
-        return "{\"price\":" + getPrice() + ",\"id\":" + getId() + ",\"image\":" + getImage() + "}";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("price", getPrice());
+            json.put("id", getId());
+            json.put("image", getImage());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return json.toString();
     }
 }

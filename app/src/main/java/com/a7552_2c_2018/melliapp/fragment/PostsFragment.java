@@ -36,6 +36,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -167,8 +168,10 @@ public class PostsFragment extends Fragment {
     private void getPosts() {
         String REQUEST_TAG = "getPosts";
         url = getString(R.string.remote_posts);
+        /*
         String params = getFilterParams();
         url += params;
+        */
         Log.d(TAG, "Get Post URL" + url);
         recyclerView.setVisibility(View.GONE);
         searching.setVisibility(View.VISIBLE);
@@ -199,6 +202,49 @@ public class PostsFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
                 params.put("token", SingletonUser.getInstance().getToken());
+                String search = fabInput.getText().toString();
+                if (!search.isEmpty()){
+                    params.put("search", search);
+                }
+
+                ActualFilters filters = SingletonUser.getInstance().getActualFilters();
+                UserInfo user = SingletonUser.getInstance().getUser();
+                if (filters.isCondSelected()) {
+                    if (filters.isOnlyNew()){
+                        params.put("estado", "nuevo");
+                    }
+                    if (filters.isOnlyUsed()){
+                        params.put("estado", "usado");
+                    }
+                }
+                if (filters.isPriceSelected()){
+                    params.put("precioMinimo", String.valueOf(filters.getMinPrice()));
+                    params.put("precioMaximo", String.valueOf(filters.getMaxPrice()));
+                }
+                /*
+                if (filters.isCategSelected()){
+                    params.put("categoria", filters.getCateg());
+                }
+                */
+                if (filters.isShipSelected()) {
+                    if (filters.isShipYes()){
+                        params.put("envio", "true");
+                    }
+                    if (filters.isShipNo()){
+                        params.put("envio", "false");
+                    }
+                }
+                if (filters.isDistSelected()){
+                    params.put("distancia", String.valueOf(filters.getMaxDist()));
+                    params.put("latitud", String.valueOf(user.getLatitude()));
+                    params.put("longitud", String.valueOf(user.getLongitude()));
+                }
+
+                if (filters.anyFilterOn()){
+                    fabFilter.getBackground().setColorFilter(0xFFFFFF00,PorterDuff.Mode.MULTIPLY);
+                } else {
+                    fabFilter.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
+                }
                 return params;
             }
         };
@@ -268,6 +314,9 @@ public class PostsFragment extends Fragment {
                 item.setPrice(jItem.getInt("price"));
                 item.setDesc(jItem.getString("title"));
                 item.setId(jItem.getString("ID"));
+                JSONArray jArray = jItem.getJSONArray("coordenates");
+                item.setLongitude(jArray.getDouble(0));
+                item.setLatitude(jArray.getDouble(1));
                 input.add(item);
             }
             SingletonUser.getInstance().setItemList(input);

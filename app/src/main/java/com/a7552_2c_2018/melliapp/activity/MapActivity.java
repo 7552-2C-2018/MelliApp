@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
@@ -43,6 +45,8 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Objects;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class MapActivity extends AppCompatActivity implements
         OnMapReadyCallback, PermissionsListener {
 
@@ -52,6 +56,7 @@ public class MapActivity extends AppCompatActivity implements
     private static final String MARKER_SOURCE = "markers-source";
     private static final String MARKER_STYLE_LAYER = "markers-style-layer";
     private static final String MARKER_IMAGE = "custom-marker";
+    private static final String TAG = "MapActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,39 +94,40 @@ public class MapActivity extends AppCompatActivity implements
                 TextView title = v.findViewById(R.id.mwTitle);
                 TextView price = v.findViewById(R.id.mwPrice);
                 ImageView picture = v.findViewById(R.id.mwPicture);
+                RelativeLayout box = v.findViewById(R.id.mwRl);
 
                 String aux = marker.getTitle();
                 title.setText(aux.substring(0,Math.min(aux.length(),30)));
+
                 String aux2 = marker.getSnippet();
+                String id = "";
                 try {
                     JSONObject aux3 = new JSONObject(aux2);
                     price.setText("$ " + String.valueOf(aux3.getInt("price")));
+                    id = aux3.getString("id");
+                    byte[] decodedString = Base64.decode(aux3.getString("image"), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    picture.setImageBitmap(decodedByte);
                 } catch (JSONException e) {
+                    Log.d(TAG, "error parse: " + aux2);
                     e.printStackTrace();
                 }
 
-                String base64Image = getString(R.string.base64mock);
-                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                picture.setImageBitmap(decodedByte);
+
+
+                String finalId = id;
+                box.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
+                        itemIntent.putExtra("ID", finalId);
+                        startActivity(itemIntent);
+                    }
+                });
 
                 return v;
             }
         });
-
-
-        /*
-        mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
-
-                PopUpManager.showToastError(getApplicationContext(), marker.getTitle());
-                return true;
-            }
-        });
-        */
-
-
         enableLocationComponent();
     }
 
