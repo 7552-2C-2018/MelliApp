@@ -114,7 +114,8 @@
         </provider>
 
         <activity android:name=".activity.FiltersActivity" />
-        <activity android:name=".activity.MapActivity"></activity>
+        <activity android:name=".activity.MapActivity" />
+        <activity android:name=".activity.ItemSoldActivity"></activity>
     </application>
 
 </manifest>

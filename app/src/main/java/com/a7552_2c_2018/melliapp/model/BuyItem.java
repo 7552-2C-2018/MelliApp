@@ -6,6 +6,7 @@ public class BuyItem {
     private String status;
     private String facebookId;
     private String publDate;
+    private String id;
 
     public BuyItem() {
     }
@@ -48,5 +49,13 @@ public class BuyItem {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

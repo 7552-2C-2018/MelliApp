@@ -82,6 +82,7 @@
     <string name="st_filters">Filtros de Búsqueda</string>
     <string name="st_map">Vista de Mapa</string>
     <string name="st_solds">Mis Ventas</string>
+    <string name="st_buys">Mis Compras</string>
     <string name="st_qr">Lector QR</string>
 
     <!-- Strings related to Main Activity -->

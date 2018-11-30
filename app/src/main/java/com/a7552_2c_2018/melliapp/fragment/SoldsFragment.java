@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.ItemSoldActivity;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
+import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,15 +92,13 @@ public class SoldsFragment extends Fragment {
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
 
                         int position = recyclerView.getChildAdapterPosition(child);
-                        /*
-                        ItemAdapter aux = (ItemAdapter) recyclerView.getAdapter();
-                        String fId = aux.getPostItem(position).getFacebookId();
-                        String publ = aux.getPostItem(position).getPublDate();
-                        Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                        itemIntent.putExtra("facebookId", fId);
-                        itemIntent.putExtra("pubDate", publ);
-                        startActivity(itemIntent);
-                        */
+
+                        BuysAdapter aux = (BuysAdapter) recyclerView.getAdapter();
+                        String Id = Objects.requireNonNull(aux).getBuyItem(position).getId();
+                        Intent itemSoldIntent = new Intent(getApplicationContext(), ItemSoldActivity.class);
+                        itemSoldIntent.putExtra("ID", Id);
+                        startActivity(itemSoldIntent);
+
                         return true;
                     }
                 }catch (Exception e){
@@ -168,14 +170,15 @@ public class SoldsFragment extends Fragment {
             for (int i = 0; i < response.length(); ++i) {
                 JSONObject jItem = response.getJSONObject(i);
                 item = new BuyItem();
-                if (jItem.isNull("pictures")) {
+                if (jItem.isNull("picture")) {
                     item.setImage(getString(R.string.base64default));
                 } else {
-                    JSONArray pictures = jItem.getJSONArray("pictures");
+                    JSONArray pictures = jItem.getJSONArray("picture");
                     item.setImage(pictures.getString(0));
                 }
                 item.setStatus(jItem.getString("estado"));
                 item.setTitle(jItem.getString("title"));
+                item.setId(jItem.getString("ID"));
                 input.add(item);
             }
             RecyclerView.Adapter mAdapter = new BuysAdapter(input);

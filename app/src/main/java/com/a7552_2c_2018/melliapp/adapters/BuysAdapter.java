@@ -76,7 +76,7 @@ public class BuysAdapter extends RecyclerView.Adapter<BuysAdapter.ViewHolder>{
         return values.size();
     }
 
-    public BuyItem getPostItem(int position) {
+    public BuyItem getBuyItem(int position) {
         return values.get(position);
     }
 
