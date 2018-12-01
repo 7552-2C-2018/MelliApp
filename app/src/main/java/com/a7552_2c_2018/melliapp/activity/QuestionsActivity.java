@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
@@ -44,9 +45,11 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private static final String TAG = "QuestionsActivity";
     private String Id;
+    private String user;
 
     @BindView(R.id.aqRecycler) RecyclerView recyclerView;
 
+    @BindView(R.id.aqRlAsk) RelativeLayout rlAsk;
     @BindView(R.id.aqEtQuestion) EditText etQuestion;
     @BindView(R.id.aqBtSendQuestion) Button btnAsk;
 
@@ -61,10 +64,15 @@ public class QuestionsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.st_questions);
 
         Id = getIntent().getStringExtra("ID");
+        user = getIntent().getStringExtra("user");
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
+
+        if (user.equals("seller")){
+            rlAsk.setVisibility(View.GONE);
+        }
 
         etQuestion.setOnTouchListener(new View.OnTouchListener() {
 

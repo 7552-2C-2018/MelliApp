@@ -47,6 +47,7 @@ public class ItemActivity extends AppCompatActivity {
     private String[] sampleImages = null;
     private String Id;
     private int price;
+    private String user = "";
 
     @BindView(R.id.carouselView)
     CarouselView carouselView;
@@ -71,6 +72,9 @@ public class ItemActivity extends AppCompatActivity {
 
     @BindView(R.id.aiRlQuestions)
     RelativeLayout rlQuestions;
+
+    @BindView(R.id.aiRlAsk)
+    RelativeLayout rlAsk;
 
     @BindView(R.id.aiEtQuestion)
     EditText etQuestion;
@@ -109,6 +113,7 @@ public class ItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent qstIntent = new Intent(ItemActivity.this, QuestionsActivity.class);
                 qstIntent.putExtra("ID", Id);
+                qstIntent.putExtra("user", user);
                 startActivity(qstIntent);
             }
         });
@@ -286,7 +291,10 @@ public class ItemActivity extends AppCompatActivity {
             JSONObject id = response.getJSONObject("_id");
             String sellerId = id.getString("facebookId");
             if (sellerId.equals(SingletonUser.getInstance().getUser().getFacebookID())){
-                btnBuy.setEnabled(false);
+                btnBuy.setVisibility(View.GONE);
+                rlAsk.setVisibility(View.GONE);
+                user = "seller";
+
             }
             carouselView.setImageListener(imageListener);
             carouselView.setPageCount(sampleImages.length);
