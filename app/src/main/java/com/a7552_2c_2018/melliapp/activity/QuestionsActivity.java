@@ -1,10 +1,13 @@
 package com.a7552_2c_2018.melliapp.activity;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
+import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.adapters.QuestionsAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.model.Question;
@@ -44,11 +48,11 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class QuestionsActivity extends AppCompatActivity {
 
     private static final String TAG = "QuestionsActivity";
+    private static final int RESULT_ANSWER_ACTIVITY = 1;
     private String Id;
     private String user;
 
     @BindView(R.id.aqRecycler) RecyclerView recyclerView;
-
     @BindView(R.id.aqRlAsk) RelativeLayout rlAsk;
     @BindView(R.id.aqEtQuestion) EditText etQuestion;
     @BindView(R.id.aqBtSendQuestion) Button btnAsk;
@@ -97,8 +101,51 @@ public class QuestionsActivity extends AppCompatActivity {
             }
         });
 
-        //getQuestions();
-        mocking();
+        final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+
+            }
+
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+                try {
+                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+
+                        int position = recyclerView.getChildAdapterPosition(child);
+
+                        QuestionsAdapter aux = (QuestionsAdapter) recyclerView.getAdapter();
+                        if (!Objects.requireNonNull(aux).getQstItem(position).getHasResponse()){
+                            Intent responseIntent = new Intent(getApplicationContext(), QuestionsResponseActivity.class);
+                            String qstId = Objects.requireNonNull(aux).getQstItem(position).getId();
+                            responseIntent.putExtra("ID", qstId);
+                            startActivityForResult(responseIntent, RESULT_ANSWER_ACTIVITY);
+                        }
+                        return true;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+
+            }
+        });
+
+        getQuestions();
+        //mocking();
     }
 
     private void sendQuestion(final String qst) {
@@ -212,17 +259,17 @@ public class QuestionsActivity extends AppCompatActivity {
             for (int i = 0; i < response.length(); ++i) {
                 JSONObject jItem = response.getJSONObject(i);
                 item = new Question();
-                /*
-                if (jItem.isNull("pictures")) {
-                    item.setImage(getString(R.string.base64default));
-                } else {
-                    JSONArray pictures = jItem.getJSONArray("pictures");
-                    item.setImage(pictures.getString(0));
+                item.setId(jItem.getString("ID"));
+                item.setQuestion("fake"); //TODO
+                item.setUserId("userId");
+                JSONObject jAux = jItem.getJSONObject("_id");
+                item.setPostId(jAux.getString("postId"));
+                item.setDate(jAux.getLong("publication_date"));
+                if (jItem.has("answer")){
+                    item.setHasResponse(true);
+                    item.setResponse(jItem.getString("answer"));
+                    item.setRespDate(1543631361);//TOD0 add date
                 }
-                item.setStatus(jItem.getString("estado"));
-                item.setTitle(jItem.getString("title"));
-                input.add(item);
-                */
             }
             RecyclerView.Adapter mAdapter = new QuestionsAdapter(input);
             recyclerView.setAdapter(mAdapter);
@@ -255,6 +302,19 @@ public class QuestionsActivity extends AppCompatActivity {
 
         RecyclerView.Adapter mAdapter = new QuestionsAdapter(input);
         recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RESULT_ANSWER_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+                    getQuestions();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode,resultCode, data);
+        }
     }
 
     @Override

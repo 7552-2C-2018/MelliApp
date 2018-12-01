@@ -159,7 +159,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private void sendQuestion(final String qst) {
         String REQUEST_TAG = "sendQuestion";
-        String url = getString(R.string.remote_posts);
+        String url = getString(R.string.remote_questions);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url,
                 new Response.Listener<String>() {
@@ -193,8 +193,8 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("ID", Id);
-                params.put("question", qst);
+                params.put("postId", Id);
+                params.put("pregunta", qst);
                 return params;
             }
 

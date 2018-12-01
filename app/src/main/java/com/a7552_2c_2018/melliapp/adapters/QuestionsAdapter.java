@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.adapters;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -8,11 +9,13 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.QuestionsResponseActivity;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.model.Question;
 
@@ -20,6 +23,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.ViewHolder>{
@@ -30,6 +35,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         final TextView tvQstMsg;
         final RelativeLayout rlResponse;
         final TextView tvRespMsg;
+        final TextView tvLink;
         final View layout;
 
         ViewHolder(View v) {
@@ -38,6 +44,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             tvQstMsg = v.findViewById(R.id.qstTvMsq);
             rlResponse = v.findViewById(R.id.qstRlResp);
             tvRespMsg = v.findViewById(R.id.qstTvResp);
+            tvLink = v.findViewById(R.id.qstTvLink);
         }
 
     }
@@ -67,12 +74,17 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         final long date = values.get(position).getDate();
         final String qst = values.get(position).getQuestion();
         holder.tvQstMsg.setText(convertTime(date) + ": " + qst);
-        //holder.tvTitle.setText(title.substring(0,Math.min(title.length(),40)));
+
+
         if (values.get(position).getHasResponse()) {
             holder.rlResponse.setVisibility(View.VISIBLE);
+            holder.tvLink.setVisibility(View.GONE);
             final long respDate = values.get(position).getRespDate();
             final String resp = values.get(position).getResponse();
             holder.tvRespMsg.setText(convertTime(respDate) + ": " + resp);
+        } else {
+            holder.tvLink.setVisibility(View.VISIBLE);
+            holder.rlResponse.setVisibility(View.GONE);
         }
     }
 

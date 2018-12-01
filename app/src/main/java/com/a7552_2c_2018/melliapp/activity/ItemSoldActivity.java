@@ -41,6 +41,7 @@ public class ItemSoldActivity extends AppCompatActivity {
     private String[] sampleImages = null;
     private String Id;
     private int price;
+    private String user = "";
 
     @BindView(R.id.aisCarouselView)
     CarouselView carouselView;
@@ -90,6 +91,12 @@ public class ItemSoldActivity extends AppCompatActivity {
             }
         });
 
+        btnAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         getPostData();
     }
 
@@ -176,13 +183,13 @@ public class ItemSoldActivity extends AppCompatActivity {
             } else {
                 tvShipping.setText(getString(R.string.ia_ship_no));
             }
-            /*
+
             JSONObject id = response.getJSONObject("_id");
             String sellerId = id.getString("facebookId");
             if (sellerId.equals(SingletonUser.getInstance().getUser().getFacebookID())){
-                btnBuy.setEnabled(false);
+                user = "seller";
             }
-            */
+
             carouselView.setImageListener(imageListener);
             carouselView.setPageCount(sampleImages.length);
 

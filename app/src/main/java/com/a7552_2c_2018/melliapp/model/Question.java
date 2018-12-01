@@ -1,6 +1,9 @@
 package com.a7552_2c_2018.melliapp.model;
 
 public class Question {
+    private String id;
+    private String postId;
+    private String userId;
     private long date;
     private String question;
     private Boolean hasResponse;
@@ -8,6 +11,30 @@ public class Question {
     private String response;
 
     public Question() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public long getDate() {

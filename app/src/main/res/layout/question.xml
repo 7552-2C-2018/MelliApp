@@ -5,10 +5,16 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/qstRlAsk"
+        android:id="@+id/qstRlAll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
+
+
+    <RelativeLayout
+        android:id="@+id/qstRlAsk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/qstIvQst"
@@ -24,26 +30,38 @@
             android:layout_toEndOf="@+id/qstIvQst" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/qstRlResp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/qstRlAsk"
-        android:layout_marginTop="5dp"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/qstIvResp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/bubble_in" />
-
-        <TextView
-            android:id="@+id/qstTvResp"
+        <RelativeLayout
+            android:id="@+id/qstRlResp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/qstIvResp" />
+            android:layout_below="@+id/qstRlAsk"
+            android:layout_marginTop="5dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/qstIvResp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/bubble_in" />
+
+            <TextView
+                android:id="@+id/qstTvResp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/qstIvResp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/qstTvLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/qstRlAsk"
+            android:layout_marginTop="5dp"
+            android:text="@string/qa_btn"
+            android:textAlignment="center"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -51,7 +69,7 @@
         android:id="@+id/divider7"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/qstRlResp"
+        android:layout_below="@+id/qstRlAll"
         android:layout_marginTop="3dp"
         android:background="?android:attr/listDivider" />
 
