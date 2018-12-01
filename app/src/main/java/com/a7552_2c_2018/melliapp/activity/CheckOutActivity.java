@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -27,22 +26,20 @@ public class CheckOutActivity extends FragmentActivity implements FragmentManage
     Button btnNext;
 
     public CardFrontFragment cardFrontFragment;
-    public CardBackFragment cardBackFragment;
+    private CardBackFragment cardBackFragment;
 
     //This is our viewPager
     private ViewPager viewPager;
 
-    CCNumberFragment numberFragment;
-    CCNameFragment nameFragment;
-    CCValidityFragment validityFragment;
+    private CCNumberFragment numberFragment;
+    private CCNameFragment nameFragment;
+    private CCValidityFragment validityFragment;
     CCSecureCodeFragment secureCodeFragment;
 
-    int total_item;
-    boolean backTrack = false;
+    private int total_item;
+    private boolean backTrack = false;
 
     private boolean mShowingBack = false;
-
-    String cardNumber, cardCVV, cardValidity, cardName;
 
 
     @Override
@@ -104,27 +101,24 @@ public class CheckOutActivity extends FragmentActivity implements FragmentManage
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = viewPager.getCurrentItem();
-                if (pos < total_item) {
-                    viewPager.setCurrentItem(pos + 1);
-                } else {
-                    checkEntries();
-                }
-
+        btnNext.setOnClickListener(view -> {
+            int pos = viewPager.getCurrentItem();
+            if (pos < total_item) {
+                viewPager.setCurrentItem(pos + 1);
+            } else {
+                checkEntries();
             }
+
         });
 
 
     }
 
-    public void checkEntries() {
-        cardName = nameFragment.getName();
-        cardNumber = numberFragment.getCardNumber();
-        cardValidity = validityFragment.getValidity();
-        cardCVV = secureCodeFragment.getValue();
+    private void checkEntries() {
+        String cardName = nameFragment.getName();
+        String cardNumber = numberFragment.getCardNumber();
+        String cardValidity = validityFragment.getValidity();
+        String cardCVV = secureCodeFragment.getValue();
 
         if (TextUtils.isEmpty(cardName)) {
             Toast.makeText(CheckOutActivity.this, "Ingrese un nombre valido", Toast.LENGTH_SHORT).show();
@@ -132,7 +126,7 @@ public class CheckOutActivity extends FragmentActivity implements FragmentManage
             Toast.makeText(CheckOutActivity.this, "Ingrese un número valido", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(cardValidity)||!CreditCardUtils.isValidDate(cardValidity)) {
             Toast.makeText(CheckOutActivity.this, "Verifique la fecha", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(cardCVV)||cardCVV.length()<3) {
+        } else if (TextUtils.isEmpty(cardCVV)|| cardCVV.length()<3) {
             Toast.makeText(CheckOutActivity.this, "Ingrese un código de seguridad válido", Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(CheckOutActivity.this, "Datos ingresados correctos", Toast.LENGTH_SHORT).show();

@@ -1,22 +1,15 @@
 package com.a7552_2c_2018.melliapp.adapters;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.activity.QuestionsResponseActivity;
-import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.model.Question;
 
 import java.text.Format;
@@ -24,12 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 @SuppressWarnings("SpellCheckingInspection")
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.ViewHolder>{
 
     private final List<Question> values;
+    private Context context;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         final TextView tvQstMsg;
@@ -45,6 +37,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             rlResponse = v.findViewById(R.id.qstRlResp);
             tvRespMsg = v.findViewById(R.id.qstTvResp);
             tvLink = v.findViewById(R.id.qstTvLink);
+            context = v.getContext();
         }
 
     }
@@ -73,7 +66,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         final long date = values.get(position).getDate();
         final String qst = values.get(position).getQuestion();
-        holder.tvQstMsg.setText(convertTime(date) + ": " + qst);
+        holder.tvQstMsg.setText(String.format(context.getString(R.string.date_holder), convertTime(date), qst));
 
 
         if (values.get(position).getHasResponse()) {
@@ -81,7 +74,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             holder.tvLink.setVisibility(View.GONE);
             final long respDate = values.get(position).getRespDate();
             final String resp = values.get(position).getResponse();
-            holder.tvRespMsg.setText(convertTime(respDate) + ": " + resp);
+            holder.tvRespMsg.setText(String.format(context.getString(R.string.date_holder), convertTime(respDate), resp));
+
         } else {
             holder.tvLink.setVisibility(View.VISIBLE);
             holder.rlResponse.setVisibility(View.GONE);
@@ -98,7 +92,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         return values.get(position);
     }
 
-    public String convertTime(long time){
+    private String convertTime(long time){
         Date date = new Date(time);
         Format format = new SimpleDateFormat("dd/MM/yyyy");
         return format.format(date);

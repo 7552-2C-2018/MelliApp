@@ -13,12 +13,9 @@ import android.util.Log;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.ChatActivity;
-import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -29,8 +26,6 @@ import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.Objects;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -137,17 +132,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String url = getString(R.string.remote_chats) +
                 "userChats/" + SingletonUser.getInstance().getUser().getFacebookID() + ".json";
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-            @Override
-            public void onResponse(String s) {
-                getChatsResponse(s);
-            }
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d(TAG, volleyError.toString());
-            }
-        });
+        StringRequest request = new StringRequest(Request.Method.GET, url, this::getChatsResponse, volleyError -> Log.d(TAG, volleyError.toString()));
 
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(request,REQUEST_TAG);
     }
@@ -158,7 +143,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject obj = new JSONObject(response);
             JSONArray chats = obj.getJSONArray("chats");
             for (int i=0; i<chats.length(); i++){
-                if (chatId == chats.getString(i)){
+                if (Objects.equals(chatId, chats.getString(i))){
                     sendNotification(title);
                 }
             }

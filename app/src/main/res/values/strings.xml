@@ -1,28 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Comprame</string>
-    <string name="hardcode_text">I\'m a hardcode text !</string>
 
     <!-- Strings for general purpose -->
     <string name="yes">Si</string>
     <string name="no">No</string>
-    <string name="money">$ </string>
     <string name="content_description">decorative</string>
+    <string name="price_holder">$ %1$d</string>
+    <string name="date_holder">%1$s: %2$s</string>
 
     <!-- Strings for logging error -->
-    <string name="send_server">Mensaje a enviar al servidor: </string>
-    <string name="json_error">Error al crear el json: </string>
 
     <!-- Strings related to api uris -->
     <string name="local_login">http://10.0.2.2:5000/login</string>
-    <string name="remote_login">https://app-server-23.herokuapp.com/users/login</string>
-    <string name="remote_register">https://app-server-23.herokuapp.com/users/register</string>
-    <string name="remote_postItem">https://app-server-23.herokuapp.com/products/newPost</string>
     <string name="remote_getCat">https://app-server-23.herokuapp.com/products/categories</string>
     <string name="remote_getPays">https://app-server-23.herokuapp.com/products/payments</string>
     <string name="remote_users">https://app-server-23.herokuapp.com/users/</string>
     <string name="remote_posts">https://app-server-23.herokuapp.com/posts/</string>
     <string name="remote_buys">https://app-server-23.herokuapp.com/buys/</string>
-    <string name="remote_posts_all">https://app-server-23.herokuapp.com/posts/get_all</string>
     <string name="remote_questions">https://app-server-23.herokuapp.com/questions/</string>
     <string name="remote_chats">https://melli-7552.firebaseio.com/</string>
 
@@ -35,7 +29,6 @@
 
     <!-- Strings related to pop ups msg-->
     <string name="general_error">Ups! Hubo un error en la aplicación</string>
-    <string name="validation_error" tools:ignore="Typos">No puedes utilizar la aplicación en este momento.</string>
     <string name="post_ok">La publicación fue satisfactoria</string>
     <string name="exit_title">Salir</string>
     <string name="exit_qst">Desea cerrar la aplicación ?</string>
@@ -64,7 +57,11 @@
     <string name="icon_money">Monto que hace referencia al total de la compra</string>
     <string name="icon_arrow">Flecha hacia la derecha</string>
     <string name="icon_send_chat">Envio de mensaje en el chat</string>
+    <string name="icon_chat">Burbuja de chat</string>
     <string name="img_item">Imagen del producto</string>
+    <string name="img_chip">Chip de la tarjeta de Credito</string>
+    <string name="img_type">Tipo de la tarjeta de Credito</string>
+    <string name="img_infowindow">Imagen del marcador</string>
 
     <!-- Strings related to Facebook -->
     <string name="facebook_app_id">2088214498095092</string>
@@ -103,6 +100,7 @@
     <string name="fa_ship_no">Sin envío</string>
     <string name="fa_btn_clean">Limpiar Filtros"</string>
     <string name="fa_btn_apply">Aplicar Filtros</string>
+    <string name="fa_progress">%1$s km</string>
 
     <!-- Strings related to Account Fragment -->
     <string name="af_title1">Cerrar Sesión</string>
@@ -118,10 +116,11 @@
     <string name="msg_save_ok">Se guardaron los cambios</string>
 
     <!-- Strings related to Posts Fragment -->
-    <string name="pf_title">Buscando productos...</string>
+    <string name="pf_title">Buscando productos…</string>
+    <string name="pf_search">Buscar</string>
 
     <!-- Strings related to Chats Fragment -->
-    <string name="cf_hint">Escriba un mensaje...</string>
+    <string name="cf_hint">Escriba un mensaje…</string>
 
     <!-- Strings related to QR Fragment -->
     <string name="qr_text">Aun no se detectó un QR válido</string>
@@ -137,7 +136,7 @@
     <string name="sbf_hood">Barrio</string>
     <string name="sbf_msg">Complete los campos de dirección para continuar</string>
     <string name="sbf_btn_calculate">Calcular Costo</string>
-    <string name="sbf_btn_calc_prog">Calculando...</string>
+    <string name="sbf_btn_calc_prog">Calculando…</string>
 
 
     <!-- Strings related to Paying Buy Fragment -->
@@ -149,7 +148,7 @@
     <string name="cbf_out">Lo retiro por el domicilio del vendedor</string>
     <string name="cbf_takes">Envio estandard a domicilio</string>
     <string name="cbf_cash">A pagar en efectivo</string>
-    <string name="cbf_tc">A pagar con tarjeta terminada en </string>
+    <string name="cbf_tc">A pagar con tarjeta terminada en %1$s</string>
     <string name="cbf_button">Confirmar Compra</string>
     <string name="cbf_confirm">Compra realizada</string>
 
@@ -172,14 +171,15 @@
     <string name="ia_btn_buy">Comprar</string>
     <string name="ia_desc">Descripción</string>
     <string name="ia_pays">Medios de Pago</string>
-    <string name="ia_shipping" tools:ignore="ExtraTranslation">Envios</string>
+    <string name="ia_shipping">Envios</string>
     <string name="ia_ship_yes">Realiza Envios</string>
     <string name="ia_ship_no">No Realiza Envios</string>
     <string name="ia_questions">Preguntas</string>
     <string name="ia_btn_ask">Enviar Pregunta</string>
-    <string name="ia_ask_hint">Hace tu pregunta ...</string>
+    <string name="ia_ask_hint">Hace tu pregunta …</string>
     <string name="ia_ask_error">Ups ! te olvidaste de completar la pregunta</string>
     <string name="ia_ask_ok">Pregunta Enviada!</string>
+    <string name="ia_holder">vendido por %1$s %2$s</string>
 
     <!-- Strings related to Questions Activity -->
     <string name="qa_btn">Responder</string>
@@ -188,7 +188,9 @@
     <string name="qra_preg">Pregunta</string>
     <string name="qra_resp">Respuesta</string>
     <string name="qra_btn">Responder</string>
+    <string name="qra_hint">Ingrese la respuesta…</string>
     <string name="qra_resp_ok">Respuesta Enviada!</string>
+
 
     <string name="card_header">TARJETA CREDITO</string>
     <string name="card_number_sample">XXXX XXXX XXXX XXXX</string>
@@ -202,6 +204,7 @@
     <string name="card_number">Numero de Tarjeta</string>
     <string name="card_validity">Vence</string>
     <string name="card_cvv">Codigo CVV/CVC</string>
+    <string name="card_date">MM/YY</string>
 
     <string name="take_barcode_picture">Take Barcode Picture</string>
     <string name="scan_barcode">Scan Barcode</string>

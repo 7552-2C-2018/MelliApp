@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +31,10 @@ public class CCNameFragment extends Fragment {
 
     @BindView(R.id.et_name)
     CreditCardEditText et_name;
-    TextView tv_Name;
 
-    CheckOutActivity activity;
-    CardFrontFragment cardFrontFragment;
+    private TextView tv_Name;
+
+    private CheckOutActivity activity;
 
     public CCNameFragment() {
         // Required empty public constructor
@@ -51,7 +50,7 @@ public class CCNameFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         activity = (CheckOutActivity) getActivity();
-        cardFrontFragment = Objects.requireNonNull(activity).cardFrontFragment;
+        CardFrontFragment cardFrontFragment = Objects.requireNonNull(activity).cardFrontFragment;
 
         tv_Name = cardFrontFragment.getName();
 
@@ -81,29 +80,23 @@ public class CCNameFragment extends Fragment {
             }
         });
 
-        et_name.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+        et_name.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    if(activity!=null)
-                    {
-                        activity.nextClick();
-                        return true;
-                    }
-
+                if(activity!=null)
+                {
+                    activity.nextClick();
+                    return true;
                 }
-                return false;
+
             }
+            return false;
         });
 
 
-        et_name.setOnBackButtonListener(new CreditCardEditText.BackButtonListener() {
-            @Override
-            public void onBackClick() {
-                if(activity!=null)
-                    activity.onBackPressed();
-            }
+        et_name.setOnBackButtonListener(() -> {
+            if(activity!=null)
+                activity.onBackPressed();
         });
 
         return view;
@@ -112,7 +105,7 @@ public class CCNameFragment extends Fragment {
     public String getName()
     {
         if(et_name!=null)
-            return et_name.getText().toString().trim();
+            return Objects.requireNonNull(et_name.getText()).toString().trim();
 
         return null;
     }

@@ -1,7 +1,6 @@
 package com.a7552_2c_2018.melliapp.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,10 +32,7 @@ import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,15 +54,27 @@ public class PostsFragment extends Fragment {
 
     private static final String TAG = "PostsFragment";
     private static final int RESULT_FILTERS_ACTIVITY = 1;
-    private String url = "";
 
-    @BindView(R.id.fpRecycler) RecyclerView recyclerView;
-    @BindView(R.id.fpSearching) RelativeLayout searching;
-    @BindView(R.id.fpAbNew) FloatingActionButton fabNew;
-    @BindView(R.id.fbEtSearch) EditText fabInput;
-    @BindView(R.id.fpBtnSearch) ImageButton fabSearch;
-    @BindView(R.id.fpBtnFilter) ImageButton fabFilter;
-    @BindView(R.id.fbBtnMap) ImageButton fabMap;
+    @BindView(R.id.fpRecycler)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.fpSearching)
+    RelativeLayout searching;
+
+    @BindView(R.id.fpAbNew)
+    FloatingActionButton fabNew;
+
+    @BindView(R.id.fbEtSearch)
+    EditText fabInput;
+
+    @BindView(R.id.fpBtnSearch)
+    ImageButton fabSearch;
+
+    @BindView(R.id.fpBtnFilter)
+    ImageButton fabFilter;
+
+    @BindView(R.id.fbBtnMap)
+    ImageButton fabMap;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -80,7 +88,7 @@ public class PostsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_posts, container, false);
 
         ButterKnife.bind(this, v);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Comprame");
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("Comprame");
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
@@ -152,22 +160,18 @@ public class PostsFragment extends Fragment {
         });
         fabMap.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
 
-        fabInput.setOnTouchListener(new View.OnTouchListener() {
+        fabInput.setOnTouchListener((v15, event) -> {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                v.setFocusable(true);
-                v.setFocusableInTouchMode(true);
-                return false;
-            }
+            v15.setFocusable(true);
+            v15.setFocusableInTouchMode(true);
+            return false;
         });
         return v;
     }
 
     private void getPosts() {
         String REQUEST_TAG = "getPosts";
-        url = getString(R.string.remote_posts);
+        String url = getString(R.string.remote_posts);
         /*
         String params = getFilterParams();
         url += params;
@@ -179,7 +183,7 @@ public class PostsFragment extends Fragment {
                 Request.Method.GET,
                 url,
                 null,
-                response -> getPostsResponse(response),
+                this::getPostsResponse,
                 error -> {
                     Log.d(TAG, "volley error check" + error.getMessage());
                     //OR

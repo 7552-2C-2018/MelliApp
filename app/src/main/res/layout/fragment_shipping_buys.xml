@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -80,7 +81,9 @@
                     android:layout_marginTop="5dp"
                     android:ems="10"
                     android:hint="@string/sbf_street"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:importantForAutofill="no"
+                    tools:targetApi="o" />
 
 
                 <EditText
@@ -92,7 +95,9 @@
                     android:layout_marginTop="5dp"
                     android:ems="10"
                     android:hint="@string/sbf_cp"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:importantForAutofill="no"
+                    tools:targetApi="o" />
 
                 <EditText
                     android:id="@+id/fsbFloor"
@@ -103,7 +108,9 @@
                     android:layout_marginTop="5dp"
                     android:ems="10"
                     android:hint="@string/sbf_floor"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:importantForAutofill="no"
+                    tools:targetApi="o" />
 
                 <EditText
                     android:id="@+id/fsbDep"
@@ -115,7 +122,9 @@
                     android:layout_toEndOf="@+id/fsbFloor"
                     android:ems="10"
                     android:hint="@string/sbf_dept"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:importantForAutofill="no"
+                    tools:targetApi="o" />
 
                 <EditText
                     android:id="@+id/fsbCity"
@@ -126,7 +135,9 @@
                     android:layout_marginTop="5dp"
                     android:ems="10"
                     android:hint="@string/sbf_hood"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:importantForAutofill="no"
+                    tools:targetApi="o" />
 
                 <Button
                     android:id="@+id/fsbCalculate"
@@ -160,7 +171,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_arrow_forward_black_24dp"
+        app:srcCompat="@drawable/ic_arrow_forward_black_24dp"
         android:contentDescription="@string/icon_arrow"/>
 
 </FrameLayout>

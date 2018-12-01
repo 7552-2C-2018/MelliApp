@@ -16,19 +16,11 @@ import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.ChatActivity;
-import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
 import com.a7552_2c_2018.melliapp.adapters.ChatsAdapter;
-import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
-import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.model.ChatItem;
-import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
-import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
@@ -36,9 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,9 +41,10 @@ public class ChatsFragment extends Fragment {
 
     private static final String TAG = "ChatsFragment";
 
-    List<ChatItem> chatList;
+    private List<ChatItem> chatList;
 
-    @BindView(R.id.fcsRecycler) RecyclerView recyclerView;
+    @BindView(R.id.fcsRecycler)
+    RecyclerView recyclerView;
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -68,7 +60,7 @@ public class ChatsFragment extends Fragment {
 
 
         ButterKnife.bind(this, v);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Conversaciones");
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("Conversaciones");
 
         chatList = new ArrayList<>();
 
@@ -99,7 +91,7 @@ public class ChatsFragment extends Fragment {
 
                         int position = recyclerView.getChildAdapterPosition(child);
                         ChatsAdapter aux = (ChatsAdapter) recyclerView.getAdapter();
-                        String chatId = aux.getChatItem(position).getChatId();
+                        String chatId = Objects.requireNonNull(aux).getChatItem(position).getChatId();
                         String title = aux.getChatItem(position).getTitle();
                         Intent chatIntent = new Intent(getApplicationContext(), ChatActivity.class);
                         chatIntent.putExtra("chatId", chatId);
@@ -128,17 +120,7 @@ public class ChatsFragment extends Fragment {
         String url = getString(R.string.remote_chats) +
                 "userChats/" + SingletonUser.getInstance().getUser().getFacebookID() + ".json";
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-            @Override
-            public void onResponse(String s) {
-                getChatsResponse(s);
-            }
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d(TAG, volleyError.toString());
-            }
-        });
+        StringRequest request = new StringRequest(Request.Method.GET, url, this::getChatsResponse, volleyError -> Log.d(TAG, volleyError.toString()));
 
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(request,REQUEST_TAG);
     }
@@ -162,17 +144,7 @@ public class ChatsFragment extends Fragment {
         String url = getString(R.string.remote_chats) +
                 "chats/" + chatId + ".json";
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-            @Override
-            public void onResponse(String s) {
-                addChatResponse(s, chatId);
-            }
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d(TAG, volleyError.toString());
-            }
-        });
+        StringRequest request = new StringRequest(Request.Method.GET, url, s -> addChatResponse(s, chatId), volleyError -> Log.d(TAG, volleyError.toString()));
 
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(request,REQUEST_TAG);
     }

@@ -2,36 +2,24 @@ package com.a7552_2c_2018.melliapp.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.adapters.QuestionsAdapter;
-import com.a7552_2c_2018.melliapp.model.Question;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.vision.text.Text;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -43,9 +31,14 @@ public class QuestionsResponseActivity extends AppCompatActivity {
     private static final String TAG = "QuestionsRspActivity";
     private String qstId;
 
-    @BindView(R.id.aqrTvPreg) TextView tvPreg;
-    @BindView(R.id.aqrEtResp) EditText etResp;
-    @BindView(R.id.aqrBtResp) Button btSend;
+    @BindView(R.id.aqrTvPreg)
+    TextView tvPreg;
+
+    @BindView(R.id.aqrEtResp)
+    EditText etResp;
+
+    @BindView(R.id.aqrBtResp)
+    Button btSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +55,12 @@ public class QuestionsResponseActivity extends AppCompatActivity {
         qstId = getIntent().getStringExtra("ID");
         getQuestion();
 
-        btSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String qst = etResp.getText().toString();
-                if (qst.isEmpty()){
-                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_error));
-                } else {
-                    sendResponse(qst);
-                }
+        btSend.setOnClickListener(v -> {
+            String qst = etResp.getText().toString();
+            if (qst.isEmpty()){
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_error));
+            } else {
+                sendResponse(qst);
             }
         });
     }
@@ -83,25 +73,17 @@ public class QuestionsResponseActivity extends AppCompatActivity {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        getQstResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
-                        //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                this::getQstResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override
@@ -136,30 +118,23 @@ public class QuestionsResponseActivity extends AppCompatActivity {
         String url = getString(R.string.remote_questions);
         StringRequest stringRequest = new StringRequest(Request.Method.PUT,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "Success");
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.qra_resp_ok));
+                response -> {
+                    Log.d(TAG, "Success");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.qra_resp_ok));
 
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-                }, new Response.ErrorListener() {
+                    setResult(RESULT_OK);
+                    finish();
+                }, error -> {
+                    Log.d(TAG, "volley error create " + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "volley error create " + error.getMessage());
-                //OR
-                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                //OR
-                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                //Or if nothing works than splitting is the only option
-                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
-
-                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-            }
-        }) {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
 
             @Override
             public String getBodyContentType() {

@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/com_facebook_button_background_color_selected"
-            android:paddingStart="8dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
 
             <EditText
                 android:id="@+id/fbEtSearch"
@@ -26,11 +27,13 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="Buscar"
+                android:hint="@string/pf_search"
                 android:inputType="textPersonName"
                 android:textColor="@color/card_text_color"
                 android:textColorHint="@color/card_text_color"
-                android:textColorLink="@android:color/holo_blue_dark" />
+                android:textColorLink="@android:color/holo_blue_dark"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
 
             <ImageButton
                 android:id="@+id/fpBtnSearch"

@@ -17,9 +17,8 @@ import butterknife.ButterKnife;
 
 public class BuyingActivity extends AppCompatActivity {
 
-    private FragmentPagerAdapter adapterViewPager;
-
-    @BindView(R.id.vpPager) ViewPager vpPager;
+    @BindView(R.id.vpPager)
+    ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class BuyingActivity extends AppCompatActivity {
         buy.setTitle(getIntent().getStringExtra("title"));
         buy.setPrice(getIntent().getIntExtra("price", 0));
         SingletonUser.getInstance().setActualBuy(buy);
-        adapterViewPager = new CustomPageAdapter(getSupportFragmentManager());
+        FragmentPagerAdapter adapterViewPager = new CustomPageAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
     }
 

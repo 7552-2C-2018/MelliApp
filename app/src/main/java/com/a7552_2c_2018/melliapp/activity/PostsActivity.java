@@ -1,9 +1,6 @@
 package com.a7552_2c_2018.melliapp.activity;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
@@ -11,8 +8,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -33,11 +28,8 @@ import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.MultiSelectionSpinner;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.tuanchauict.intentchooser.ImageChooserMaker;
@@ -99,7 +91,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     LinearLayout secondLayout;
 
     private List<String> base64array = null;
-    private double latitude, longitude;
     private LocationManager locationManager;
     private Criteria criteria;
     private String bestProvider;
@@ -119,26 +110,20 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
 
         secondLayout.setVisibility(View.GONE);
 
-        loadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = ImageChooserMaker.newChooser(PostsActivity.this)
-                        .add(new CameraChooser())
-                        .add(new ImageChooser(true))
-                        .create("Seleccione la imagen");
-                startActivityForResult(intent, REQUEST_IMAGE_CHOOSER);
-            }
+        loadImg.setOnClickListener(v -> {
+            Intent intent = ImageChooserMaker.newChooser(PostsActivity.this)
+                    .add(new CameraChooser())
+                    .add(new ImageChooser(true))
+                    .create("Seleccione la imagen");
+            startActivityForResult(intent, REQUEST_IMAGE_CHOOSER);
         });
 
-        validatePost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validateInputs()) {
-                    callBackend();
-                    onBackPressed();
-                } else {
-                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.pa_msg));
-                }
+        validatePost.setOnClickListener(v -> {
+            if (validateInputs()) {
+                callBackend();
+                onBackPressed();
+            } else {
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.pa_msg));
             }
         });
 
@@ -151,25 +136,17 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        getServerCategoriesResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
-                        //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                this::getServerCategoriesResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override
@@ -211,25 +188,17 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        getServerPaymentsResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
-                        Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                this::getServerPaymentsResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override
@@ -313,27 +282,20 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         */
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "Success");
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.post_ok));
-                    }
-                }, new Response.ErrorListener() {
+                response -> {
+                    Log.d(TAG, "Success");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.post_ok));
+                }, error -> {
+                    Log.d(TAG, "volley error create " + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "volley error create " + error.getMessage());
-                //OR
-                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                //OR
-                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                //Or if nothing works than splitting is the only option
-                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
-
-                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-            }
-        }) {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
 
             @Override
             public String getBodyContentType() {
@@ -424,7 +386,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         }
     }
 
-    public static String encode2ToBase64(Bitmap image2) {
+    private static String encode2ToBase64(Bitmap image2) {
         ByteArrayOutputStream base = new ByteArrayOutputStream();
         image2.compress(Bitmap.CompressFormat.JPEG, 100, base);
         byte[] b = base.toByteArray();
@@ -444,8 +406,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
         locationManager.removeUpdates(this);
 
         //open the map:
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
     }
 
     @Override

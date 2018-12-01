@@ -7,9 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,8 +16,6 @@ import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -40,8 +36,6 @@ public class ItemSoldActivity extends AppCompatActivity {
     private static final String TAG = "ItemSoldActivity";
     private String[] sampleImages = null;
     private String Id;
-    private int price;
-    private String user = "";
 
     @BindView(R.id.aisCarouselView)
     CarouselView carouselView;
@@ -82,32 +76,23 @@ public class ItemSoldActivity extends AppCompatActivity {
 
         Id = getIntent().getStringExtra("ID");
 
-        rlQuestions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent qstIntent = new Intent(ItemSoldActivity.this, QuestionsActivity.class);
-                qstIntent.putExtra("ID", Id);
-                startActivity(qstIntent);
-            }
+        rlQuestions.setOnClickListener(v -> {
+            Intent qstIntent = new Intent(ItemSoldActivity.this, QuestionsActivity.class);
+            qstIntent.putExtra("ID", Id);
+            startActivity(qstIntent);
         });
 
-        btnAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnAction.setOnClickListener(v -> {
 
-            }
         });
         getPostData();
     }
 
-    private final ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            String base64Image = sampleImages[position];
-            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            imageView.setImageBitmap(decodedByte);
-        }
+    private final ImageListener imageListener = (position, imageView) -> {
+        String base64Image = sampleImages[position];
+        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        imageView.setImageBitmap(decodedByte);
     };
 
     private void getPostData() {
@@ -119,25 +104,17 @@ public class ItemSoldActivity extends AppCompatActivity {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        getPostResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
-                        //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                this::getPostResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override
@@ -162,11 +139,11 @@ public class ItemSoldActivity extends AppCompatActivity {
         try {
             tvTitle.setText(response.getString("title"));
             tvDesc.setText(response.getString("description"));
-            price = response.getInt("price");
-            tvPrice.setText("$ " + String.valueOf(price));
+            int price = response.getInt("price");
+            tvPrice.setText(String.format(getString(R.string.price_holder), price));
             JSONObject seller = response.getJSONObject("name");
-            tvSeller.setText("vendido por " + seller.getString("nombre") + " " +
-                    seller.getString("apellido"));
+            tvSeller.setText(String.format(getString(R.string.ia_holder), seller.getString("nombre"),
+                    seller.getString("apellido")));
             JSONArray payments = response.getJSONArray("payments");
             StringBuilder fullString = new StringBuilder(payments.getString(0));
             for (int i=1; i<payments.length(); i++){
@@ -187,7 +164,7 @@ public class ItemSoldActivity extends AppCompatActivity {
             JSONObject id = response.getJSONObject("_id");
             String sellerId = id.getString("facebookId");
             if (sellerId.equals(SingletonUser.getInstance().getUser().getFacebookID())){
-                user = "seller";
+                String user = "seller";
             }
 
             carouselView.setImageListener(imageListener);

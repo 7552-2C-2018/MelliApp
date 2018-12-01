@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,11 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,8 +20,6 @@ import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.synnapps.carouselview.CarouselView;
@@ -33,7 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -85,16 +81,14 @@ public class ItemActivity extends AppCompatActivity {
     @BindView(R.id.aiBtnBuy)
     Button btnBuy;
 
-    private final ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            String base64Image = sampleImages[position];
-            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            imageView.setImageBitmap(decodedByte);
-        }
+    private final ImageListener imageListener = (position, imageView) -> {
+        String base64Image = sampleImages[position];
+        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        imageView.setImageBitmap(decodedByte);
     };
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,48 +102,35 @@ public class ItemActivity extends AppCompatActivity {
         Id = getIntent().getStringExtra("ID");
 
 
-        rlQuestions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent qstIntent = new Intent(ItemActivity.this, QuestionsActivity.class);
-                qstIntent.putExtra("ID", Id);
-                qstIntent.putExtra("user", user);
-                startActivity(qstIntent);
+        rlQuestions.setOnClickListener(v -> {
+            Intent qstIntent = new Intent(ItemActivity.this, QuestionsActivity.class);
+            qstIntent.putExtra("ID", Id);
+            qstIntent.putExtra("user", user);
+            startActivity(qstIntent);
+        });
+
+        etQuestion.setOnTouchListener((v, event) -> {
+
+            v.setFocusable(true);
+            v.setFocusableInTouchMode(true);
+            return false;
+        });
+
+        btnAsk.setOnClickListener(v -> {
+            String qst = etQuestion.getText().toString();
+            if (qst.isEmpty()){
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_error));
+            } else {
+                sendQuestion(qst);
             }
         });
 
-        etQuestion.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                v.setFocusable(true);
-                v.setFocusableInTouchMode(true);
-                return false;
-            }
-        });
-
-        btnAsk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String qst = etQuestion.getText().toString();
-                if (qst.isEmpty()){
-                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_error));
-                } else {
-                    sendQuestion(qst);
-                }
-            }
-        });
-
-        btnBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent buyIntent = new Intent(ItemActivity.this, BuyingActivity.class);
-                buyIntent.putExtra("ID", Id);
-                buyIntent.putExtra("title", tvTitle.getText().toString());
-                buyIntent.putExtra("price", price);
-                startActivity(buyIntent);
-            }
+        btnBuy.setOnClickListener(v -> {
+            Intent buyIntent = new Intent(ItemActivity.this, BuyingActivity.class);
+            buyIntent.putExtra("ID", Id);
+            buyIntent.putExtra("title", tvTitle.getText().toString());
+            buyIntent.putExtra("price", price);
+            startActivity(buyIntent);
         });
 
         //mocking();
@@ -162,28 +143,21 @@ public class ItemActivity extends AppCompatActivity {
         String url = getString(R.string.remote_questions);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "Success");
-                        etQuestion.setText("");
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_ok));
-                    }
-                }, new Response.ErrorListener() {
+                response -> {
+                    Log.d(TAG, "Success");
+                    etQuestion.setText("");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_ok));
+                }, error -> {
+                    Log.d(TAG, "volley error create " + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "volley error create " + error.getMessage());
-                //OR
-                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                //OR
-                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                //Or if nothing works than splitting is the only option
-                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
-
-                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-            }
-        }) {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
 
             @Override
             public String getBodyContentType() {
@@ -224,25 +198,17 @@ public class ItemActivity extends AppCompatActivity {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        getPostResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
-                        //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                this::getPostResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override
@@ -268,10 +234,10 @@ public class ItemActivity extends AppCompatActivity {
             tvTitle.setText(response.getString("title"));
             tvDesc.setText(response.getString("description"));
             price = response.getInt("price");
-            tvPrice.setText("$ " + String.valueOf(price));
+            tvPrice.setText(String.format(getString(R.string.price_holder), price));
             JSONObject seller = response.getJSONObject("name");
-            tvSeller.setText("vendido por " + seller.getString("nombre") + " " +
-                    seller.getString("apellido"));
+            tvSeller.setText(String.format(getString(R.string.ia_holder), seller.getString("nombre"),
+                    seller.getString("apellido")));
             JSONArray payments = response.getJSONArray("payments");
             StringBuilder fullString = new StringBuilder(payments.getString(0));
             for (int i=1; i<payments.length(); i++){

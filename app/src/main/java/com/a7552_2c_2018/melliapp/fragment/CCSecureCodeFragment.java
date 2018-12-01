@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +34,10 @@ public class CCSecureCodeFragment extends Fragment {
 
     @BindView(R.id.et_cvv)
     CreditCardEditText et_cvv;
-    TextView tv_cvv;
 
-    CheckOutActivity activity;
+    private TextView tv_cvv;
+
+    private CheckOutActivity activity;
 
     public CCSecureCodeFragment() {
         // Required empty public constructor
@@ -80,28 +80,22 @@ public class CCSecureCodeFragment extends Fragment {
             }
         });
 
-        et_cvv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+        et_cvv.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    if(activity!=null)
-                    {
-                        activity.nextClick();
-                        return true;
-                    }
-
+                if(activity!=null)
+                {
+                    activity.nextClick();
+                    return true;
                 }
-                return false;
+
             }
+            return false;
         });
 
-        et_cvv.setOnBackButtonListener(new CreditCardEditText.BackButtonListener() {
-            @Override
-            public void onBackClick() {
-                if(activity!=null)
-                    activity.onBackPressed();
-            }
+        et_cvv.setOnBackButtonListener(() -> {
+            if(activity!=null)
+                activity.onBackPressed();
         });
 
         return view;

@@ -1,32 +1,26 @@
 package com.a7552_2c_2018.melliapp.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.model.PostItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
-import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.Icon;
-import com.mapbox.mapboxsdk.annotations.IconFactory;
-import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -36,16 +30,12 @@ import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Objects;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MapActivity extends AppCompatActivity implements
         OnMapReadyCallback, PermissionsListener {
@@ -85,48 +75,42 @@ public class MapActivity extends AppCompatActivity implements
                     .snippet(item.getJsonForm()));
         }
 
-        mapboxMap.setInfoWindowAdapter(new MapboxMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(@NonNull Marker marker) {
+        mapboxMap.setInfoWindowAdapter(marker -> {
 
-                View v = getLayoutInflater().inflate(R.layout.map_window, null);
+            @SuppressLint("InflateParams") View v = getLayoutInflater().inflate(R.layout.map_window, null);
 
-                TextView title = v.findViewById(R.id.mwTitle);
-                TextView price = v.findViewById(R.id.mwPrice);
-                ImageView picture = v.findViewById(R.id.mwPicture);
-                RelativeLayout box = v.findViewById(R.id.mwRl);
+            TextView title = v.findViewById(R.id.mwTitle);
+            TextView price = v.findViewById(R.id.mwPrice);
+            ImageView picture = v.findViewById(R.id.mwPicture);
+            RelativeLayout box = v.findViewById(R.id.mwRl);
 
-                String aux = marker.getTitle();
-                title.setText(aux.substring(0,Math.min(aux.length(),30)));
+            String aux = marker.getTitle();
+            title.setText(aux.substring(0,Math.min(aux.length(),30)));
 
-                String aux2 = marker.getSnippet();
-                String id = "";
-                try {
-                    JSONObject aux3 = new JSONObject(aux2);
-                    price.setText("$ " + String.valueOf(aux3.getInt("price")));
-                    id = aux3.getString("id");
-                    byte[] decodedString = Base64.decode(aux3.getString("image"), Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    picture.setImageBitmap(decodedByte);
-                } catch (JSONException e) {
-                    Log.d(TAG, "error parse: " + aux2);
-                    e.printStackTrace();
-                }
-
-
-
-                String finalId = id;
-                box.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                        itemIntent.putExtra("ID", finalId);
-                        startActivity(itemIntent);
-                    }
-                });
-
-                return v;
+            String aux2 = marker.getSnippet();
+            String id = "";
+            try {
+                JSONObject aux3 = new JSONObject(aux2);
+                price.setText(String.format(getString(R.string.price_holder), aux3.getInt("price")));
+                id = aux3.getString("id");
+                byte[] decodedString = Base64.decode(aux3.getString("image"), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                picture.setImageBitmap(decodedByte);
+            } catch (JSONException e) {
+                Log.d(TAG, "error parse: " + aux2);
+                e.printStackTrace();
             }
+
+
+
+            String finalId = id;
+            box.setOnClickListener(v1 -> {
+                Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
+                itemIntent.putExtra("ID", finalId);
+                startActivity(itemIntent);
+            });
+
+            return v;
         });
         enableLocationComponent();
     }

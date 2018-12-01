@@ -16,9 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin">
-
-
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin">
 
             <ImageView
                 android:layout_width="@dimen/chip_width"
@@ -26,7 +25,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="@dimen/items_inbetween"
                 android:src="@drawable/ic_chip"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/img_chip" />
 
             <TextView
                 android:id="@+id/tv_card_number"
@@ -45,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/items_inbetween_small"
+                    android:layout_marginEnd="@dimen/items_inbetween_small"
                     android:text="@string/card_validity_label"
                     android:textColor="@color/card_text_color"
                     android:textSize="@dimen/xsmall_text" />
@@ -75,12 +74,12 @@
         <ImageView
             android:id="@+id/ivType"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/items_inbetween_small"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/items_inbetween_small"
             android:layout_marginBottom="@dimen/items_inbetween_small"
             android:layout_width="@dimen/cardtype_width"
             android:layout_height="@dimen/cardtype_height"
-            android:contentDescription="TODO" />
+            android:contentDescription="@string/img_type" />
 
     </RelativeLayout>
 

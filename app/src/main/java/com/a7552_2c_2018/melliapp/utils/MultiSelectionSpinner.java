@@ -70,21 +70,15 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
         builder.setTitle(getResources().getString(R.string.multi_title));
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
-        builder.setPositiveButton(getResources().getString(R.string.multi_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
-                listener.selectedIndices(getSelectedIndices());
-                listener.selectedStrings(getSelectedStrings());
-            }
+        builder.setPositiveButton(getResources().getString(R.string.multi_ok), (dialog, which) -> {
+            System.arraycopy(mSelection, 0, mSelectionAtStart, 0, mSelection.length);
+            listener.selectedIndices(getSelectedIndices());
+            listener.selectedStrings(getSelectedStrings());
         });
-        builder.setNegativeButton(getResources().getString(R.string.multi_discard), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                simple_adapter.clear();
-                simple_adapter.add(_itemsAtStart);
-                System.arraycopy(mSelectionAtStart, 0, mSelection, 0, mSelectionAtStart.length);
-            }
+        builder.setNegativeButton(getResources().getString(R.string.multi_discard), (dialog, which) -> {
+            simple_adapter.clear();
+            simple_adapter.add(_itemsAtStart);
+            System.arraycopy(mSelectionAtStart, 0, mSelection, 0, mSelectionAtStart.length);
         });
         builder.show();
         return true;

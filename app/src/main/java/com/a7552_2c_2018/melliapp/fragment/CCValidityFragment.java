@@ -4,7 +4,6 @@ package com.a7552_2c_2018.melliapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +29,8 @@ public class CCValidityFragment extends Fragment {
 
     @BindView(R.id.et_validity)
     CreditCardEditText et_validity;
-    TextView tv_validity;
 
-    CheckOutActivity activity;
-    CardFrontFragment cardFrontFragment;
+    private CheckOutActivity activity;
 
     public CCValidityFragment() {
         // Required empty public constructor
@@ -48,33 +45,27 @@ public class CCValidityFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         activity = (CheckOutActivity) getActivity();
-        cardFrontFragment = Objects.requireNonNull(activity).cardFrontFragment;
+        CardFrontFragment cardFrontFragment = Objects.requireNonNull(activity).cardFrontFragment;
 
 
-        tv_validity = cardFrontFragment.getValidity();
+        TextView tv_validity = cardFrontFragment.getValidity();
         et_validity.addTextChangedListener(new CreditCardExpiryTextWatcher(et_validity, tv_validity));
 
-        et_validity.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+        et_validity.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    if (activity != null) {
-                        activity.nextClick();
-                        return true;
-                    }
-
+                if (activity != null) {
+                    activity.nextClick();
+                    return true;
                 }
-                return false;
+
             }
+            return false;
         });
 
-        et_validity.setOnBackButtonListener(new CreditCardEditText.BackButtonListener() {
-            @Override
-            public void onBackClick() {
-                if(activity!=null)
-                    activity.onBackPressed();
-            }
+        et_validity.setOnBackButtonListener(() -> {
+            if(activity!=null)
+                activity.onBackPressed();
         });
 
 
@@ -84,7 +75,7 @@ public class CCValidityFragment extends Fragment {
     public String getValidity()
     {
         if(et_validity!=null)
-            return et_validity.getText().toString().trim();
+            return Objects.requireNonNull(et_validity.getText()).toString().trim();
 
         return null;
     }

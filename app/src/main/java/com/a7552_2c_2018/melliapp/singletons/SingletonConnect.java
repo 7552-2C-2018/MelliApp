@@ -1,6 +1,7 @@
 package com.a7552_2c_2018.melliapp.singletons;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
@@ -13,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 
 
 public class SingletonConnect {
+    @SuppressLint("StaticFieldLeak")
     private static SingletonConnect mAppSingletonInstance;
     private RequestQueue mRequestQueue;
     private static Context mContext;

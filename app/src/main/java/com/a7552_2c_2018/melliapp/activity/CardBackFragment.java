@@ -23,11 +23,8 @@ import butterknife.ButterKnife;
  */
 public class CardBackFragment extends Fragment {
 
-    @BindView(R.id.tv_cvv)TextView tv_cvv;
-    FontTypeChange fontTypeChange;
-
-    CheckOutActivity activity;
-    CCSecureCodeFragment securecode;
+    @BindView(R.id.tv_cvv)
+    TextView tv_cvv;
 
     public CardBackFragment() {
         // Required empty public constructor
@@ -43,11 +40,11 @@ public class CardBackFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_card_back, container, false);
         ButterKnife.bind(this, view);
 
-        fontTypeChange=new FontTypeChange(getActivity());
+        FontTypeChange fontTypeChange = new FontTypeChange(getActivity());
         tv_cvv.setTypeface(fontTypeChange.get_fontface(1));
 
-        activity = (CheckOutActivity) getActivity();
-        securecode = activity.secureCodeFragment;
+        CheckOutActivity activity = (CheckOutActivity) getActivity();
+        CCSecureCodeFragment securecode = activity.secureCodeFragment;
         securecode.setCvv(tv_cvv);
 
         if(!TextUtils.isEmpty(securecode.getValue()))

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.mapbox.mapboxsdk.annotations.BubbleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -29,7 +28,8 @@
             android:id="@+id/mwPicture"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/img_infowindow" />
 
         <RelativeLayout
             android:id="@+id/text_container"
@@ -45,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="false"
-                android:text="@string/mock_title"
                 android:textSize="14sp" />
 
             <TextView
@@ -55,7 +54,6 @@
                 android:layout_below="@id/mwTitle"
                 android:layout_alignStart="@id/mwTitle"
                 android:layout_marginTop="2dp"
-                android:text="$ 2950"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 

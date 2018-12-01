@@ -17,10 +17,10 @@ public class CreditCardUtils {
     public static final int DISCOVER = 3;
     public static final int AMEX = 4;
 
-    public static final String VISA_PREFIX = "4";
-    public static final String MASTERCARD_PREFIX = "51,52,53,54,55,";
-    public static final String DISCOVER_PREFIX = "6011";
-    public static final String AMEX_PREFIX = "34,37,";
+    private static final String VISA_PREFIX = "4";
+    private static final String MASTERCARD_PREFIX = "51,52,53,54,55,";
+    private static final String DISCOVER_PREFIX = "6011";
+    private static final String AMEX_PREFIX = "34,37,";
 
     public static int getCardType(String cardNumber) {
 
@@ -54,7 +54,7 @@ public class CreditCardUtils {
             String month=cardValidity.substring(0,2);
             String year=cardValidity.substring(3,5);
 
-            int monthpart=-1,yearpart=-1;
+            int monthpart,yearpart;
 
             try
             {

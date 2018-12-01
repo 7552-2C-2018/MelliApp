@@ -16,7 +16,6 @@ import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
 import com.a7552_2c_2018.melliapp.model.ActualBuy;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 
-import java.security.Signature;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -31,10 +30,17 @@ public class PayingBuyFragment extends Fragment {
     private static final String TAG = "PayingBuyFragment";
     private static final int RESULT_CHECK_OUT_ACTIVITY = 1;
 
-    @BindView(R.id.fpbRbCash) RadioButton cash;
-    @BindView(R.id.fpbRbTc) RadioButton creditCard;
-    @BindView(R.id.fpbBtBack) ImageButton btBack;
-    @BindView(R.id.fpbBtNext) ImageButton btNext;
+    @BindView(R.id.fpbRbCash)
+    RadioButton cash;
+
+    @BindView(R.id.fpbRbTc)
+    RadioButton creditCard;
+
+    @BindView(R.id.fpbBtBack)
+    ImageButton btBack;
+
+    @BindView(R.id.fpbBtNext)
+    ImageButton btNext;
 
     public PayingBuyFragment() {
         // Required empty public constructor
@@ -48,39 +54,25 @@ public class PayingBuyFragment extends Fragment {
 
         ButterKnife.bind(this, v);
 
-        cash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cash.isChecked()) {
-                    saveValues();
-                    ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
-                }
-            }
-        });
-
-        creditCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (creditCard.isChecked()) {
-                    Intent cardIntent = new Intent(getApplicationContext(), CheckOutActivity.class);
-                    startActivityForResult(cardIntent, RESULT_CHECK_OUT_ACTIVITY);
-                }
-            }
-        });
-
-        btBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(0);
-            }
-        });
-
-        btNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        cash.setOnClickListener(v12 -> {
+            if (cash.isChecked()) {
                 saveValues();
                 ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
             }
+        });
+
+        creditCard.setOnClickListener(v1 -> {
+            if (creditCard.isChecked()) {
+                Intent cardIntent = new Intent(getApplicationContext(), CheckOutActivity.class);
+                startActivityForResult(cardIntent, RESULT_CHECK_OUT_ACTIVITY);
+            }
+        });
+
+        btBack.setOnClickListener(view -> ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(0));
+
+        btNext.setOnClickListener(view -> {
+            saveValues();
+            ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
         });
 
         return v;

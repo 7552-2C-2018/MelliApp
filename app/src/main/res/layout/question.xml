@@ -20,7 +20,8 @@
             android:id="@+id/qstIvQst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/bubble_out" />
+            app:srcCompat="@drawable/bubble_out"
+            android:contentDescription="@string/icon_chat" />
 
         <TextView
             android:id="@+id/qstTvMsq"
@@ -42,7 +43,8 @@
                 android:id="@+id/qstIvResp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/bubble_in" />
+                app:srcCompat="@drawable/bubble_in"
+                android:contentDescription="@string/icon_chat"/>
 
             <TextView
                 android:id="@+id/qstTvResp"

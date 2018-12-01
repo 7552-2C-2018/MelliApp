@@ -120,7 +120,9 @@
             android:inputType="textEmailAddress"
             android:hint="@string/af_title8"
             app:layout_constraintStart_toEndOf="@+id/faTvFiller3"
-            app:layout_constraintTop_toBottomOf="@+id/faEtSurname"/>
+            app:layout_constraintTop_toBottomOf="@+id/faEtSurname"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
 
         <EditText
             android:id="@+id/faEtSurname"
@@ -132,7 +134,9 @@
             android:text="@string/af_title9"
             app:layout_constraintStart_toEndOf="@+id/faTvFiller2"
             app:layout_constraintTop_toBottomOf="@+id/faEtName"
-            tools:ignore="LabelFor" />
+            tools:ignore="LabelFor"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
 
         <EditText
             android:id="@+id/faEtName"
@@ -145,7 +149,9 @@
             android:text="@string/af_title10"
             app:layout_constraintStart_toEndOf="@+id/faTvFiller1"
             app:layout_constraintTop_toBottomOf="@+id/AccProfilePicture"
-            tools:ignore="LabelFor" />
+            tools:ignore="LabelFor"
+            android:importantForAutofill="no"
+            tools:targetApi="o" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

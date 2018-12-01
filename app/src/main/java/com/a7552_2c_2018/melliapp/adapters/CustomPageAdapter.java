@@ -17,8 +17,7 @@ public class CustomPageAdapter extends FragmentPagerAdapter {
     // Returns total number of pages.
     @Override
     public int getCount() {
-        int NUM_ITEMS = 3;
-        return NUM_ITEMS;
+        return 3;
     }
 
     // Returns the fragment to display for a particular page.

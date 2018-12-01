@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 
 public class FontTypeChange {
 
-	private Context c;
+	private final Context c;
 	
 	public FontTypeChange(Context s) {
 		// TODO Auto-generated constructor stub

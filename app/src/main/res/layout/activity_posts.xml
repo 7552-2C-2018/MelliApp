@@ -42,7 +42,9 @@
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title2"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
 
             <EditText
                 android:id="@+id/apMlDesc"
@@ -52,7 +54,9 @@
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title3"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
 
             <EditText
                 android:id="@+id/apNstock"
@@ -62,7 +66,9 @@
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title4"
-                android:inputType="number" />
+                android:inputType="number"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
 
             <EditText
                 android:id="@+id/apNprice"
@@ -72,7 +78,9 @@
                 android:layout_marginTop="5dp"
                 android:ems="10"
                 android:hint="@string/pa_title5"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
 
             <RadioGroup
                 android:layout_width="match_parent"

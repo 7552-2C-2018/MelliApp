@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.utils;
 
+import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 
 public class CreditCardExpiryTextWatcher implements TextWatcher {
 
-    private EditText etCard;
+    private final EditText etCard;
     private TextView tvCard;
     private boolean isDelete;
 
@@ -33,6 +34,7 @@ public class CreditCardExpiryTextWatcher implements TextWatcher {
         isDelete = before != 0;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void afterTextChanged(Editable s) {
         String source = s.toString();

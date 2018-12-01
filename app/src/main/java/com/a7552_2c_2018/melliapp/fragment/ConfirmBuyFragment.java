@@ -1,18 +1,10 @@
 package com.a7552_2c_2018.melliapp.fragment;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,20 +14,15 @@ import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.HomeActivity;
-import com.a7552_2c_2018.melliapp.activity.ItemActivity;
 import com.a7552_2c_2018.melliapp.model.ActualBuy;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,15 +34,28 @@ public class ConfirmBuyFragment extends Fragment {
 
     private static final String TAG = "ConfirmBuyFragment";
 
-    @BindView(R.id.fcbTvItem) TextView tvItemDesc;
-    @BindView(R.id.fcbTvItemPrice) TextView tvItemPrice;
-    @BindView(R.id.fcbTvShip) TextView tvShipDesc;
-    @BindView(R.id.fcbTvShipPrice) TextView tvShipPrice;
-    @BindView(R.id.fcbTvPay) TextView tvPayDesc;
-    @BindView(R.id.fcbTvPayPrice) TextView tvPayPrice;
-    @BindView(R.id.fcbBtnConf) Button btConfirm;
+    @BindView(R.id.fcbTvItem)
+    TextView tvItemDesc;
 
-    int total;
+    @BindView(R.id.fcbTvItemPrice)
+    TextView tvItemPrice;
+
+    @BindView(R.id.fcbTvShip)
+    TextView tvShipDesc;
+
+    @BindView(R.id.fcbTvShipPrice)
+    TextView tvShipPrice;
+
+    @BindView(R.id.fcbTvPay)
+    TextView tvPayDesc;
+
+    @BindView(R.id.fcbTvPayPrice)
+    TextView tvPayPrice;
+
+    @BindView(R.id.fcbBtnConf)
+    Button btConfirm;
+
+    private int total;
 
     public ConfirmBuyFragment() {
         // Required empty public constructor
@@ -73,28 +73,24 @@ public class ConfirmBuyFragment extends Fragment {
         total = buy.getPrice();
 
         tvItemDesc.setText(buy.getTitle());
-        tvItemPrice.setText("$ " + buy.getPrice());
+        Resources res = getResources();
+        tvItemPrice.setText(String.format(res.getString(R.string.price_holder), buy.getPrice()));
         if (buy.isPaysShipping()){
             tvShipDesc.setText(getString(R.string.cbf_takes));
-            tvShipPrice.setText("$ " + buy.getShippingPrice());
+            tvShipPrice.setText(String.format(res.getString(R.string.price_holder), buy.getShippingPrice()));
             total =+ buy.getShippingPrice();
         } else {
             tvShipDesc.setText(getString(R.string.cbf_out));
-            tvShipPrice.setText("$ 0");
+            tvShipPrice.setText(String.format(res.getString(R.string.price_holder), 0));
         }
         if (buy.isPaysWithCard()){
-            tvPayDesc.setText(getString(R.string.cbf_tc) + buy.getCardNumber().substring(12,15));
+            tvPayDesc.setText(String.format(res.getString(R.string.cbf_tc), buy.getCardNumber().substring(12,15)));
         } else {
             tvPayDesc.setText(getString(R.string.cbf_cash));
         }
-        tvPayPrice.setText("$ " + total);
+        tvPayPrice.setText(String.format(res.getString(R.string.price_holder), total));
 
-        btConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callBackend();
-            }
-        });
+        btConfirm.setOnClickListener(v1 -> callBackend());
         return v;
     }
 
@@ -103,29 +99,22 @@ public class ConfirmBuyFragment extends Fragment {
         String url = getString(R.string.remote_buys);
         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "Success");
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.cbf_confirm));
-                        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivity(homeIntent);
-                    }
-                }, new Response.ErrorListener() {
+                response -> {
+                    Log.d(TAG, "Success");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.cbf_confirm));
+                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(homeIntent);
+                }, error -> {
+                    Log.d(TAG, "volley error create " + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "volley error create " + error.getMessage());
-                //OR
-                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                //OR
-                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                //Or if nothing works than splitting is the only option
-                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
-
-                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-            }
-        }) {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
 
             @Override
             public String getBodyContentType() {

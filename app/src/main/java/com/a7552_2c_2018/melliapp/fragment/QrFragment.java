@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,12 +36,13 @@ public class QrFragment extends Fragment {
 
     private static final String TAG = "QrFragment";
 
-    @BindView(R.id.surfaceView) SurfaceView surfaceView;
-    @BindView(R.id.txtBarcodeValue) TextView txtBarcodeValue;
-    private BarcodeDetector barcodeDetector;
+    @BindView(R.id.surfaceView)
+    SurfaceView surfaceView;
+    @BindView(R.id.txtBarcodeValue)
+    TextView txtBarcodeValue;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
-    String intentData = "";
+    private String intentData = "";
 
     public QrFragment() {
         // Required empty public constructor
@@ -47,14 +50,14 @@ public class QrFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_qr, container, false);
 
         ButterKnife.bind(this, v);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.st_qr));
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(getString(R.string.st_qr));
 
         return v;
     }
@@ -63,7 +66,7 @@ public class QrFragment extends Fragment {
 
         //Toast.makeText(getApplicationContext(), "Barcode scanner started", Toast.LENGTH_SHORT).show();
 
-        barcodeDetector = new BarcodeDetector.Builder(getApplicationContext())
+        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(getApplicationContext())
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
 
@@ -79,7 +82,7 @@ public class QrFragment extends Fragment {
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(surfaceView.getHolder());
                     } else {
-                        ActivityCompat.requestPermissions(getActivity(), new
+                        ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
 
@@ -113,17 +116,13 @@ public class QrFragment extends Fragment {
                 if (barcodes.size() != 0) {
 
 
-                    txtBarcodeValue.post(new Runnable() {
+                    txtBarcodeValue.post(() -> {
+                        intentData = barcodes.valueAt(0).displayValue;
+                        txtBarcodeValue.setText(intentData);
 
-                        @Override
-                        public void run() {
-                            intentData = barcodes.valueAt(0).displayValue;
-                            txtBarcodeValue.setText(intentData);
-
-                            Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                            itemIntent.putExtra("ID", intentData);
-                            startActivity(itemIntent);
-                        }
+                        Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
+                        itemIntent.putExtra("ID", intentData);
+                        startActivity(itemIntent);
                     });
 
                 }

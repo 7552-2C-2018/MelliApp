@@ -3,7 +3,6 @@ package com.a7552_2c_2018.melliapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,17 +31,38 @@ public class ShippingBuyFragment extends Fragment {
 
     private static final String TAG = "ShippingBuyFragment";
 
-    @BindView(R.id.fsbRbOut) RadioButton noShipping;
-    @BindView(R.id.fsbRbShips) RadioButton takesShipping;
-    @BindView(R.id.fsbRlAddress) RelativeLayout rlShipping;
-    @BindView(R.id.fsbStreet) EditText tvStreet;
-    @BindView(R.id.fsbPostalCode) EditText tvCp;
-    @BindView(R.id.fsbFloor) EditText tvFloor;
-    @BindView(R.id.fsbDep) EditText tvDept;
-    @BindView(R.id.fsbCity) EditText tvCity;
-    @BindView(R.id.fsbCalculate) Button btCalculateCost;
-    @BindView(R.id.fsbShipCost) TextView tvShipCost;
-    @BindView(R.id.fsbBtnNext) ImageButton btNext;
+    @BindView(R.id.fsbRbOut)
+    RadioButton noShipping;
+
+    @BindView(R.id.fsbRbShips)
+    RadioButton takesShipping;
+
+    @BindView(R.id.fsbRlAddress)
+    RelativeLayout rlShipping;
+
+    @BindView(R.id.fsbStreet)
+    EditText tvStreet;
+
+    @BindView(R.id.fsbPostalCode)
+    EditText tvCp;
+
+    @BindView(R.id.fsbFloor)
+    EditText tvFloor;
+
+    @BindView(R.id.fsbDep)
+    EditText tvDept;
+
+    @BindView(R.id.fsbCity)
+    EditText tvCity;
+
+    @BindView(R.id.fsbCalculate)
+    Button btCalculateCost;
+
+    @BindView(R.id.fsbShipCost)
+    TextView tvShipCost;
+
+    @BindView(R.id.fsbBtnNext)
+    ImageButton btNext;
 
     public ShippingBuyFragment() {
         // Required empty public constructor
@@ -57,47 +77,33 @@ public class ShippingBuyFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         rlShipping.setVisibility(View.GONE);
-        noShipping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (noShipping.isChecked()) {
-                    rlShipping.setVisibility(View.GONE);
-                    saveValues();
-                    ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(1);
-
-                }
-            }
-        });
-
-        takesShipping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (takesShipping.isChecked()) {
-                    rlShipping.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        btNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validInput()){
-                    saveValues();
-                    ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(1);
-                } else {
-                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.sbf_msg));
-                }
+        noShipping.setOnClickListener(v12 -> {
+            if (noShipping.isChecked()) {
+                rlShipping.setVisibility(View.GONE);
+                saveValues();
+                ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(1);
 
             }
         });
 
-        btCalculateCost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calculateCost(tvStreet.getText().toString(), tvCp.getText().toString(),
-                        tvCity.getText().toString());
+        takesShipping.setOnClickListener(v1 -> {
+            if (takesShipping.isChecked()) {
+                rlShipping.setVisibility(View.VISIBLE);
             }
         });
+
+        btNext.setOnClickListener(view -> {
+            if (validInput()){
+                saveValues();
+                ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(1);
+            } else {
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.sbf_msg));
+            }
+
+        });
+
+        btCalculateCost.setOnClickListener(view -> calculateCost(tvStreet.getText().toString(), tvCp.getText().toString(),
+                tvCity.getText().toString()));
 
         return v;
     }

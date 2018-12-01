@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,15 +21,11 @@ import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -49,8 +46,6 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
     private static final int RESULT_LOGIN_ACTIVITY = 1;
     private double latitude = 0, longitude = 0;
     private LocationManager locationManager;
-    private Criteria criteria;
-    private String bestProvider;
 
     @BindView(R.id.profilePicture)
     ProfilePictureView profilePicture;
@@ -88,31 +83,29 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
         tvMsg.setText(R.string.validating);
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @SuppressWarnings("SpellCheckingInspection")
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.d(TAG, "response: " + response.toString());
+                (object, response) -> {
+                    Log.d(TAG, "response: " + response.toString());
 
-                        String id, name, surname, email;
-                        String profilePicUrl;
-                        try {
-                            id = object.getString("id");
-                            name = object.getString("first_name");
-                            surname = object.getString("last_name");
-                            email = object.getString("email");
-                            profilePicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                            UserInfo user;
-                            user = new UserInfo(id, name, surname, email);
-                            user.setPhotoURL(profilePicUrl);
-                            SingletonUser.getInstance().setUser(user);
-                            profilePicture.setProfileId(id);
-                            TextView tvTitle = findViewById(R.id.tvHelloName);
-                            tvTitle.setText("¡Bienvenido " + name + "!");
-                            checkServer();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    String id, name, surname, email;
+                    String profilePicUrl;
+                    try {
+                        id = object.getString("id");
+                        name = object.getString("first_name");
+                        surname = object.getString("last_name");
+                        email = object.getString("email");
+                        profilePicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                        UserInfo user;
+                        user = new UserInfo(id, name, surname, email);
+                        user.setPhotoURL(profilePicUrl);
+                        SingletonUser.getInstance().setUser(user);
+                        profilePicture.setProfileId(id);
+                        TextView tvTitle = findViewById(R.id.tvHelloName);
+                        Resources res = getResources();
+                        String text = String.format(res.getString(R.string.welcome_msg), name);
+                        tvTitle.setText(text);
+                        checkServer();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 });
         Bundle parameters = new Bundle();
@@ -130,26 +123,18 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        getServerLoginResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
-                        //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                this::getServerLoginResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                        //PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                        createUser();
-                    }
+                    //PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                    createUser();
                 }) {
 
             @Override
@@ -191,27 +176,20 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
         final UserInfo user = SingletonUser.getInstance().getUser();
         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "Success");
-                        getServerRegisterResponse(response);
-                    }
-                }, new Response.ErrorListener() {
+                response -> {
+                    Log.d(TAG, "Success");
+                    getServerRegisterResponse(response);
+                }, error -> {
+                    Log.d(TAG, "volley error create " + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "volley error create " + error.getMessage());
-                //OR
-                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                //OR
-                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                //Or if nothing works than splitting is the only option
-                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
-
-                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-            }
-        }) {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
 
             @Override
             public String getBodyContentType() {
@@ -284,8 +262,8 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
             longitude = location.getLongitude();
             latitude = location.getLatitude();
             */
-            criteria = new Criteria();
-            bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
+            Criteria criteria = new Criteria();
+            String bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true));
 
             //You can still do this if you like, you might get lucky:
             Location location = locationManager.getLastKnownLocation(bestProvider);
@@ -296,7 +274,7 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
             }
             else{
                 //This is what you need:
-                locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) this);
+                locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
             }
         } else {
             ActivityCompat.requestPermissions(this, new String[] {

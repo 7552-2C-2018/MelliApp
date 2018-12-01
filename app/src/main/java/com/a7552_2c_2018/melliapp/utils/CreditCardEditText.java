@@ -13,9 +13,9 @@ import android.view.KeyEvent;
 public class CreditCardEditText extends android.support.v7.widget.AppCompatEditText {
 
 
-    public Context context;
+    private final Context context;
 
-    BackButtonListener backButtonListener;
+    private BackButtonListener backButtonListener;
 
     public CreditCardEditText(Context context) {
         super(context);

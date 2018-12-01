@@ -15,18 +15,13 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.a7552_2c_2018.melliapp.R;
-import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
-import com.a7552_2c_2018.melliapp.adapters.ItemAdapter;
 import com.a7552_2c_2018.melliapp.adapters.QuestionsAdapter;
-import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.model.Question;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 
@@ -43,19 +38,23 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 public class QuestionsActivity extends AppCompatActivity {
 
     private static final String TAG = "QuestionsActivity";
     private static final int RESULT_ANSWER_ACTIVITY = 1;
     private String Id;
-    private String user;
 
-    @BindView(R.id.aqRecycler) RecyclerView recyclerView;
-    @BindView(R.id.aqRlAsk) RelativeLayout rlAsk;
-    @BindView(R.id.aqEtQuestion) EditText etQuestion;
-    @BindView(R.id.aqBtSendQuestion) Button btnAsk;
+    @BindView(R.id.aqRecycler)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.aqRlAsk)
+    RelativeLayout rlAsk;
+
+    @BindView(R.id.aqEtQuestion)
+    EditText etQuestion;
+
+    @BindView(R.id.aqBtSendQuestion)
+    Button btnAsk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,7 @@ public class QuestionsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.st_questions);
 
         Id = getIntent().getStringExtra("ID");
-        user = getIntent().getStringExtra("user");
+        String user = getIntent().getStringExtra("user");
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -78,26 +77,19 @@ public class QuestionsActivity extends AppCompatActivity {
             rlAsk.setVisibility(View.GONE);
         }
 
-        etQuestion.setOnTouchListener(new View.OnTouchListener() {
+        etQuestion.setOnTouchListener((v, event) -> {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                v.setFocusable(true);
-                v.setFocusableInTouchMode(true);
-                return false;
-            }
+            v.setFocusable(true);
+            v.setFocusableInTouchMode(true);
+            return false;
         });
 
-        btnAsk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String qst = etQuestion.getText().toString();
-                if (qst.isEmpty()){
-                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_error));
-                } else {
-                    sendQuestion(qst);
-                }
+        btnAsk.setOnClickListener(v -> {
+            String qst = etQuestion.getText().toString();
+            if (qst.isEmpty()){
+                PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_error));
+            } else {
+                sendQuestion(qst);
             }
         });
 
@@ -153,28 +145,21 @@ public class QuestionsActivity extends AppCompatActivity {
         String url = getString(R.string.remote_posts);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(TAG, "Success");
-                        etQuestion.setText("");
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_ok));
-                    }
-                }, new Response.ErrorListener() {
+                response -> {
+                    Log.d(TAG, "Success");
+                    etQuestion.setText("");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_ok));
+                }, error -> {
+                    Log.d(TAG, "volley error create " + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "volley error create " + error.getMessage());
-                //OR
-                Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                //OR
-                Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                //Or if nothing works than splitting is the only option
-                Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
-
-                PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-            }
-        }) {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
 
             @Override
             public String getBodyContentType() {
@@ -214,24 +199,16 @@ public class QuestionsActivity extends AppCompatActivity {
                 Request.Method.GET,
                 url,
                 null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        getQuestionsResponse(response);
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.d(TAG, "volley error check" + error.getMessage());
-                        //OR
-                        Log.d(TAG, "volley msg " +error.getLocalizedMessage());
-                        //OR
-                        Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                        //Or if nothing works than splitting is the only option
+                this::getQuestionsResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
 
-                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
-                    }
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override

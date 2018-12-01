@@ -32,12 +32,17 @@ import static com.a7552_2c_2018.melliapp.utils.CreditCardUtils.VISA;
 public class CardFrontFragment extends Fragment {
 
 
-    @BindView(R.id.tv_card_number)TextView tvNumber;
-    @BindView(R.id.tv_member_name)TextView tvName;
-    @BindView(R.id.tv_validity)TextView tvValidity;
-    @BindView(R.id.ivType)ImageView ivType;
+    @BindView(R.id.tv_card_number)
+    TextView tvNumber;
 
-    FontTypeChange fontTypeChange;
+    @BindView(R.id.tv_member_name)
+    TextView tvName;
+
+    @BindView(R.id.tv_validity)
+    TextView tvValidity;
+
+    @BindView(R.id.ivType)
+    ImageView ivType;
 
     public CardFrontFragment() {
         // Required empty public constructor
@@ -51,7 +56,7 @@ public class CardFrontFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_card_front, container, false);
         ButterKnife.bind(this, view);
-        fontTypeChange=new FontTypeChange(getActivity());
+        FontTypeChange fontTypeChange = new FontTypeChange(getActivity());
         tvNumber.setTypeface(fontTypeChange.get_fontface(3));
         tvName.setTypeface(fontTypeChange.get_fontface(3));
 
