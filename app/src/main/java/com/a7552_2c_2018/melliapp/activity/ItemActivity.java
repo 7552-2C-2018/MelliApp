@@ -100,8 +100,6 @@ public class ItemActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.st_item));
 
         Id = getIntent().getStringExtra("ID");
-
-
         rlQuestions.setOnClickListener(v -> {
             Intent qstIntent = new Intent(ItemActivity.this, QuestionsActivity.class);
             qstIntent.putExtra("ID", Id);

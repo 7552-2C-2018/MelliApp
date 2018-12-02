@@ -7,8 +7,17 @@ public class BuyItem {
     private String facebookId;
     private String publDate;
     private String id;
+    private String postId;
 
     public BuyItem() {
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getImage() {

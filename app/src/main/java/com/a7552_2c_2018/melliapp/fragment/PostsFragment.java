@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +55,9 @@ public class PostsFragment extends Fragment {
 
     private static final String TAG = "PostsFragment";
     private static final int RESULT_FILTERS_ACTIVITY = 1;
+
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @BindView(R.id.fpRecycler)
     RecyclerView recyclerView;
@@ -166,6 +170,9 @@ public class PostsFragment extends Fragment {
             v15.setFocusableInTouchMode(true);
             return false;
         });
+
+        swipeRefreshLayout.setOnRefreshListener(() -> getPosts());
+
         return v;
     }
 
@@ -328,6 +335,7 @@ public class PostsFragment extends Fragment {
             RecyclerView.Adapter mAdapter = new ItemAdapter(input);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setRefreshing(false);
         } catch (JSONException e) {
             e.printStackTrace();
         }

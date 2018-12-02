@@ -116,8 +116,7 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
 
     private void checkServer() {
         String REQUEST_TAG = "checkUser";
-        //String url = getString(R.string.remote_login);
-        String url = getString(R.string.remote_users);
+        String url = getString(R.string.remote_login);
         Log.d(TAG, "token " + AccessToken.getCurrentAccessToken().getToken());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -171,8 +170,7 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
 
     private void createUser() {
         String REQUEST_TAG = "createUser";
-        //String url = getString(R.string.remote_register);
-        String url = getString(R.string.remote_users);
+        String url = getString(R.string.remote_register);
         final UserInfo user = SingletonUser.getInstance().getUser();
         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                 url,

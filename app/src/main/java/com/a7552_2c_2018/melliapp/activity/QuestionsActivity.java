@@ -74,6 +74,7 @@ public class QuestionsActivity extends AppCompatActivity {
         Id = getIntent().getStringExtra("ID");
         user = getIntent().getStringExtra("user");
 
+        tvEmpty.setVisibility(View.GONE);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
@@ -240,8 +241,10 @@ public class QuestionsActivity extends AppCompatActivity {
         try {
             List<Question> input = new ArrayList<>();
             Question item;
+            if (response.length() == 0){
+                tvEmpty.setVisibility(View.VISIBLE);
+            }
             for (int i = 0; i < response.length(); i++) {
-                tvEmpty.setVisibility(View.GONE);
                 JSONObject jItem = response.getJSONObject(i);
                 item = new Question();
                 item.setId(jItem.getString("ID"));

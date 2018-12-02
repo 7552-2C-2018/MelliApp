@@ -221,7 +221,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             payments_array = new String[response.length()];
             for (int i = 0; i < response.length(); ++i) {
                 JSONObject item = response.getJSONObject(i);
-                //int id = item.getInt("_id");
                 String pay = item.getString("name");
                 payments_array[i] = pay;
             }

@@ -15,6 +15,8 @@
     <string name="remote_getCat">https://app-server-23.herokuapp.com/products/categories</string>
     <string name="remote_getPays">https://app-server-23.herokuapp.com/products/payments</string>
     <string name="remote_users">https://app-server-23.herokuapp.com/users/</string>
+    <string name="remote_login">https://app-server-23.herokuapp.com/users/login</string>
+    <string name="remote_register">https://app-server-23.herokuapp.com/users/register</string>
     <string name="remote_posts">https://app-server-23.herokuapp.com/posts/</string>
     <string name="remote_buys">https://app-server-23.herokuapp.com/buys/</string>
     <string name="remote_questions">https://app-server-23.herokuapp.com/questions/</string>
@@ -80,7 +82,9 @@
     <string name="st_filters">Filtros de Búsqueda</string>
     <string name="st_map">Vista de Mapa</string>
     <string name="st_solds">Mis Ventas</string>
+    <string name="st_sold_item">Producto Vendido</string>
     <string name="st_buys">Mis Compras</string>
+    <string name="st_buy_item">Producto Comprado</string>
     <string name="st_qr">Lector QR</string>
 
     <!-- Strings related to Main Activity -->

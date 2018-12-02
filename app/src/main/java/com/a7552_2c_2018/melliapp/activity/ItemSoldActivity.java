@@ -36,6 +36,8 @@ public class ItemSoldActivity extends AppCompatActivity {
     private static final String TAG = "ItemSoldActivity";
     private String[] sampleImages = null;
     private String Id;
+    private String user = "";
+    private String categ = "";
 
     @BindView(R.id.aisCarouselView)
     CarouselView carouselView;
@@ -72,13 +74,20 @@ public class ItemSoldActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.st_buys));
 
         Id = getIntent().getStringExtra("ID");
+        categ = getIntent().getStringExtra("categ");
+
+        if (categ.equals("sold")) {
+            getSupportActionBar().setTitle(getString(R.string.st_sold_item));
+        } else {
+            getSupportActionBar().setTitle(getString(R.string.st_buy_item));
+        }
 
         rlQuestions.setOnClickListener(v -> {
             Intent qstIntent = new Intent(ItemSoldActivity.this, QuestionsActivity.class);
             qstIntent.putExtra("ID", Id);
+            qstIntent.putExtra("user", user);
             startActivity(qstIntent);
         });
 
@@ -97,7 +106,6 @@ public class ItemSoldActivity extends AppCompatActivity {
 
     private void getPostData() {
         String REQUEST_TAG = "getPost";
-        //String url = getString(R.string.remote_login);
         String url = getString(R.string.remote_posts);
         url = url + Id;
         JsonObjectRequest jsonObtRequest = new JsonObjectRequest(
@@ -111,9 +119,6 @@ public class ItemSoldActivity extends AppCompatActivity {
                     Log.d(TAG, "volley msg " +error.getLocalizedMessage());
                     //OR
                     Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
-                    //Or if nothing works than splitting is the only option
-                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
-
                     PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
@@ -164,7 +169,7 @@ public class ItemSoldActivity extends AppCompatActivity {
             JSONObject id = response.getJSONObject("_id");
             String sellerId = id.getString("facebookId");
             if (sellerId.equals(SingletonUser.getInstance().getUser().getFacebookID())){
-                String user = "seller";
+                user = "seller";
             }
 
             carouselView.setImageListener(imageListener);
@@ -174,6 +179,12 @@ public class ItemSoldActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

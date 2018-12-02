@@ -90,9 +90,10 @@ public class BuysFragment extends Fragment {
                         int position = recyclerView.getChildAdapterPosition(child);
 
                         BuysAdapter aux = (BuysAdapter) recyclerView.getAdapter();
-                        String Id = Objects.requireNonNull(aux).getBuyItem(position).getId();
+                        String Id = Objects.requireNonNull(aux).getBuyItem(position).getPostId();
                         Intent itemSoldIntent = new Intent(getApplicationContext(), ItemSoldActivity.class);
                         itemSoldIntent.putExtra("ID", Id);
+                        itemSoldIntent.putExtra("categ", "buy");
                         startActivity(itemSoldIntent);
 
                         return true;
@@ -167,6 +168,7 @@ public class BuysFragment extends Fragment {
                 item.setStatus(jItem.getString("estado"));
                 item.setTitle(jItem.getString("title"));
                 item.setId(jItem.getString("ID"));
+                item.setPostId(jItem.getString("postId"));
                 input.add(item);
             }
             RecyclerView.Adapter mAdapter = new BuysAdapter(input);
