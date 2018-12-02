@@ -106,7 +106,7 @@ public class QuestionsResponseActivity extends AppCompatActivity {
     private void getQstResponse(JSONObject response) {
         Log.d(TAG, response.toString());
         try {
-            tvPreg.setText(response.getString("pregunta")); //TODO
+            tvPreg.setText(response.getString("pregunta"));
             btSend.setEnabled(true);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -116,6 +116,7 @@ public class QuestionsResponseActivity extends AppCompatActivity {
     private void sendResponse(String msg) {
         String REQUEST_TAG = "sendResponse";
         String url = getString(R.string.remote_questions);
+        url = url + qstId + "/respuesta/";
         StringRequest stringRequest = new StringRequest(Request.Method.PUT,
                 url,
                 response -> {
@@ -145,7 +146,6 @@ public class QuestionsResponseActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("respuesta", msg);
-                params.put("questionId", qstId);
                 return params;
             }
 

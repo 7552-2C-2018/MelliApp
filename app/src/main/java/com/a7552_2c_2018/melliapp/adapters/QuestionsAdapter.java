@@ -77,7 +77,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             holder.tvRespMsg.setText(String.format(context.getString(R.string.date_holder), convertTime(respDate), resp));
 
         } else {
-            holder.tvLink.setVisibility(View.VISIBLE);
+            if (values.get(position).getCanAnswer()) {
+                holder.tvLink.setVisibility(View.VISIBLE);
+            }
             holder.rlResponse.setVisibility(View.GONE);
         }
     }
@@ -93,7 +95,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
     }
 
     private String convertTime(long time){
-        Date date = new Date(time);
+        Date date = new Date(time * 1000);
         Format format = new SimpleDateFormat("dd/MM/yyyy");
         return format.format(date);
     }

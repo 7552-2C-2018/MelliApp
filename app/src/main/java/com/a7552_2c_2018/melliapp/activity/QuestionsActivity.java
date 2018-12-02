@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.adapters.QuestionsAdapter;
@@ -43,9 +44,13 @@ public class QuestionsActivity extends AppCompatActivity {
     private static final String TAG = "QuestionsActivity";
     private static final int RESULT_ANSWER_ACTIVITY = 1;
     private String Id;
+    private String user;
 
     @BindView(R.id.aqRecycler)
     RecyclerView recyclerView;
+
+    @BindView(R.id.aqTvEmpty)
+    TextView tvEmpty;
 
     @BindView(R.id.aqRlAsk)
     RelativeLayout rlAsk;
@@ -67,7 +72,7 @@ public class QuestionsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.st_questions);
 
         Id = getIntent().getStringExtra("ID");
-        String user = getIntent().getStringExtra("user");
+        user = getIntent().getStringExtra("user");
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -142,12 +147,13 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private void sendQuestion(final String qst) {
         String REQUEST_TAG = "sendQuestion";
-        String url = getString(R.string.remote_posts);
+        String url = getString(R.string.remote_questions);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url,
                 response -> {
                     Log.d(TAG, "Success");
                     etQuestion.setText("");
+                    getQuestions();
                     PopUpManager.showToastError(getApplicationContext(), getString(R.string.ia_ask_ok));
                 }, error -> {
                     Log.d(TAG, "volley error create " + error.getMessage());
@@ -169,7 +175,7 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("ID", Id);
+                params.put("postId", Id);
                 params.put("question", qst);
                 return params;
             }
@@ -188,13 +194,14 @@ public class QuestionsActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Log.d(TAG, "request a enviar post questions: " + stringRequest);
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(stringRequest,REQUEST_TAG);
     }
 
     private void getQuestions() {
         String REQUEST_TAG = "getQuestions";
-        String url = getString(R.string.remote_buys);
-        url = url + "seller=" + SingletonUser.getInstance().getUser().getFacebookID();
+        String url = getString(R.string.remote_questions);
+        url = url + "postId=" + Id;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
@@ -233,20 +240,26 @@ public class QuestionsActivity extends AppCompatActivity {
         try {
             List<Question> input = new ArrayList<>();
             Question item;
-            for (int i = 0; i < response.length(); ++i) {
+            for (int i = 0; i < response.length(); i++) {
+                tvEmpty.setVisibility(View.GONE);
                 JSONObject jItem = response.getJSONObject(i);
                 item = new Question();
                 item.setId(jItem.getString("ID"));
-                item.setQuestion("fake"); //TODO
-                item.setUserId("userId");
+                item.setQuestion(jItem.getString("pregunta"));
+                item.setUserId(jItem.getString("userId"));
                 JSONObject jAux = jItem.getJSONObject("_id");
                 item.setPostId(jAux.getString("postId"));
                 item.setDate(jAux.getLong("publication_date"));
+                if (user.equals("seller")) {
+                    item.setCanAnswer(true);
+                }
+
                 if (jItem.has("answer")){
                     item.setHasResponse(true);
                     item.setResponse(jItem.getString("answer"));
-                    item.setRespDate(1543631361);//TOD0 add date
+                    item.setRespDate(jItem.getLong("answer_date"));
                 }
+                input.add(item);
             }
             RecyclerView.Adapter mAdapter = new QuestionsAdapter(input);
             recyclerView.setAdapter(mAdapter);

@@ -6,11 +6,22 @@ public class Question {
     private String userId;
     private long date;
     private String question;
-    private Boolean hasResponse;
+    private boolean hasResponse;
+    private boolean canAnswer;
     private long respDate;
     private String response;
 
     public Question() {
+        hasResponse = false;
+        canAnswer = false;
+    }
+
+    public boolean getCanAnswer() {
+        return canAnswer;
+    }
+
+    public void setCanAnswer(boolean canAnswer) {
+        this.canAnswer = canAnswer;
     }
 
     public String getId() {
@@ -53,11 +64,11 @@ public class Question {
         this.question = question;
     }
 
-    public Boolean getHasResponse() {
+    public boolean getHasResponse() {
         return hasResponse;
     }
 
-    public void setHasResponse(Boolean hasResponse) {
+    public void setHasResponse(boolean hasResponse) {
         this.hasResponse = hasResponse;
     }
 

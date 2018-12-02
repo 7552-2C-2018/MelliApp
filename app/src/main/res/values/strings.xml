@@ -183,6 +183,7 @@
 
     <!-- Strings related to Questions Activity -->
     <string name="qa_btn">Responder</string>
+    <string name="qa_empty">No hay preguntas aun</string>
 
     <!-- Strings related to Questions Response Activity -->
     <string name="qra_preg">Pregunta</string>

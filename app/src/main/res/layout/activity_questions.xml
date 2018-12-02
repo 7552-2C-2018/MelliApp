@@ -11,6 +11,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/aqTvEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/qa_empty"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/aqRecycler"
             android:layout_width="match_parent"

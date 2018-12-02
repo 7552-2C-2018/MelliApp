@@ -23,13 +23,17 @@
             android:id="@+id/divider13"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="3dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/aqrTvPreg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="18sp" />
 
         <View
             android:id="@+id/divider14"
@@ -51,17 +55,20 @@
             android:id="@+id/divider15"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="3dp"
             android:background="?android:attr/listDivider" />
 
         <EditText
             android:id="@+id/aqrEtResp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/qra_hint"
-            android:inputType="textMultiLine"
             android:importantForAutofill="no"
+            android:inputType="textMultiLine"
             tools:targetApi="o" />
 
         <Button
