@@ -21,6 +21,7 @@
     <string name="remote_buys">https://app-server-23.herokuapp.com/buys/</string>
     <string name="remote_questions">https://app-server-23.herokuapp.com/questions/</string>
     <string name="remote_chats">https://melli-7552.firebaseio.com/</string>
+    <string name="remote_rating">https://app-server-23.herokuapp.com/score/</string>
 
     <!-- Strings related to api tokens -->
     <string name="map_token">sk.eyJ1IjoiY2FybG9zZnVybmFyaSIsImEiOiJjam95c2I2M2YwMnZmM3BqejF2d2Ntb2VuIn0.VmCT7ZqCgUHCiNG9DTsEwg</string>
@@ -85,6 +86,7 @@
     <string name="st_sold_item">Producto Vendido</string>
     <string name="st_buys">Mis Compras</string>
     <string name="st_buy_item">Producto Comprado</string>
+    <string name="st_ranking">Calificación</string>
     <string name="st_qr">Lector QR</string>
 
     <!-- Strings related to Main Activity -->
@@ -97,6 +99,8 @@
     <!-- Strings related to Filters Activity -->
     <string name="fa_cond">Condición</string>
     <string name="fa_price">Rango de Precios</string>
+    <string name="fa_price_min">Precio Mínimo</string>
+    <string name="fa_price_max">Precio Máximo</string>
     <string name="fa_categ">Categoría</string>
     <string name="fa_dist">Distancia Máxima</string>
     <string name="fa_ship">Envíos</string>
@@ -185,6 +189,12 @@
     <string name="ia_ask_ok">Pregunta Enviada!</string>
     <string name="ia_holder">vendido por %1$s %2$s</string>
 
+    <!-- Strings related to Item Sold Activity -->
+    <string name="isa_btn_rank_v">Calificar al Vendedor</string>
+    <string name="isa_btn_rank_c">Calificar al Comprador</string>
+    <string name="isa_status">Estado de la compra: %1$s</string>
+
+
     <!-- Strings related to Questions Activity -->
     <string name="qa_btn">Responder</string>
     <string name="qa_empty">No hay preguntas aun</string>
@@ -196,6 +206,13 @@
     <string name="qra_hint">Ingrese la respuesta…</string>
     <string name="qra_resp_ok">Respuesta Enviada!</string>
 
+    <!-- Strings related to Ranking Activity -->
+    <string name="ra_title1">Calificación</string>
+    <string name="ra_title2">Comentario</string>
+    <string name="ra_hint">Ingrese un comentario (opcional)</string>
+    <string name="ra_button">Enviar Calificación</string>
+    <string name="ra_error">Debe seleccionar una calificación</string>
+    <string name="ra_send">Calificación enviada</string>
 
     <string name="card_header">TARJETA CREDITO</string>
     <string name="card_number_sample">XXXX XXXX XXXX XXXX</string>

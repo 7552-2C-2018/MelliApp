@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,10 +35,13 @@ import butterknife.ButterKnife;
 public class ItemSoldActivity extends AppCompatActivity {
 
     private static final String TAG = "ItemSoldActivity";
+    private static final int RESULT_RANKING = 1;
     private String[] sampleImages = null;
-    private String Id;
+    private String buyId;
+    private String postId;
     private String user = "";
     private String categ = "";
+    private String status = "";
 
     @BindView(R.id.aisCarouselView)
     CarouselView carouselView;
@@ -63,6 +67,9 @@ public class ItemSoldActivity extends AppCompatActivity {
     @BindView(R.id.aisRlQuestions)
     RelativeLayout rlQuestions;
 
+    @BindView(R.id.aisStatus)
+    TextView tvStatus;
+
     @BindView(R.id.aisBtnAction)
     Button btnAction;
 
@@ -75,8 +82,16 @@ public class ItemSoldActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        Id = getIntent().getStringExtra("ID");
+        buyId = getIntent().getStringExtra("buyId");
+        postId = getIntent().getStringExtra("postId");
         categ = getIntent().getStringExtra("categ");
+        status = getIntent().getStringExtra("status");
+
+        tvStatus.setText(String.format(getString(R.string.isa_status), status));
+
+        if (status.equals("Finalizado")){
+            btnAction.setVisibility(View.VISIBLE);
+        }
 
         if (categ.equals("sold")) {
             getSupportActionBar().setTitle(getString(R.string.st_sold_item));
@@ -86,13 +101,25 @@ public class ItemSoldActivity extends AppCompatActivity {
 
         rlQuestions.setOnClickListener(v -> {
             Intent qstIntent = new Intent(ItemSoldActivity.this, QuestionsActivity.class);
-            qstIntent.putExtra("ID", Id);
+            qstIntent.putExtra("ID", postId);
             qstIntent.putExtra("user", user);
             startActivity(qstIntent);
         });
 
-        btnAction.setOnClickListener(v -> {
+        String btnText;
+        if (categ.equals("buy")) {
+            btnText = getString(R.string.isa_btn_rank_v);
+        } else {
+            btnText = getString(R.string.isa_btn_rank_c);
+        }
+        btnAction.setText(btnText);
 
+        btnAction.setOnClickListener(v -> {
+            Intent rankingIntent = new Intent(ItemSoldActivity.this, RankingActivity.class);
+            rankingIntent.putExtra("postId", postId);
+            rankingIntent.putExtra("buyId", buyId);
+            rankingIntent.putExtra("user", user);
+            startActivityForResult(rankingIntent, RESULT_RANKING);
         });
         getPostData();
     }
@@ -107,7 +134,7 @@ public class ItemSoldActivity extends AppCompatActivity {
     private void getPostData() {
         String REQUEST_TAG = "getPost";
         String url = getString(R.string.remote_posts);
-        url = url + Id;
+        url = url + postId;
         JsonObjectRequest jsonObtRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -178,6 +205,19 @@ public class ItemSoldActivity extends AppCompatActivity {
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RESULT_RANKING:
+                if (resultCode == RESULT_OK) {
+                    getPostData();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode,resultCode, data);
         }
     }
 

@@ -55,6 +55,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="4dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView
@@ -78,6 +79,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="4dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView
@@ -101,6 +103,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="4dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView
@@ -122,9 +125,9 @@
                 android:layout_marginEnd="8dp" />
 
             <View
-                android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="4dp"
                 android:background="?android:attr/listDivider" />
 
             <RelativeLayout
@@ -154,10 +157,27 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/aisStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
             <Button
                 android:id="@+id/aisBtnAction"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone" />
         </LinearLayout>
 
     </ScrollView>

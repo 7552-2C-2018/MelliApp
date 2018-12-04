@@ -232,17 +232,15 @@ public class PostsFragment extends Fragment {
                     params.put("precioMinimo", String.valueOf(filters.getMinPrice()));
                     params.put("precioMaximo", String.valueOf(filters.getMaxPrice()));
                 }
-                /*
                 if (filters.isCategSelected()){
                     params.put("categoria", filters.getCateg());
                 }
-                */
                 if (filters.isShipSelected()) {
                     if (filters.isShipYes()){
-                        params.put("envio", "true");
+                        params.put("envio", "1");
                     }
                     if (filters.isShipNo()){
-                        params.put("envio", "false");
+                        params.put("envio", "0");
                     }
                 }
                 if (filters.isDistSelected()){

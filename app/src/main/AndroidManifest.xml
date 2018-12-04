@@ -117,6 +117,7 @@
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.ItemSoldActivity" />
         <activity android:name=".activity.QuestionsResponseActivity" />
+        <activity android:name=".activity.RankingActivity"></activity>
     </application>
 
 </manifest>

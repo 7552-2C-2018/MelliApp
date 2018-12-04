@@ -91,6 +91,50 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="12dp" />
 
+                <TextView
+                    android:id="@+id/faFillerA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rangeSeekbar"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/fa_price_min"
+                    android:textColor="@color/vpi__bright_foreground_disabled_holo_dark"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/faEtPriceMin"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rangeSeekbar"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/faFillerA"
+                    android:ems="6"
+                    android:inputType="number"
+                    android:maxLength="4" />
+
+                <TextView
+                    android:id="@+id/faFillerB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rangeSeekbar"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_toEndOf="@+id/faEtPriceMin"
+                    android:text="@string/fa_price_max"
+                    android:textColor="@color/vpi__bright_foreground_disabled_holo_dark"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/faEtPriceMax"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rangeSeekbar"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/faFillerB"
+                    android:ems="6"
+                    android:inputType="number"
+                    android:maxLength="4" />
+
             </RelativeLayout>
 
             <View

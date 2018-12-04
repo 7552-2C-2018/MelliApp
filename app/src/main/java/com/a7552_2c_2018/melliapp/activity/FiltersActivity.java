@@ -2,9 +2,12 @@ package com.a7552_2c_2018.melliapp.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -63,6 +66,12 @@ public class FiltersActivity extends AppCompatActivity {
 
     private RangeSeekBar rgSeekBar;
 
+    @BindView(R.id.faEtPriceMin)
+    EditText etPrinceMin;
+
+    @BindView(R.id.faEtPriceMax)
+    EditText etPrinceMax;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +79,8 @@ public class FiltersActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         rgSeekBar = findViewById(R.id.rangeSeekbar);
         rgSeekBar.setRangeValues(0, 9999);
+        etPrinceMin.setText(String.valueOf(0));
+        etPrinceMax.setText(String.valueOf(9999));
         loadFilters();
         spCateg.setEnabled(false);
         getServerCategories();
@@ -108,6 +119,8 @@ public class FiltersActivity extends AppCompatActivity {
             rbUsed.setChecked(false);
             rgSeekBar.setSelectedMinValue(0);
             rgSeekBar.setSelectedMaxValue(9999);
+            etPrinceMin.setText(String.valueOf(0));
+            etPrinceMax.setText(String.valueOf(9999));
             spCateg.setSelection(0);
             rbShipYes.setChecked(false);
             rbShipNo.setChecked(false);
@@ -165,6 +178,56 @@ public class FiltersActivity extends AppCompatActivity {
             setResult(RESULT_OK);
             return;
         });
+
+        etPrinceMin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (etPrinceMin.isFocused()) { //<-- check if is focused
+                    if (!etPrinceMin.getText().toString().isEmpty()){
+                        rgSeekBar.setSelectedMinValue(Integer.valueOf(etPrinceMin.getText().toString()));
+                        if (Integer.valueOf(etPrinceMin.getText().toString()) > Integer.valueOf(etPrinceMax.getText().toString())){
+                            rgSeekBar.setSelectedMaxValue(rgSeekBar.getSelectedMinValue());
+                            etPrinceMax.setText(etPrinceMin.getText().toString());
+                        }
+                    }
+                }
+            }
+        });
+
+        etPrinceMax.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (etPrinceMax.isFocused()) { //<-- check if is focused
+                    if (!etPrinceMax.getText().toString().isEmpty()) {
+                        rgSeekBar.setSelectedMaxValue(Integer.valueOf(etPrinceMax.getText().toString()));
+                        if (Integer.valueOf(etPrinceMax.getText().toString()) < Integer.valueOf(etPrinceMin.getText().toString())) {
+                            rgSeekBar.setSelectedMinValue(rgSeekBar.getSelectedMaxValue());
+                            etPrinceMin.setText(etPrinceMax.getText().toString());
+                        }
+                    }
+                }
+            }
+        });
+
+        rgSeekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+                etPrinceMin.setText(rgSeekBar.getSelectedMinValue().toString());
+                etPrinceMax.setText(rgSeekBar.getSelectedMaxValue().toString());
+            }
+        });
     }
 
     private void loadFilters() {
@@ -181,11 +244,9 @@ public class FiltersActivity extends AppCompatActivity {
             rgSeekBar.setSelectedMinValue(filters.getMinPrice());
             rgSeekBar.setSelectedMaxValue(filters.getMaxPrice());
         }
-        /*
         if (filters.isCategSelected()){
             spCateg.setSelection(getSelectedItem(filters.getCateg()));
         }
-        */
         if (filters.isShipSelected()) {
             if (filters.isShipYes()){
                 rbShipYes.setChecked(true);
