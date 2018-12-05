@@ -12,11 +12,14 @@
 
     <!-- Strings related to api uris -->
     <string name="local_login">http://10.0.2.2:5000/login</string>
-    <string name="remote_getCat">https://app-server-23.herokuapp.com/products/categories</string>
-    <string name="remote_getPays">https://app-server-23.herokuapp.com/products/payments</string>
+    <string name="remote_getCat">https://app-server-23.herokuapp.com/resources/categories</string>
+    <string name="remote_getPays">https://app-server-23.herokuapp.com/resources/payments</string>
+    <string name="remote_getStatus">https://app-server-23.herokuapp.com/resources/buyStates</string>
     <string name="remote_users">https://app-server-23.herokuapp.com/users/</string>
     <string name="remote_login">https://app-server-23.herokuapp.com/users/login</string>
     <string name="remote_register">https://app-server-23.herokuapp.com/users/register</string>
+    <string name="remote_activities">https://app-server-23.herokuapp.com/users/activities</string>
+    <string name="remote_score">https://app-server-23.herokuapp.com/users/puntos</string>
     <string name="remote_posts">https://app-server-23.herokuapp.com/posts/</string>
     <string name="remote_buys">https://app-server-23.herokuapp.com/buys/</string>
     <string name="remote_questions">https://app-server-23.herokuapp.com/questions/</string>
@@ -119,8 +122,9 @@
     <string name="af_title6">Guardar Cambios</string>
     <string name="af_title7">Mis Actividades</string>
     <string name="af_title8">asd@asd.com</string>
-    <string name="af_title9">Surname</string>
-    <string name="af_title10">Name</string>
+    <string name="af_title9">Apellido</string>
+    <string name="af_title10">Nombre</string>
+    <string name="af_score">Mi Puntaje: %1$d</string>
     <string name="msg_save_ok">Se guardaron los cambios</string>
 
     <!-- Strings related to Posts Fragment -->
@@ -173,6 +177,7 @@
     <string name="pa_title10">Agregar Imágenes</string>
     <string name="pa_title11">Publicar</string>
     <string name="pa_title12">Realiza Envios:</string>
+    <string name="pa_title13">Dirección (Calle y numero)</string>
     <string name="pa_msg">Faltan ingresar datos</string>
 
     <!-- Strings related to Item Activity -->

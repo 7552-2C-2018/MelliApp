@@ -166,7 +166,7 @@ public class ItemActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("postId", Id);
-                params.put("pregunta", qst);
+                params.put("question", qst);
                 return params;
             }
 

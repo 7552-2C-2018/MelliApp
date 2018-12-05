@@ -69,6 +69,9 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     @BindView(R.id.apNprice)
     EditText price;
 
+    @BindView(R.id.apAddress)
+    EditText address;
+
     @BindView(R.id.apRbNew)
     RadioButton isNew;
 
@@ -308,6 +311,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                 params.put("desc", desc.getText().toString());
                 params.put("stock", stock.getText().toString());
                 params.put("price", price.getText().toString());
+                params.put("street", address.getText().toString());
                 params.put("new", String.valueOf(isNew.isChecked()));
                 params.put("shipping", String.valueOf(makesShipping.isChecked()));
                 List<String> aux = paymentOptions.getSelectedStrings();

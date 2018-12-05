@@ -6,25 +6,42 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.MainActivity;
+import com.a7552_2c_2018.melliapp.adapters.ActivitiesAdapter;
+import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
+import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.model.UserInfo;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -47,6 +64,9 @@ public class AccountFragment extends Fragment {
     @BindView(R.id.faEtEmail)
     EditText etEmail;
 
+    @BindView(R.id.faTvScore)
+    TextView tvScore;
+
     @BindView(R.id.AccProfilePicture)
     ProfilePictureView profilePicture;
 
@@ -55,6 +75,9 @@ public class AccountFragment extends Fragment {
 
     @BindView(R.id.faBtnSave)
     Button btSave;
+
+    @BindView(R.id.afRvActivities)
+    RecyclerView rvActivities;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -80,8 +103,117 @@ public class AccountFragment extends Fragment {
         btLogin.setOnClickListener(v12 -> logOut());
         btSave.setOnClickListener(v1 -> saveChanges());
 
+        rvActivities.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        rvActivities.setLayoutManager(layoutManager);
+
+        getScore();
+
+        getActivities();
         // Inflate the layout for this fragment
         return v;
+    }
+
+    private void getScore() {
+        String REQUEST_TAG = "getScore";
+        String url = getString(R.string.remote_score);
+        JsonObjectRequest jsonObtRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::getScoreResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", SingletonUser.getInstance().getToken());
+
+                return params;
+            }
+        };
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObtRequest,REQUEST_TAG);
+    }
+
+    private void getScoreResponse(JSONObject response) {
+        Log.d(TAG, response.toString());
+        try {
+            String text = String.format(getString(R.string.af_score), response.getInt("scorePoints"));
+            tvScore.setText(text);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getActivities() {
+        String REQUEST_TAG = "getActivities";
+        String url = getString(R.string.remote_activities);
+        JsonObjectRequest jsonObtRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::getActResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
+                    //PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", SingletonUser.getInstance().getToken());
+                return params;
+            }
+        };
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObtRequest,REQUEST_TAG);
+    }
+
+    private void getActResponse(JSONObject response) {
+        Log.d(TAG, response.toString());
+        try {
+            List<String> input = new ArrayList<>();
+            JSONArray items = response.getJSONArray("activities");
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject jItem = items.getJSONObject(i);
+                String item = convertTime(jItem.getLong("date")) +
+                        " " + jItem.getString("action");
+                input.add(item);
+            }
+            RecyclerView.Adapter mAdapter = new ActivitiesAdapter(input);
+            rvActivities.setAdapter(mAdapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -194,6 +326,11 @@ public class AccountFragment extends Fragment {
         user.setName(etName.getText().toString());
         user.setSurname(etSurname.getText().toString());
         SingletonUser.getInstance().setUser(user);
+    }
 
+    private String convertTime(long time){
+        Date date = new Date(time * 1000);
+        Format format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(date);
     }
 }

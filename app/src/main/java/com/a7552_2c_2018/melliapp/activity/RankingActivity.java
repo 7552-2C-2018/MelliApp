@@ -66,7 +66,7 @@ public class RankingActivity extends AppCompatActivity {
             }
         });
 
-        getRanking();
+        //getRanking();
     }
 
     private void sendRanking() {

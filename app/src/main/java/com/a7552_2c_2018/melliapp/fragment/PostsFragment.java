@@ -260,52 +260,6 @@ public class PostsFragment extends Fragment {
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
     }
 
-    private String getFilterParams() {
-        String result = "?search=";
-        String search = fabInput.getText().toString();
-        result += search;
-
-        ActualFilters filters = SingletonUser.getInstance().getActualFilters();
-        UserInfo user = SingletonUser.getInstance().getUser();
-        if (filters.isCondSelected()) {
-            result += "&cond=";
-            if (filters.isOnlyNew()){
-                result += "new";
-            }
-            if (filters.isOnlyUsed()){
-                result += "used";
-            }
-        }
-        if (filters.isPriceSelected()){
-            result += "&minPrice=" + filters.getMinPrice();
-            result += "&maxPrice=" + filters.getMaxPrice();
-        }
-        if (filters.isCategSelected()){
-            result += "&categ=" + filters.getCateg();
-        }
-        if (filters.isShipSelected()) {
-            result += "&shipping=";
-            if (filters.isShipYes()){
-                result += "yes";
-            }
-            if (filters.isShipNo()){
-                result += "no";
-            }
-        }
-        if (filters.isDistSelected()){
-            result += "&distance=" + filters.getMaxDist();
-            result += "&lat=" + String.valueOf(user.getLatitude());
-            result += "&long=" + String.valueOf(user.getLongitude());
-        }
-
-        if (filters.anyFilterOn()){
-            fabFilter.getBackground().setColorFilter(0xFFFFFF00,PorterDuff.Mode.MULTIPLY);
-        } else {
-            fabFilter.getBackground().setColorFilter(0x00000000,PorterDuff.Mode.MULTIPLY);
-        }
-        return result;
-    }
-
     private void getPostsResponse(JSONArray response) {
         Log.d(TAG, response.toString());
         try {
@@ -339,7 +293,53 @@ public class PostsFragment extends Fragment {
         }
     }
 
-    @Override
+    private String getFilterParams() {
+        String result = "?search=";
+        String search = fabInput.getText().toString();
+        result += search;
+
+        ActualFilters filters = SingletonUser.getInstance().getActualFilters();
+        UserInfo user = SingletonUser.getInstance().getUser();
+        if (filters.isCondSelected()) {
+            result += "&cond=";
+            if (filters.isOnlyNew()) {
+                result += "new";
+            }
+            if (filters.isOnlyUsed()) {
+                result += "used";
+            }
+        }
+        if (filters.isPriceSelected()) {
+            result += "&minPrice=" + filters.getMinPrice();
+            result += "&maxPrice=" + filters.getMaxPrice();
+        }
+        if (filters.isCategSelected()) {
+            result += "&categ=" + filters.getCateg();
+        }
+        if (filters.isShipSelected()) {
+            result += "&shipping=";
+            if (filters.isShipYes()) {
+                result += "yes";
+            }
+            if (filters.isShipNo()) {
+                result += "no";
+            }
+        }
+        if (filters.isDistSelected()) {
+            result += "&distance=" + filters.getMaxDist();
+            result += "&lat=" + String.valueOf(user.getLatitude());
+            result += "&long=" + String.valueOf(user.getLongitude());
+        }
+
+        if (filters.anyFilterOn()) {
+            fabFilter.getBackground().setColorFilter(0xFFFFFF00, PorterDuff.Mode.MULTIPLY);
+        } else {
+            fabFilter.getBackground().setColorFilter(0x00000000, PorterDuff.Mode.MULTIPLY);
+        }
+        return result;
+    }
+
+        @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case RESULT_FILTERS_ACTIVITY:

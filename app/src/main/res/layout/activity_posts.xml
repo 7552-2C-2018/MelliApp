@@ -82,6 +82,18 @@
                 android:importantForAutofill="no"
                 tools:targetApi="o" />
 
+            <EditText
+                android:id="@+id/apAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:hint="@string/pa_title13"
+                android:inputType="textMultiLine"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
