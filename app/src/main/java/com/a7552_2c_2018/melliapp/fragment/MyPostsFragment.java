@@ -1,5 +1,6 @@
 package com.a7552_2c_2018.melliapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.ItemActivity;
+import com.a7552_2c_2018.melliapp.activity.ItemSoldActivity;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
@@ -87,15 +90,12 @@ public class MyPostsFragment extends Fragment {
                     if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
 
                         int position = recyclerView.getChildAdapterPosition(child);
-                        /*
-                        ItemAdapter aux = (ItemAdapter) recyclerView.getAdapter();
-                        String fId = aux.getPostItem(position).getFacebookId();
-                        String publ = aux.getPostItem(position).getPublDate();
+
+                        BuysAdapter aux = (BuysAdapter) recyclerView.getAdapter();
+                        String postId = Objects.requireNonNull(aux).getBuyItem(position).getPostId();
                         Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                        itemIntent.putExtra("facebookId", fId);
-                        itemIntent.putExtra("pubDate", publ);
+                        itemIntent.putExtra("ID", postId);
                         startActivity(itemIntent);
-                        */
                         return true;
                     }
                 }catch (Exception e){
@@ -115,7 +115,7 @@ public class MyPostsFragment extends Fragment {
     }
 
     private void getMyPosts() {
-        String REQUEST_TAG = "getBuys";
+        String REQUEST_TAG = "getMyPosts";
         String url = getString(R.string.remote_posts);
         url = url + "user=" + SingletonUser.getInstance().getUser().getFacebookID();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
@@ -166,7 +166,7 @@ public class MyPostsFragment extends Fragment {
                     item.setImage(pictures.getString(0));
                 }
                 //item.setStatus(jItem.getString("estado"));
-                // TODO agregar al back
+                item.setPostId(jItem.getString("ID"));
                 item.setStatus("Activa");
                 item.setTitle(jItem.getString("title"));
                 input.add(item);

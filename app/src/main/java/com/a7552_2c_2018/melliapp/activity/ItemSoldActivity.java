@@ -165,7 +165,7 @@ public class ItemSoldActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("State", "Finalizado");
+                params.put("State", "2");
                 return params;
             }
 

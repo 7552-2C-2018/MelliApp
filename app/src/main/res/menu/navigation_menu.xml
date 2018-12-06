@@ -13,6 +13,9 @@
     <item android:id="@+id/solds"
         android:icon="@drawable/ic_monetization_on_black_24dp"
         android:title="@string/nav_op4"/>
+    <item android:id="@+id/ratings"
+        android:icon="@drawable/ic_star_black_24dp"
+        android:title="@string/nav_op8"/>
     <item android:id="@+id/chats"
         android:icon="@drawable/ic_chat_black_24dp"
         android:title="@string/nav_op5"/>

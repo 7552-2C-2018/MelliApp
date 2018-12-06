@@ -17,6 +17,7 @@ import com.a7552_2c_2018.melliapp.fragment.ChatsFragment;
 import com.a7552_2c_2018.melliapp.fragment.MyPostsFragment;
 import com.a7552_2c_2018.melliapp.fragment.PostsFragment;
 import com.a7552_2c_2018.melliapp.fragment.QrFragment;
+import com.a7552_2c_2018.melliapp.fragment.RatingsFragment;
 import com.a7552_2c_2018.melliapp.fragment.SoldsFragment;
 
 import java.util.Objects;
@@ -67,6 +68,9 @@ public class HomeActivity extends AppCompatActivity {
                     break;
                 case R.id.solds:
                     fragment1 = new SoldsFragment();
+                    break;
+                case R.id.ratings:
+                    fragment1 = new RatingsFragment();
                     break;
                 case R.id.chats:
                     fragment1 = new ChatsFragment();

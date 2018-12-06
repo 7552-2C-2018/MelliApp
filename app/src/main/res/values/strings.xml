@@ -57,6 +57,7 @@
     <string name="nav_op5">Conversaciones</string>
     <string name="nav_op6">Comprar con QR</string>
     <string name="nav_op7">Mi Cuenta</string>
+    <string name="nav_op8">Mis Calificaciones</string>
 
     <!-- Strings for Images Content Descriptions -->
     <string name="icon_shop_bag">Bolsa de Compras que hace referencia al producto por comprar</string>
@@ -91,6 +92,7 @@
     <string name="st_buys">Mis Compras</string>
     <string name="st_buy_item">Producto Comprado</string>
     <string name="st_ranking">Calificación</string>
+    <string name="st_rantings">Calificaciones</string>
     <string name="st_qr">Lector QR</string>
 
     <!-- Strings related to Main Activity -->
