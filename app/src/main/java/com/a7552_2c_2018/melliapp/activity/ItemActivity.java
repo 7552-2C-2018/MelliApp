@@ -193,7 +193,6 @@ public class ItemActivity extends AppCompatActivity {
 
     private void getPostData() {
         String REQUEST_TAG = "getPost";
-        //String url = getString(R.string.remote_login);
         String url = getString(R.string.remote_posts);
         url = url + Id;
         JsonObjectRequest jsonObtRequest = new JsonObjectRequest(

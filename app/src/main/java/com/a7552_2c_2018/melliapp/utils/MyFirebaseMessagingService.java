@@ -67,22 +67,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "--> " + remoteMessage.getData().get("user_id"));
             String id = remoteMessage.getData().get("user_id");
             if (id.equals(SingletonUser.getInstance().getUser().getFacebookID())) {
+                Log.d(TAG, "--> es mia");
                 title = remoteMessage.getData().get("title");
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 //String categ = remoteMessage.getData().get("categ");
                 //sendNotification2(title, getCustomIntent(categ));
-                sendNotification2(title, intent);
+                serverNotification(title, intent);
             }
-        } else {
+        }
+
+        if (remoteMessage.getFrom().equals("/topics/pushNotifications")){
             if (remoteMessage.getNotification() != null) {
-                Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-                try {
-                    checkMessage(remoteMessage);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Log.d(TAG, "Message Notification Chats: " + remoteMessage.getNotification().getBody());
+                //checkMessage(remoteMessage);
+                chatNotification(remoteMessage.getNotification().getBody());
             }
         }
 
@@ -108,7 +108,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void chatNotification(String messageBody) {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("chatId", chatId);
         intent.putExtra("title", title);
@@ -121,8 +121,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_notifications_active_black_24dp)
-                        .setContentTitle("Comprame")
-                        .setContentText(messageBody)
+                        .setContentTitle("Tienes un nuevo mensaje !")
+                        .setContentText("Producto: " + messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
@@ -141,7 +141,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Objects.requireNonNull(notificationManager).notify(1 /* ID of notification */, notificationBuilder.build());
     }
 
-    private void sendNotification2(String messageBody, Intent intent) {
+    private void serverNotification(String messageBody, Intent intent) {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -188,13 +188,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void getChatsResponse(String response) {
-        Log.d(TAG, response);
+        Log.d(TAG, "getChatsResponse: " + response);
         try {
             JSONObject obj = new JSONObject(response);
             JSONArray chats = obj.getJSONArray("chats");
             for (int i=0; i<chats.length(); i++){
                 if (Objects.equals(chatId, chats.getString(i))){
-                    sendNotification(title);
+                    chatNotification(title);
                 }
             }
         } catch (JSONException e) {
