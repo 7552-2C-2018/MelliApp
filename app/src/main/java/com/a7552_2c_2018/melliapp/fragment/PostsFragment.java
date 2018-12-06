@@ -198,7 +198,7 @@ public class PostsFragment extends Fragment {
                     //OR
                     Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
                     //Or if nothing works than splitting is the only option
-                    Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
                     PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {

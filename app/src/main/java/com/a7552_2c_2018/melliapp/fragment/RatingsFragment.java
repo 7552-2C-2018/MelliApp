@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.adapters.ActivitiesAdapter;
 import com.a7552_2c_2018.melliapp.adapters.BuysAdapter;
 import com.a7552_2c_2018.melliapp.model.BuyItem;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
@@ -21,6 +22,7 @@ import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +43,12 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class RatingsFragment extends Fragment {
 
     private static final String TAG = "RatingsFragment";
-    @BindView(R.id.fmpRecycler)
-    RecyclerView recyclerView;
+
+    @BindView(R.id.frtRvRec)
+    RecyclerView rvRec;
+
+    @BindView(R.id.frtRvSend)
+    RecyclerView rvEnv;
 
     public RatingsFragment() {
         // Required empty public constructor
@@ -53,19 +59,23 @@ public class RatingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_myposts, container, false);
+        View v = inflater.inflate(R.layout.fragment_ratings, container, false);
 
         // Inflate the layout for this fragment
 
         ButterKnife.bind(this, v);
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(getString(R.string.st_rantings));
 
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 1);
-        recyclerView.setLayoutManager(layoutManager);
+        rvEnv.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManagerEnv = new GridLayoutManager(getApplicationContext(), 1);
+        rvEnv.setLayoutManager(layoutManagerEnv);
 
-        //getMyPosts();
-        //mocking();
+        rvRec.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManagerRec = new GridLayoutManager(getApplicationContext(), 1);
+        rvRec.setLayoutManager(layoutManagerRec);
+
+        getRatingsSend();
+        getRatingsReceived();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {
@@ -73,56 +83,17 @@ public class RatingsFragment extends Fragment {
             }
         });
 
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-
-            }
-
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-                try {
-                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-
-                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-
-                        int position = recyclerView.getChildAdapterPosition(child);
-                        /*
-                        ItemAdapter aux = (ItemAdapter) recyclerView.getAdapter();
-                        String fId = aux.getPostItem(position).getFacebookId();
-                        String publ = aux.getPostItem(position).getPublDate();
-                        Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                        itemIntent.putExtra("facebookId", fId);
-                        itemIntent.putExtra("pubDate", publ);
-                        startActivity(itemIntent);
-                        */
-                        return true;
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-
-            }
-        });
-
         return v;
     }
 
-    private void getMyPosts() {
-        String REQUEST_TAG = "getBuys";
-        String url = getString(R.string.remote_posts);
-        url = url + "user=" + SingletonUser.getInstance().getUser().getFacebookID();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+    private void getRatingsReceived() {
+        String REQUEST_TAG = "getRaitingsRecived";
+        String url = getString(R.string.remote_rating_reci);
+        JsonArrayRequest jsonObtRequest = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
-                this::getPostsResponse,
+                this::getRatRecResponse,
                 error -> {
                     Log.d(TAG, "volley error check" + error.getMessage());
                     //OR
@@ -130,8 +101,9 @@ public class RatingsFragment extends Fragment {
                     //OR
                     Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
                     //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
 
-                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                    //PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
                 }) {
 
             @Override
@@ -144,51 +116,86 @@ public class RatingsFragment extends Fragment {
                 Map<String, String> params = new HashMap<>();
                 params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
                 params.put("token", SingletonUser.getInstance().getToken());
-
                 return params;
             }
         };
-        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonArrayRequest,REQUEST_TAG);
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObtRequest,REQUEST_TAG);
     }
 
-    private void getPostsResponse(JSONArray response) {
+    private void getRatRecResponse(JSONArray response) {
         Log.d(TAG, response.toString());
         try {
-            List<BuyItem> input = new ArrayList<>();
-            BuyItem item;
-            for (int i = 0; i < response.length(); ++i) {
+            List<String> input = new ArrayList<>();
+            for (int i = 0; i < response.length(); i++) {
                 JSONObject jItem = response.getJSONObject(i);
-                item = new BuyItem();
-                if (jItem.isNull("pictures")) {
-                    item.setImage(getString(R.string.base64default));
-                } else {
-                    JSONArray pictures = jItem.getJSONArray("pictures");
-                    item.setImage(pictures.getString(0));
+                String item = "Puntaje: " + String.valueOf(jItem.getDouble("value"));
+                if (jItem.has("comment")) {
+                    item = item + " Comentario: " + jItem.getString("comment");
                 }
-                //item.setStatus(jItem.getString("estado"));
-                // TODO agregar al back
-                item.setStatus("Activa");
-                item.setTitle(jItem.getString("title"));
                 input.add(item);
             }
-            RecyclerView.Adapter mAdapter = new BuysAdapter(input);
-            recyclerView.setAdapter(mAdapter);
+            RecyclerView.Adapter mAdapter = new ActivitiesAdapter(input);
+            rvRec.setAdapter(mAdapter);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public void mocking() {
-        List<BuyItem> input = new ArrayList<>();
-        BuyItem item;
-        for (int i = 0; i < 4; ++i) {
-            item = new BuyItem();
-            item.setImage(getString(R.string.base64mock));
-            item.setStatus(getString(R.string.mock_status));
-            item.setTitle(getString(R.string.mock_title));
-            input.add(item);
-        }
-        RecyclerView.Adapter mAdapter = new BuysAdapter(input);
-        recyclerView.setAdapter(mAdapter);
+
+    private void getRatingsSend() {
+        String REQUEST_TAG = "getRatingsSend";
+        String url = getString(R.string.remote_rating_send);
+        JsonArrayRequest jsonObtRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::getRatSendResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
+                    //PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", SingletonUser.getInstance().getToken());
+                return params;
+            }
+        };
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObtRequest,REQUEST_TAG);
     }
+
+    private void getRatSendResponse(JSONArray response) {
+        Log.d(TAG, response.toString());
+        try {
+            List<String> input = new ArrayList<>();
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject jItem = response.getJSONObject(i);
+                String item = "Puntaje: " + String.valueOf(jItem.getDouble("value"));
+                if (jItem.has("comment")) {
+                    item = item + " Comentario: " + jItem.getString("comment");
+                }
+                input.add(item);
+            }
+            RecyclerView.Adapter mAdapter = new ActivitiesAdapter(input);
+            rvEnv.setAdapter(mAdapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

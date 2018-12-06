@@ -18,6 +18,7 @@ import com.a7552_2c_2018.melliapp.model.ActualBuy;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 
@@ -130,7 +131,7 @@ public class ConfirmBuyFragment extends Fragment {
                     params.put("cp", buy.getCp());
                     params.put("floor", buy.getFloor());
                     params.put("dept", buy.getDept());
-                    params.put("city", buy.getCity());
+                    params.put("city", "CABA");
                 }
                 if (buy.isPaysWithCard()){
                     params.put("cardNumber", buy.getCardNumber());
@@ -156,6 +157,11 @@ public class ConfirmBuyFragment extends Fragment {
             }
 
         };
+
+        jsonObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjRequest,REQUEST_TAG);
     }

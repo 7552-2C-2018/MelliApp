@@ -63,7 +63,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
         }
 
-        if (remoteMessage.getFrom().equals("allDevices")){
+        if (remoteMessage.getFrom().equals("/topics/allDevices")){
+            Log.d(TAG, "--> " + remoteMessage.getData().get("user_id"));
             String id = remoteMessage.getData().get("user_id");
             if (id.equals(SingletonUser.getInstance().getUser().getFacebookID())) {
                 title = remoteMessage.getData().get("title");
