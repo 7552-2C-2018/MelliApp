@@ -16,8 +16,10 @@ import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -73,6 +75,9 @@ public class ItemSoldActivity extends AppCompatActivity {
     @BindView(R.id.aisBtnAction)
     Button btnAction;
 
+    @BindView(R.id.aisBtnFinish)
+    Button btnFinish;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +100,7 @@ public class ItemSoldActivity extends AppCompatActivity {
 
         if (categ.equals("sold")) {
             getSupportActionBar().setTitle(getString(R.string.st_sold_item));
+            btnFinish.setVisibility(View.VISIBLE);
         } else {
             getSupportActionBar().setTitle(getString(R.string.st_buy_item));
         }
@@ -114,6 +120,10 @@ public class ItemSoldActivity extends AppCompatActivity {
         }
         btnAction.setText(btnText);
 
+        btnFinish.setOnClickListener(v -> {
+            changeBuyStatus();
+        });
+
         btnAction.setOnClickListener(v -> {
             Intent rankingIntent = new Intent(ItemSoldActivity.this, RankingActivity.class);
             rankingIntent.putExtra("postId", postId);
@@ -121,7 +131,60 @@ public class ItemSoldActivity extends AppCompatActivity {
             rankingIntent.putExtra("user", user);
             startActivityForResult(rankingIntent, RESULT_RANKING);
         });
+
         getPostData();
+    }
+
+    private void changeBuyStatus() {
+        String REQUEST_TAG = "changeBuyStatus";
+        String url = getString(R.string.remote_buys);
+        url = url + buyId;
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                url,
+                response -> {
+                    Log.d(TAG, "Success");
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.isa_status_mod));
+                    tvStatus.setText(String.format(getString(R.string.isa_status), "Finalizado"));
+                }, error -> {
+            Log.d(TAG, "volley error create " + error.getMessage());
+            //OR
+            Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+            //OR
+            Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+            //Or if nothing works than splitting is the only option
+            Log.d(TAG, "volley msg4 " + new String(error.networkResponse.data));
+
+            PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("State", "Finalizado");
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", SingletonUser.getInstance().getToken());
+                params.put("buyId", buyId);
+                return params;
+            }
+
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(stringRequest,REQUEST_TAG);
     }
 
     private final ImageListener imageListener = (position, imageView) -> {

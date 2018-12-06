@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
             startActivityForResult(loginIntent, RESULT_LOGIN_ACTIVITY);
         } else {
             loadData();
-            getLocation();
+            //getLocation();
         }
     }
 

@@ -198,7 +198,9 @@
     <!-- Strings related to Item Sold Activity -->
     <string name="isa_btn_rank_v">Calificar al Vendedor</string>
     <string name="isa_btn_rank_c">Calificar al Comprador</string>
+    <string name="isa_btn_finish">Finalizar Compra</string>
     <string name="isa_status">Estado de la compra: %1$s</string>
+    <string name="isa_status_mod">Estado Modificado</string>
 
 
     <!-- Strings related to Questions Activity -->

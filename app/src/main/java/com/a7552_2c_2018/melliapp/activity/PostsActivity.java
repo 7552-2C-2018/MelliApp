@@ -1,6 +1,9 @@
 package com.a7552_2c_2018.melliapp.activity;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
@@ -8,6 +11,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -56,6 +61,7 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
 
     private static final String TAG = "PostsActivity";
     private static final int REQUEST_IMAGE_CHOOSER = 1;
+    private double latitude = 0, longitude = 0;
 
     @BindView(R.id.apTvTitle)
     EditText title;
@@ -247,7 +253,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
     private void callBackend(){
         String REQUEST_TAG = "createPost";
         String url = getString(R.string.remote_posts);
-        /*
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED &&
@@ -281,7 +286,6 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
             longitude = location.getLongitude();
             latitude = location.getLatitude();
         }
-        */
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url,
                 response -> {
@@ -325,8 +329,8 @@ public class PostsActivity extends AppCompatActivity implements MultiSelectionSp
                     }
                 }
                 UserInfo user = SingletonUser.getInstance().getUser();
-                params.put("latitude", String.valueOf(user.getLatitude()));
-                params.put("longitude", String.valueOf(user.getLongitude()));
+                params.put("latitude", String.valueOf(latitude));
+                params.put("longitude", String.valueOf(longitude));
                 return params;
             }
 
