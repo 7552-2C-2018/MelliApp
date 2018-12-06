@@ -75,16 +75,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
         final String price = "$ " + values.get(position).getPrice();
         final String desc = values.get(position).getDesc();
         holder.tvPrice.setText(price);
-        /*
-        holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent itemIntent = new Intent(getApplicationContext(), ItemActivity.class);
-                itemIntent.putExtra("facebookId", );
-                startActivity(itemIntent);
-            }
-        });
-        */
         holder.tvDesc.setText(desc.substring(0,Math.min(desc.length(),40)));
         String base64Image = values.get(position).getImage();
         byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);

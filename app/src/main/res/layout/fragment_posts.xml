@@ -75,7 +75,9 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/fpRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingBottom="55dp"
+                android:clipToPadding="false"/>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

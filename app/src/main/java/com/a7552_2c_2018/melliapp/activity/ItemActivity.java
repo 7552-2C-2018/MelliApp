@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,6 +66,9 @@ public class ItemActivity extends AppCompatActivity {
 
     @BindView(R.id.aiTvShipping)
     TextView tvShipping;
+
+    @BindView(R.id.aiQr)
+    ImageView ivQr;
 
     @BindView(R.id.aiRlQuestions)
     RelativeLayout rlQuestions;
@@ -260,6 +264,15 @@ public class ItemActivity extends AppCompatActivity {
                 user = "seller";
 
             }
+            if (response.has("qr")){
+                String base64Image = response.getString("qr");
+                base64Image = base64Image.substring(2);
+                base64Image = base64Image.substring(0, base64Image.length() - 1);
+                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                ivQr.setImageBitmap(decodedByte);
+            }
+
             carouselView.setImageListener(imageListener);
             carouselView.setPageCount(sampleImages.length);
 
