@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.CardFrontFragment;
 import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
+import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.CreditCardEditText;
 import com.a7552_2c_2018.melliapp.utils.CreditCardFormattingTextWatcher;
 
@@ -52,7 +54,6 @@ public class CCNumberFragment extends Fragment {
 
         TextView tv_number = cardFrontFragment.getNumber();
 
-        //Do your stuff
         et_number.addTextChangedListener(new CreditCardFormattingTextWatcher(et_number, tv_number,cardFrontFragment.getCardType(), type -> {
             Log.d("Card", "setCardType: "+type);
 

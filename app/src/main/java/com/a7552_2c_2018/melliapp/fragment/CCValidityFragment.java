@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.CardFrontFragment;
 import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
+import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.CreditCardEditText;
 import com.a7552_2c_2018.melliapp.utils.CreditCardExpiryTextWatcher;
 
@@ -55,11 +57,13 @@ public class CCValidityFragment extends Fragment {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                 if (activity != null) {
+
                     activity.nextClick();
                     return true;
                 }
 
             }
+
             return false;
         });
 

@@ -151,4 +151,8 @@ public class ActualBuy {
     public void setPrice(int price) {
         this.price = price;
     }
+
+    public int getTotal() {
+        return price + shippingPrice;
+    }
 }

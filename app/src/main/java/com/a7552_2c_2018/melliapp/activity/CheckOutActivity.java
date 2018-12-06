@@ -14,6 +14,8 @@ import com.a7552_2c_2018.melliapp.fragment.CCNameFragment;
 import com.a7552_2c_2018.melliapp.fragment.CCNumberFragment;
 import com.a7552_2c_2018.melliapp.fragment.CCSecureCodeFragment;
 import com.a7552_2c_2018.melliapp.fragment.CCValidityFragment;
+import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.CreditCardUtils;
 import com.a7552_2c_2018.melliapp.utils.ViewPagerAdapter;
 
@@ -130,6 +132,12 @@ public class CheckOutActivity extends FragmentActivity implements FragmentManage
             Toast.makeText(CheckOutActivity.this, "Ingrese un código de seguridad válido", Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(CheckOutActivity.this, "Datos ingresados correctos", Toast.LENGTH_SHORT).show();
+            ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+            buy.setCardNumber(cardNumber.replaceAll("\\s+",""));
+            buy.setCardName(cardName);
+            buy.setCardDate(cardValidity);
+            buy.setCardCVV(Integer.valueOf(cardCVV));
+            SingletonUser.getInstance().setActualBuy(buy);
             setResult(RESULT_OK);
             finish();
 

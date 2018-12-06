@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseMessaging.getInstance().subscribeToTopic("allDevices");
+
         ButterKnife.bind(this);
 
         // If MainActivity is reached without the user being logged in, redirect to the Login

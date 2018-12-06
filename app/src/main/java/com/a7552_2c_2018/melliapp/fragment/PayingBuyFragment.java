@@ -30,6 +30,7 @@ public class PayingBuyFragment extends Fragment {
     private static final String TAG = "PayingBuyFragment";
     private static final int RESULT_CHECK_OUT_ACTIVITY = 1;
 
+
     @BindView(R.id.fpbRbCash)
     RadioButton cash;
 
@@ -54,15 +55,21 @@ public class PayingBuyFragment extends Fragment {
 
         ButterKnife.bind(this, v);
 
+
         cash.setOnClickListener(v12 -> {
             if (cash.isChecked()) {
-                saveValues();
+                ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+                buy.setPaysWithCard(false);
+                SingletonUser.getInstance().setActualBuy(buy);
                 ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
             }
         });
 
         creditCard.setOnClickListener(v1 -> {
             if (creditCard.isChecked()) {
+                ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+                buy.setPaysWithCard(true);
+                SingletonUser.getInstance().setActualBuy(buy);
                 Intent cardIntent = new Intent(getApplicationContext(), CheckOutActivity.class);
                 startActivityForResult(cardIntent, RESULT_CHECK_OUT_ACTIVITY);
             }
@@ -71,17 +78,10 @@ public class PayingBuyFragment extends Fragment {
         btBack.setOnClickListener(view -> ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(0));
 
         btNext.setOnClickListener(view -> {
-            saveValues();
             ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(2);
         });
 
         return v;
-    }
-
-    private void saveValues() {
-        ActualBuy buy = SingletonUser.getInstance().getActualBuy();
-        buy.setPaysWithCard(false);
-        SingletonUser.getInstance().setActualBuy(buy);
     }
 
     @Override

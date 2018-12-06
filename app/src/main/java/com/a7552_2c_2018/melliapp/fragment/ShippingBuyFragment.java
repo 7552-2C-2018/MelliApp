@@ -3,6 +3,7 @@ package com.a7552_2c_2018.melliapp.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,17 @@ import android.widget.TextView;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.BuyingActivity;
 import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -128,7 +137,7 @@ public class ShippingBuyFragment extends Fragment {
                 buy.setFloor(tvFloor.getText().toString());
             }
             if (!tvDept.getText().toString().isEmpty()){
-                buy.setFloor(tvDept.getText().toString());
+                buy.setDept(tvDept.getText().toString());
             }
         } else {
             buy.setPaysShipping(false);
@@ -137,7 +146,58 @@ public class ShippingBuyFragment extends Fragment {
     }
 
     private void calculateCost(String street, String cp, String city) {
-        //TODO: call backend
+        String REQUEST_TAG = "getScore";
+        String url = getString(R.string.remote_estimate);
+        JsonObjectRequest jsonObtRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::getShippingResponse,
+                error -> {
+                    Log.d(TAG, "volley error check" + error.getMessage());
+                    //OR
+                    Log.d(TAG, "volley msg " +error.getLocalizedMessage());
+                    //OR
+                    Log.d(TAG, "volley msg3 " +error.getLocalizedMessage());
+                    //Or if nothing works than splitting is the only option
+                    //Log.d(TAG, "volley msg4 " +new String(error.networkResponse.data).split(":")[1]);
+
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.general_error));
+                }) {
+
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=UTF-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+                Map<String, String> params = new HashMap<>();
+                params.put("facebookId", SingletonUser.getInstance().getUser().getFacebookID());
+                params.put("token", SingletonUser.getInstance().getToken());
+                params.put("postId", buy.getId());
+                params.put("street", street);
+                params.put("cp", cp);
+                params.put("city", "CABA");
+                return params;
+            }
+        };
+        SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObtRequest,REQUEST_TAG);
+    }
+
+    private void getShippingResponse(JSONObject response) {
+        Log.d(TAG, response.toString());
+        try {
+            int price = (int) response.getDouble("ShipmentCost");
+            String text = String.format(getString(R.string.price_holder), price);
+            tvShipCost.setText(text);
+            ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+            buy.setShippingPrice(price);
+            SingletonUser.getInstance().setActualBuy(buy);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

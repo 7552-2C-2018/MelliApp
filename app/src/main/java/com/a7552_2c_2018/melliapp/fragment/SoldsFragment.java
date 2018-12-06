@@ -43,6 +43,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class SoldsFragment extends Fragment {
 
     private static final String TAG = "SoldsFragment";
+    private String status = "";
+
     @BindView(R.id.fsRecycler)
     RecyclerView recyclerView;
 
@@ -92,10 +94,13 @@ public class SoldsFragment extends Fragment {
                         int position = recyclerView.getChildAdapterPosition(child);
 
                         BuysAdapter aux = (BuysAdapter) recyclerView.getAdapter();
-                        String Id = Objects.requireNonNull(aux).getBuyItem(position).getPostId();
+                        String postId = Objects.requireNonNull(aux).getBuyItem(position).getPostId();
+                        String buyId = Objects.requireNonNull(aux).getBuyItem(position).getId();
                         Intent itemSoldIntent = new Intent(getApplicationContext(), ItemSoldActivity.class);
-                        itemSoldIntent.putExtra("ID", Id);
+                        itemSoldIntent.putExtra("buyId", buyId);
+                        itemSoldIntent.putExtra("postId", postId);
                         itemSoldIntent.putExtra("categ", "sold");
+                        itemSoldIntent.putExtra("status", status);
                         startActivity(itemSoldIntent);
 
                         return true;
@@ -168,6 +173,7 @@ public class SoldsFragment extends Fragment {
                     item.setImage(pictures.getString(0));
                 }
                 item.setStatus(jItem.getString("estado"));
+                status = jItem.getString("estado");
                 item.setTitle(jItem.getString("title"));
                 item.setId(jItem.getString("ID"));
                 item.setPostId(jItem.getString("postId"));

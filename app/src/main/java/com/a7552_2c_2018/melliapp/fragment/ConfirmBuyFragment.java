@@ -70,7 +70,7 @@ public class ConfirmBuyFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         ActualBuy buy = SingletonUser.getInstance().getActualBuy();
-        total = buy.getPrice();
+        total = buy.getTotal();
 
         tvItemDesc.setText(buy.getTitle());
         Resources res = getResources();
@@ -78,7 +78,6 @@ public class ConfirmBuyFragment extends Fragment {
         if (buy.isPaysShipping()){
             tvShipDesc.setText(getString(R.string.cbf_takes));
             tvShipPrice.setText(String.format(res.getString(R.string.price_holder), buy.getShippingPrice()));
-            total =+ buy.getShippingPrice();
         } else {
             tvShipDesc.setText(getString(R.string.cbf_out));
             tvShipPrice.setText(String.format(res.getString(R.string.price_holder), 0));
@@ -135,9 +134,13 @@ public class ConfirmBuyFragment extends Fragment {
                 }
                 if (buy.isPaysWithCard()){
                     params.put("cardNumber", buy.getCardNumber());
+                    params.put("cardBank", "Frances");
                     params.put("cardDate", buy.getCardDate());
                     params.put("cardName", buy.getCardName());
                     params.put("cardCVV", String.valueOf(buy.getCardCVV()));
+                    params.put("paymentMethod", "Credito");
+                } else {
+                    params.put("paymentMethod", "Efectivo");
                 }
                 return params;
             }

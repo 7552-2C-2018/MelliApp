@@ -20,6 +20,7 @@
     <string name="remote_register">https://app-server-23.herokuapp.com/users/register</string>
     <string name="remote_activities">https://app-server-23.herokuapp.com/users/activities</string>
     <string name="remote_score">https://app-server-23.herokuapp.com/users/puntos</string>
+    <string name="remote_estimate">https://app-server-23.herokuapp.com/estimation/</string>
     <string name="remote_posts">https://app-server-23.herokuapp.com/posts/</string>
     <string name="remote_buys">https://app-server-23.herokuapp.com/buys/</string>
     <string name="remote_questions">https://app-server-23.herokuapp.com/questions/</string>
@@ -159,7 +160,7 @@
     <string name="cbf_title">Envio</string>
     <string name="cbf_out">Lo retiro por el domicilio del vendedor</string>
     <string name="cbf_takes">Envio estandard a domicilio</string>
-    <string name="cbf_cash">A pagar en efectivo</string>
+    <string name="cbf_cash">A pagar</string>
     <string name="cbf_tc">A pagar con tarjeta terminada en %1$s</string>
     <string name="cbf_button">Confirmar Compra</string>
     <string name="cbf_confirm">Compra realizada</string>

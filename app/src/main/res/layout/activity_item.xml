@@ -74,7 +74,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="8dp"
+                android:singleLine="false"
+                android:maxLines="10"/>
 
             <View
                 android:layout_width="match_parent"
@@ -137,7 +139,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp">
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="5dp">
 
                 <TextView
                     android:id="@+id/textView"
@@ -153,8 +156,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/ic_arrow_forward_black_24dp"
-                    android:contentDescription="@string/icon_arrow" />
+                    android:contentDescription="@string/icon_arrow"
+                    app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
 
             </RelativeLayout>
 

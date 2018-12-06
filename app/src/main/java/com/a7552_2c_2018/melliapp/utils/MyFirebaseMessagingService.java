@@ -13,6 +13,9 @@ import android.util.Log;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.ChatActivity;
+import com.a7552_2c_2018.melliapp.activity.HomeActivity;
+import com.a7552_2c_2018.melliapp.activity.ItemActivity;
+import com.a7552_2c_2018.melliapp.activity.MainActivity;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.android.volley.Request;
@@ -51,7 +54,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
+
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
@@ -60,20 +63,36 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
         }
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            try {
+        if (remoteMessage.getFrom().equals("allDevices")){
+            String id = remoteMessage.getData().get("user_id");
+            if (id.equals(SingletonUser.getInstance().getUser().getFacebookID())) {
                 title = remoteMessage.getData().get("title");
-                checkMessage(remoteMessage);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //String categ = remoteMessage.getData().get("categ");
+                //sendNotification2(title, getCustomIntent(categ));
+                sendNotification2(title, intent);
+            }
+        } else {
+            if (remoteMessage.getNotification() != null) {
+                Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+                try {
+                    checkMessage(remoteMessage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
+
+    private Intent getCustomIntent(String categ) {
+        return  null;
+    }
+
 
     private void checkMessage(RemoteMessage remoteMessage) throws JSONException {
         Map<String, String> params = remoteMessage.getData();
@@ -95,6 +114,36 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
+
+        String channelId = getString(R.string.default_notification_channel_id);
+        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.ic_notifications_active_black_24dp)
+                        .setContentTitle("Comprame")
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
+        }
+
+        Objects.requireNonNull(notificationManager).notify(1 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendNotification2(String messageBody, Intent intent) {
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

@@ -230,7 +230,7 @@ public class ItemActivity extends AppCompatActivity {
         Log.d(TAG, response.toString());
         try {
             tvTitle.setText(response.getString("title"));
-            tvDesc.setText(response.getString("description"));
+            tvDesc.setText(response.getString("description").replaceAll("\\\\n", System.getProperty("line.separator")));
             price = response.getInt("price");
             tvPrice.setText(String.format(getString(R.string.price_holder), price));
             JSONObject seller = response.getJSONObject("name");
