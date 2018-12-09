@@ -271,32 +271,6 @@ public class QuestionsActivity extends AppCompatActivity {
         }
     }
 
-    private void mocking() {
-        List<Question> input = new ArrayList<>();
-        Question item = new Question();
-        item.setDate(Long.parseLong(getString(R.string.mock_qst_date_1)));
-        item.setQuestion(getString(R.string.mock_qst_qst_1));
-        item.setHasResponse(true);
-        item.setRespDate(Long.parseLong(getString(R.string.mock_qst_respdate_1)));
-        item.setResponse(getString(R.string.mock_qst_resp_1));
-        input.add(item);
-        item = new Question();
-        item.setDate(Long.parseLong(getString(R.string.mock_qst_date_2)));
-        item.setQuestion(getString(R.string.mock_qst_qst_2));
-        item.setHasResponse(false);
-        input.add(item);
-        item = new Question();
-        item.setDate(Long.parseLong(getString(R.string.mock_qst_date_3)));
-        item.setQuestion(getString(R.string.mock_qst_qst_3));
-        item.setHasResponse(true);
-        item.setRespDate(Long.parseLong(getString(R.string.mock_qst_respdate_3)));
-        item.setResponse(getString(R.string.mock_qst_resp_3));
-        input.add(item);
-
-        RecyclerView.Adapter mAdapter = new QuestionsAdapter(input);
-        recyclerView.setAdapter(mAdapter);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {

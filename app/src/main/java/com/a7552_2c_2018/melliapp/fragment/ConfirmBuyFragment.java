@@ -72,8 +72,7 @@ public class ConfirmBuyFragment extends Fragment {
 
         ActualBuy buy = SingletonUser.getInstance().getActualBuy();
         total = buy.getTotal();
-
-        tvItemDesc.setText(buy.getTitle());
+        tvItemDesc.setText(buy.getTitle().substring(0,Math.min(buy.getTitle().length(),33)));
         Resources res = getResources();
         tvItemPrice.setText(String.format(res.getString(R.string.price_holder), buy.getPrice()));
         if (buy.isPaysShipping()){

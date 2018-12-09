@@ -92,18 +92,20 @@ public class ItemSoldActivity extends AppCompatActivity {
         categ = getIntent().getStringExtra("categ");
         status = getIntent().getStringExtra("status");
 
-        tvStatus.setText(String.format(getString(R.string.isa_status), status));
-
-        if (status.equals("Finalizado")){
-            btnAction.setVisibility(View.VISIBLE);
-        }
-
+        String btnText;
         if (categ.equals("sold")) {
             getSupportActionBar().setTitle(getString(R.string.st_sold_item));
-            btnFinish.setVisibility(View.VISIBLE);
+            btnText = getString(R.string.isa_btn_rank_c);
         } else {
             getSupportActionBar().setTitle(getString(R.string.st_buy_item));
+            btnText = getString(R.string.isa_btn_rank_v);
         }
+
+        btnAction.setText(btnText);
+
+        tvStatus.setText(String.format(getString(R.string.isa_status), status));
+
+        updateStatus();
 
         rlQuestions.setOnClickListener(v -> {
             Intent qstIntent = new Intent(ItemSoldActivity.this, QuestionsActivity.class);
@@ -111,14 +113,6 @@ public class ItemSoldActivity extends AppCompatActivity {
             qstIntent.putExtra("user", user);
             startActivity(qstIntent);
         });
-
-        String btnText;
-        if (categ.equals("buy")) {
-            btnText = getString(R.string.isa_btn_rank_v);
-        } else {
-            btnText = getString(R.string.isa_btn_rank_c);
-        }
-        btnAction.setText(btnText);
 
         btnFinish.setOnClickListener(v -> {
             changeBuyStatus();
@@ -145,6 +139,7 @@ public class ItemSoldActivity extends AppCompatActivity {
                     Log.d(TAG, "Success");
                     PopUpManager.showToastError(getApplicationContext(), getString(R.string.isa_status_mod));
                     tvStatus.setText(String.format(getString(R.string.isa_status), "Finalizado"));
+                    btnFinish.setVisibility(View.GONE);
                 }, error -> {
             Log.d(TAG, "volley error create " + error.getMessage());
             //OR
@@ -165,7 +160,7 @@ public class ItemSoldActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("State", "2");
+                params.put("estado", "2");
                 return params;
             }
 
@@ -269,6 +264,7 @@ public class ItemSoldActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        updateStatus();
     }
 
     @Override
@@ -276,12 +272,38 @@ public class ItemSoldActivity extends AppCompatActivity {
         switch (requestCode) {
             case RESULT_RANKING:
                 if (resultCode == RESULT_OK) {
-                    getPostData();
+                    btnAction.setVisibility(View.GONE);
+                    btnFinish.setVisibility(View.GONE);
+                    if (categ.equals("sold")) {
+                        tvStatus.setText(String.format(getString(R.string.isa_status), "Completado"));
+                    } else {
+                        tvStatus.setText(String.format(getString(R.string.isa_status), "Calificado"));
+                    }
                 }
                 break;
             default:
                 super.onActivityResult(requestCode,resultCode, data);
         }
+    }
+
+    private void updateStatus() {
+        btnAction.setVisibility(View.GONE);
+        btnFinish.setVisibility(View.GONE);
+        if (categ.equals("sold")) {
+            if (status.equals("Comprado") || status.equals("Pago aceptado")){
+                btnAction.setVisibility(View.GONE);
+                btnFinish.setVisibility(View.VISIBLE);
+            }
+            if (status.equals("Calificado")){
+                btnAction.setVisibility(View.VISIBLE);
+                btnFinish.setVisibility(View.GONE);
+            }
+        } else {
+            if (status.equals("Finalizado")){
+                btnAction.setVisibility(View.VISIBLE);
+            }
+        }
+        tvStatus.setText(String.format(getString(R.string.isa_status), status));
     }
 
     @Override

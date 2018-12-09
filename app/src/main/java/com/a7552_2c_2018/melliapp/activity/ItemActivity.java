@@ -281,27 +281,6 @@ public class ItemActivity extends AppCompatActivity {
         }
     }
 
-    //remove this method
-    private void mocking(){
-        sampleImages = new String[4];
-        for (int i=0; i<4; i++){
-            sampleImages[i]= getString(R.string.base64mock);
-        }
-
-        carouselView.setPageCount(sampleImages.length);
-        carouselView.setImageListener(imageListener);
-
-        tvTitle.setText(getString(R.string.mock_title));
-        tvDesc.setText(getString(R.string.mock_desc));
-        tvPrice.setText(getString(R.string.mock_price));
-        tvSeller.setText(getString(R.string.mock_seller));
-        String[] pays = getResources().getStringArray(R.array.mock_payments_array);
-        StringBuilder fullString = new StringBuilder(pays[0]);
-        for (int i=1; i<pays.length; i++){
-            fullString.append(", ").append(pays[i]);
-        }
-        tvPayments.setText(fullString.toString());
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

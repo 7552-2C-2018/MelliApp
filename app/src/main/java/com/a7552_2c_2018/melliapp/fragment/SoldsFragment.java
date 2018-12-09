@@ -37,12 +37,14 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class SoldsFragment extends Fragment {
 
     private static final String TAG = "SoldsFragment";
+    private static final int RESULT_SOLDS = 1;
     private String status = "";
 
     @BindView(R.id.fsRecycler)
@@ -70,7 +72,6 @@ public class SoldsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         getSolds();
-        //mocking();
 
         final GestureDetector mGestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override public boolean onSingleTapUp(MotionEvent e) {
@@ -101,7 +102,7 @@ public class SoldsFragment extends Fragment {
                         itemSoldIntent.putExtra("postId", postId);
                         itemSoldIntent.putExtra("categ", "sold");
                         itemSoldIntent.putExtra("status", status);
-                        startActivity(itemSoldIntent);
+                        startActivityForResult(itemSoldIntent, RESULT_SOLDS);
 
                         return true;
                     }
@@ -186,17 +187,17 @@ public class SoldsFragment extends Fragment {
         }
     }
 
-    public void mocking() {
-        List<BuyItem> input = new ArrayList<>();
-        BuyItem item;
-        for (int i = 0; i < 4; ++i) {
-            item = new BuyItem();
-            item.setImage(getString(R.string.base64mock));
-            item.setStatus(getString(R.string.mock_status));
-            item.setTitle(getString(R.string.mock_title));
-            input.add(item);
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RESULT_SOLDS:
+                if (resultCode == RESULT_OK) {
+                    getSolds();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode,resultCode, data);
         }
-        RecyclerView.Adapter mAdapter = new BuysAdapter(input);
-        recyclerView.setAdapter(mAdapter);
     }
 }
