@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.ItemSoldActivity;
@@ -49,6 +52,15 @@ public class SoldsFragment extends Fragment {
 
     @BindView(R.id.fsRecycler)
     RecyclerView recyclerView;
+
+    @BindView(R.id.fsRlEmpty)
+    RelativeLayout rlEmpty;
+
+    @BindView(R.id.fsLoading)
+    ProgressBar progressBar;
+
+    @BindView(R.id.fsTvFiller)
+    TextView tvMsg;
 
     public SoldsFragment() {
         // Required empty public constructor
@@ -182,6 +194,12 @@ public class SoldsFragment extends Fragment {
             }
             RecyclerView.Adapter mAdapter = new BuysAdapter(input);
             recyclerView.setAdapter(mAdapter);
+            if (input.size() > 0) {
+                rlEmpty.setVisibility(View.GONE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                tvMsg.setText(getString(R.string.sf_empty));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -192,9 +210,7 @@ public class SoldsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case RESULT_SOLDS:
-                if (resultCode == RESULT_OK) {
                     getSolds();
-                }
                 break;
             default:
                 super.onActivityResult(requestCode,resultCode, data);

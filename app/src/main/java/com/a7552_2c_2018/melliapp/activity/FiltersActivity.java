@@ -149,11 +149,11 @@ public class FiltersActivity extends AppCompatActivity {
                 filters.setOnlyUsed(true);
                 filters.setCondSelected(true);
             }
-            if ((int)rgSeekBar.getSelectedMinValue() != 0){
+            if (((int)rgSeekBar.getSelectedMinValue() != 0) || !etPrinceMin.getText().equals("0")){
                 filters.setMinPrice((int)rgSeekBar.getSelectedMinValue());
                 filters.setPriceSelected(true);
             }
-            if ((int)rgSeekBar.getSelectedMaxValue() != 0){
+            if (((int)rgSeekBar.getSelectedMaxValue() != 9999) || !etPrinceMax.getText().equals("9999")){
                 filters.setMaxPrice((int)rgSeekBar.getSelectedMaxValue());
                 filters.setPriceSelected(true);
             }
@@ -244,9 +244,11 @@ public class FiltersActivity extends AppCompatActivity {
             rgSeekBar.setSelectedMinValue(filters.getMinPrice());
             rgSeekBar.setSelectedMaxValue(filters.getMaxPrice());
         }
+        /*
         if (filters.isCategSelected()){
             spCateg.setSelection(getSelectedItem(filters.getCateg()));
         }
+        */
         if (filters.isShipSelected()) {
             if (filters.isShipYes()){
                 rbShipYes.setChecked(true);

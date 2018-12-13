@@ -26,6 +26,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
+import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity  implements LocationListener
                         name = object.getString("first_name");
                         surname = object.getString("last_name");
                         email = object.getString("email");
+                        //email="";
                         profilePicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
                         UserInfo user;
                         user = new UserInfo(id, name, surname, email);

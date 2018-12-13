@@ -308,7 +308,10 @@ public class ItemSoldActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        //onBackPressed();
+        //return true;
+        finish();
+        setResult(RESULT_OK);
         return true;
     }
 

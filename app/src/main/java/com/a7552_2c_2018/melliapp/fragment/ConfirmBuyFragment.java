@@ -5,18 +5,22 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a7552_2c_2018.melliapp.R;
+import com.a7552_2c_2018.melliapp.activity.CheckOutActivity;
 import com.a7552_2c_2018.melliapp.activity.HomeActivity;
 import com.a7552_2c_2018.melliapp.model.ActualBuy;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
+import com.a7552_2c_2018.melliapp.utils.CreditCardUtils;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -89,7 +93,7 @@ public class ConfirmBuyFragment extends Fragment {
         }
         tvPayPrice.setText(String.format(res.getString(R.string.price_holder), total));
 
-        btConfirm.setOnClickListener(v1 -> callBackend());
+        btConfirm.setOnClickListener(v1 -> {if (checkEntries()) {callBackend();}});
         return v;
     }
 
@@ -163,5 +167,35 @@ public class ConfirmBuyFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         SingletonConnect.getInstance(getApplicationContext()).addToRequestQueue(jsonObjRequest,REQUEST_TAG);
+    }
+
+    private boolean checkEntries() {
+
+        ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+
+        if (!buy.isPaysWithCard()) {
+            return true;
+        }
+
+        String cardName = buy.getCardName();
+        String cardNumber = buy.getCardNumber();
+        String cardValidity = buy.getCardDate();
+        String cardCVV = String.valueOf(buy.getCardCVV());
+
+        if (TextUtils.isEmpty(cardName)) {
+            PopUpManager.showToastError(getApplicationContext(), "Ingrese un nombre valido");
+            return false;
+        } else if (TextUtils.isEmpty(cardNumber) || !CreditCardUtils.isValid(cardNumber.replace(" ",""))) {
+            PopUpManager.showToastError(getApplicationContext(), "Ingrese un número valido");
+            return false;
+        } else if (TextUtils.isEmpty(cardValidity)||!CreditCardUtils.isValidDate(cardValidity)) {
+            PopUpManager.showToastError(getApplicationContext(), "Verifique la fecha");
+            return false;
+        } else if (TextUtils.isEmpty(cardCVV)|| cardCVV.length()<3) {
+            PopUpManager.showToastError(getApplicationContext(), "Ingrese un código de seguridad válido");
+            return false;
+        } else {
+            return true;
+        }
     }
 }

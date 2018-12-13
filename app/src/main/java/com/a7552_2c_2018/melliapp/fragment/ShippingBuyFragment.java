@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.BuyingActivity;
 import com.a7552_2c_2018.melliapp.model.ActualBuy;
+import com.a7552_2c_2018.melliapp.model.ActualFilters;
 import com.a7552_2c_2018.melliapp.singletons.SingletonConnect;
 import com.a7552_2c_2018.melliapp.singletons.SingletonUser;
 import com.a7552_2c_2018.melliapp.utils.PopUpManager;
@@ -102,28 +103,37 @@ public class ShippingBuyFragment extends Fragment {
         });
 
         btNext.setOnClickListener(view -> {
-            if (validInput()){
+            if (noShipping.isChecked()) {
                 saveValues();
                 ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(1);
             } else {
-                PopUpManager.showToastError(getApplicationContext(), getString(R.string.sbf_msg));
+                if (takesShipping.isChecked()){
+                    if (validInput()){
+                        saveValues();
+                        ((BuyingActivity)Objects.requireNonNull(getActivity())).selectTab(1);
+                    } else {
+                        PopUpManager.showToastError(getApplicationContext(), getString(R.string.sbf_msg));
+                    }
+                } else {
+                    PopUpManager.showToastError(getApplicationContext(), getString(R.string.sbf_msg2));
+                }
             }
-
         });
 
         btCalculateCost.setOnClickListener(view -> calculateCost(tvStreet.getText().toString(), tvCp.getText().toString(),
                 tvCity.getText().toString()));
 
+        ActualBuy buy = SingletonUser.getInstance().getActualBuy();
+        if (buy.getPrice() < 50) {
+            noShipping.setVisibility(View.INVISIBLE);
+        }
+
         return v;
     }
 
     private boolean validInput() {
-        if (noShipping.isChecked()){
-            return true;
-        } else {
-            return !tvStreet.getText().toString().isEmpty() && !tvCp.getText().toString().isEmpty()
+        return !tvStreet.getText().toString().isEmpty() && !tvCp.getText().toString().isEmpty()
                     && !tvCity.getText().toString().isEmpty();
-        }
     }
 
     private void saveValues() {

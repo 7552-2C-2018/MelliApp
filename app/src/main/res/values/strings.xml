@@ -35,6 +35,7 @@
 
     <!-- Strings related to steady screen text -->
     <string name="validating">Espera mientras validamos tus datos.</string>
+    <string name="searching_data">Buscando datos…</string>
 
     <!-- Strings related to pop ups msg-->
     <string name="general_error">Ups! Hubo un error en la aplicación</string>
@@ -140,8 +141,15 @@
     <string name="rft_rat_send">Calificaciones Enviadas</string>
     <string name="rft_rat_reciv">Calificaciones Recibidas</string>
 
+    <!-- Strings related to Buys Fragment -->
+    <string name="bf_empty">No ha realizado compras aun</string>
+
+    <!-- Strings related to Solds Fragment -->
+    <string name="sf_empty">No ha realizado ventas aun</string>
+
     <!-- Strings related to Chats Fragment -->
     <string name="cf_hint">Escriba un mensaje…</string>
+    <string name="cf_empty">No tiene conversaciones</string>
 
     <!-- Strings related to QR Fragment -->
     <string name="qr_text">Aun no se detectó un QR válido</string>
@@ -156,6 +164,7 @@
     <string name="sbf_dept">Depto</string>
     <string name="sbf_hood">Barrio</string>
     <string name="sbf_msg">Complete los campos de dirección para continuar</string>
+    <string name="sbf_msg2">Seleccione alguna de las opciones para continuar</string>
     <string name="sbf_btn_calculate">Calcular Costo</string>
     <string name="sbf_btn_calc_prog">Calculando…</string>
 

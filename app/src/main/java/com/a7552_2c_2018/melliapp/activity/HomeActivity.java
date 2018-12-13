@@ -1,6 +1,7 @@
 package com.a7552_2c_2018.melliapp.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -113,6 +114,11 @@ public class HomeActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> finishAffinity())
                 .setNegativeButton(getString(R.string.no), null)
                 .show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }

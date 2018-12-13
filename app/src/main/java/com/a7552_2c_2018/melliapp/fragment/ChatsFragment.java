@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.a7552_2c_2018.melliapp.R;
 import com.a7552_2c_2018.melliapp.activity.ChatActivity;
@@ -45,6 +48,15 @@ public class ChatsFragment extends Fragment {
 
     @BindView(R.id.fcsRecycler)
     RecyclerView recyclerView;
+
+    @BindView(R.id.fcRlEmpty)
+    RelativeLayout rlEmpty;
+
+    @BindView(R.id.fcLoading)
+    ProgressBar progressBar;
+
+    @BindView(R.id.fcTvFiller)
+    TextView tvMsg;
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -132,6 +144,12 @@ public class ChatsFragment extends Fragment {
             JSONArray chats = obj.getJSONArray("chats");
             for (int i=0; i<chats.length(); i++){
                 addChat(chats.getString(i));
+            }
+            if (chats.length() > 0) {
+                rlEmpty.setVisibility(View.GONE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                tvMsg.setText(getString(R.string.cf_empty));
             }
         } catch (JSONException e) {
             e.printStackTrace();
